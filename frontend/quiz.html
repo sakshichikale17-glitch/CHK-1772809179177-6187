@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MythoVerse Quiz</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    :root {
+      --primary: #4b2e83;
+      --secondary: #6a4ccf;
+      --accent: #ff9800;
+      --success: #2e7d32;
+      --danger: #d32f2f;
+      --light: #f6f4ff;
+      --white: #ffffff;
+      --text: #333;
+      --muted: #666;
+      --border: #e7ddff;
+      --shadow: 0 12px 30px rgba(40, 20, 80, 0.12);
+      --gradient-main: linear-gradient(135deg, #4b2e83, #6a4ccf);
+      --gradient-warm: linear-gradient(135deg, #ff9800, #ffb74d);
+    }
+
+    body {
+      background: linear-gradient(135deg, #f7f3ff, #eef3ff);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    header {
+      background: var(--gradient-main);
+      color: white;
+      padding: 18px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-actions a,
+    .header-actions button {
+      border: none;
+      background: white;
+      color: var(--primary);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .header-actions a:hover,
+    .header-actions button:hover {
+      transform: translateY(-2px);
+    }
+
+    .page {
+      max-width: 1300px;
+      margin: 24px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 280px 1fr 320px;
+      gap: 22px;
+    }
+
+    .panel {
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .panel h2 {
+      color: var(--primary);
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    /* Left panel */
+    .chapter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chapter-item {
+      padding: 14px;
+      border-radius: 14px;
+      background: #f9f7ff;
+      border: 1px solid var(--border);
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    .chapter-item:hover,
+    .chapter-item.active {
+      transform: translateX(4px);
+      background: linear-gradient(135deg, #f1eaff, #faf7ff);
+      border-color: #cab8ff;
+    }
+
+    .chapter-item h3 {
+      font-size: 16px;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .chapter-item p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Center */
+    .quiz-banner {
+      background: var(--gradient-main);
+      color: white;
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-banner h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .quiz-banner p {
+      line-height: 1.8;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 14px;
+    }
+
+    .banner-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .banner-tags span {
+      background: rgba(255,255,255,0.14);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .quiz-box {
+      background: #fcfbff;
+      border: 1px solid #ece7fa;
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .quiz-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .quiz-top h3 {
+      color: var(--primary);
+      font-size: 22px;
+    }
+
+    .question-count {
+      background: #f1eaff;
+      color: var(--primary);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .question {
+      font-size: 20px;
+      font-weight: bold;
+      color: #261a48;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .options {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 14px;
+      padding: 15px 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .option:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(40, 20, 80, 0.08);
+      border-color: #c8b4ff;
+    }
+
+    .option.selected {
+      border-color: var(--primary);
+      background: #f3eeff;
+    }
+
+    .option.correct {
+      border-color: var(--success);
+      background: #edf9ee;
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .option.wrong {
+      border-color: var(--danger);
+      background: #fdeeee;
+      color: var(--danger);
+      font-weight: bold;
+    }
+
+    .quiz-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .left-actions,
+    .right-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-light {
+      background: #eee8ff;
+      color: var(--primary);
+    }
+
+    .btn-main {
+      background: var(--gradient-main);
+      color: white;
+    }
+
+    .btn-warm {
+      background: var(--gradient-warm);
+      color: white;
+    }
+
+    .result-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 14px;
+      display: none;
+      line-height: 1.7;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .result-box.show {
+      display: block;
+    }
+
+    .result-correct {
+      background: #edf9ee;
+      color: var(--success);
+      border: 1px solid #b9e0bc;
+    }
+
+    .result-wrong {
+      background: #fdeeee;
+      color: var(--danger);
+      border: 1px solid #efb5b5;
+    }
+
+    .score-box {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #fff8ef, #fff4e2);
+      border: 1px solid #ffe1b3;
+      border-radius: 16px;
+      padding: 18px;
+      display: none;
+    }
+
+    .score-box.show {
+      display: block;
+    }
+
+    .score-box h3 {
+      color: #9a5b00;
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .score-box p {
+      color: #7a5a22;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    /* Right panel */
+    .progress-card,
+    .reward-card,
+    .value-card,
+    .tip-card {
+      background: #fcfbff;
+      border: 1px solid #ece7fa;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .progress-card h3,
+    .reward-card h3,
+    .value-card h3,
+    .tip-card h3 {
+      color: var(--primary);
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: #e7e0f7;
+      overflow: hidden;
+      margin: 10px 0 8px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 20%;
+      background: var(--gradient-warm);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .small-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .reward-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .reward-badges span {
+      background: linear-gradient(135deg, #fff2d8, #ffe3a9);
+      color: #8a5a00;
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .value-card p,
+    .tip-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    @media (max-width: 1100px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      header {
+        padding: 16px 18px;
+      }
+
+      .page {
+        padding: 0 14px;
+      }
+
+      .quiz-banner h1 {
+        font-size: 24px;
+      }
+
+      .question {
+        font-size: 18px;
+      }
+
+      .quiz-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .left-actions,
+      .right-actions {
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🧠 MythoVerse Quiz</div>
+    <div class="header-actions">
+      <a href="story-player.html">← Back to Story</a>
+      <button onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <!-- Left panel -->
+    <aside class="panel">
+      <h2>Quiz Sections</h2>
+      <div class="chapter-list">
+        <div class="chapter-item active">
+          <h3>Question Set 1</h3>
+          <p>Birth of Lord Rama</p>
+        </div>
+        <div class="chapter-item">
+          <h3>Question Set 2</h3>
+          <p>Ayodhya Celebration</p>
+        </div>
+        <div class="chapter-item">
+          <h3>Question Set 3</h3>
+          <p>Moral Values</p>
+        </div>
+        <div class="chapter-item">
+          <h3>Bonus Round</h3>
+          <p>Sanskrit and Story Meaning</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center panel -->
+    <main class="panel">
+      <div class="quiz-banner">
+        <h1>Ramayan Chapter Quiz</h1>
+        <p>
+          Test your understanding of the story “Birth of Lord Rama” and earn progress,
+          rewards, and learning badges in MythoVerse.
+        </p>
+        <div class="banner-tags">
+          <span>Realm: Ramayan</span>
+          <span>Difficulty: Easy</span>
+          <span>Reward: 50 XP</span>
+        </div>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-top">
+          <h3>Story Quiz</h3>
+          <div class="question-count" id="questionCount">Question 1 of 5</div>
+        </div>
+
+        <div class="question" id="questionText">
+          Why was the birth of Lord Rama important in Ayodhya?
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <div class="quiz-actions">
+          <div class="left-actions">
+            <button class="btn btn-light" onclick="prevQuestion()">Previous</button>
+            <button class="btn btn-light" onclick="checkAnswer()">Check Answer</button>
+          </div>
+          <div class="right-actions">
+            <button class="btn btn-main" onclick="nextQuestion()">Next</button>
+            <button class="btn btn-warm" onclick="submitQuiz()">Submit Quiz</button>
+          </div>
+        </div>
+
+        <div class="result-box" id="resultBox"></div>
+        <div class="score-box" id="scoreBox"></div>
+      </div>
+    </main>
+
+    <!-- Right panel -->
+    <aside class="panel">
+      <h2>Quiz Progress</h2>
+
+      <div class="progress-card">
+        <h3>Completion</h3>
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p class="small-text" id="progressText">You have completed 1 of 5 questions.</p>
+      </div>
+
+      <div class="reward-card">
+        <h3>Rewards</h3>
+        <div class="reward-badges">
+          <span>Story Learner</span>
+          <span>Quiz Starter</span>
+          <span>Value Finder</span>
+        </div>
+      </div>
+
+      <div class="value-card">
+        <h3>Value of the Chapter</h3>
+        <p>
+          This chapter teaches the importance of truth, righteousness, and divine purpose.
+        </p>
+      </div>
+
+      <div class="tip-card">
+        <h3>Quick Tip</h3>
+        <p>
+          Read the story carefully before answering. MythoVerse quizzes are designed to help
+          you remember the meaning, not just facts.
+        </p>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Why was the birth of Lord Rama important in Ayodhya?",
+        options: [
+          "Because Ayodhya wanted a new palace",
+          "Because it brought joy, hope, and righteousness",
+          "Because the people wanted a festival only",
+          "Because the king wanted to leave Ayodhya"
+        ],
+        correct: 1,
+        explanation: "Correct. Lord Rama’s birth brought happiness, divine purpose, and the path of righteousness to Ayodhya."
+      },
+      {
+        question: "Who was the king of Ayodhya in this story?",
+        options: [
+          "King Janaka",
+          "King Dasharatha",
+          "King Ravana",
+          "King Sugriva"
+        ],
+        correct: 1,
+        explanation: "Correct. King Dasharatha was the ruler of Ayodhya and father of Lord Rama."
+      },
+      {
+        question: "Which value is strongly connected with Lord Rama’s story?",
+        options: [
+          "Greed",
+          "Anger",
+          "Truth and duty",
+          "Pride"
+        ],
+        correct: 2,
+        explanation: "Correct. Lord Rama is known for truth, duty, and righteousness."
+      },
+      {
+        question: "What was the feeling in Ayodhya after Rama’s birth?",
+        options: [
+          "Fear and sadness",
+          "Confusion and silence",
+          "Joy and celebration",
+          "Anger and war"
+        ],
+        correct: 2,
+        explanation: "Correct. The people of Ayodhya celebrated with happiness and devotion."
+      },
+      {
+        question: "What does the Sanskrit word 'Dharma' mean in this chapter?",
+        options: [
+          "Dance",
+          "Treasure",
+          "Duty and righteousness",
+          "Battle"
+        ],
+        correct: 2,
+        explanation: "Correct. Dharma means duty, righteousness, and moral order."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let selectedOption = null;
+    let answers = new Array(quizData.length).fill(null);
+    let checkedQuestions = new Array(quizData.length).fill(false);
+
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const resultBox = document.getElementById("resultBox");
+    const questionCount = document.getElementById("questionCount");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const scoreBox = document.getElementById("scoreBox");
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      questionText.textContent = q.question;
+      questionCount.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+      optionsContainer.innerHTML = "";
+      resultBox.className = "result-box";
+      resultBox.textContent = "";
+
+      q.options.forEach((option, index) => {
+        const div = document.createElement("div");
+        div.classList.add("option");
+        div.textContent = option;
+
+        if (answers[currentQuestion] === index) {
+          div.classList.add("selected");
+          selectedOption = index;
+        }
+
+        if (checkedQuestions[currentQuestion]) {
+          if (index === q.correct) {
+            div.classList.add("correct");
+          } else if (answers[currentQuestion] === index && index !== q.correct) {
+            div.classList.add("wrong");
+          }
+        }
+
+        div.addEventListener("click", () => {
+          if (checkedQuestions[currentQuestion]) return;
+
+          selectedOption = index;
+          answers[currentQuestion] = index;
+
+          document.querySelectorAll(".option").forEach(opt => {
+            opt.classList.remove("selected");
+          });
+
+          div.classList.add("selected");
+        });
+
+        optionsContainer.appendChild(div);
+      });
+
+      updateProgress();
+    }
+
+    function checkAnswer() {
+      if (answers[currentQuestion] === null) {
+        resultBox.className = "result-box show result-wrong";
+        resultBox.textContent = "Please select an answer first.";
+        return;
+      }
+
+      checkedQuestions[currentQuestion] = true;
+      const isCorrect = answers[currentQuestion] === quizData[currentQuestion].correct;
+
+      if (isCorrect) {
+        resultBox.className = "result-box show result-correct";
+        resultBox.textContent = quizData[currentQuestion].explanation;
+      } else {
+        resultBox.className = "result-box show result-wrong";
+        resultBox.textContent = `Wrong answer. ${quizData[currentQuestion].explanation}`;
+      }
+
+      loadQuestion();
+      resultBox.className = isCorrect
+        ? "result-box show result-correct"
+        : "result-box show result-wrong";
+      resultBox.textContent = isCorrect
+        ? quizData[currentQuestion].explanation
+        : `Wrong answer. ${quizData[currentQuestion].explanation}`;
+    }
+
+    function nextQuestion() {
+      if (currentQuestion < quizData.length - 1) {
+        currentQuestion++;
+        selectedOption = answers[currentQuestion];
+        loadQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        selectedOption = answers[currentQuestion];
+        loadQuestion();
+      }
+    }
+
+    function updateProgress() {
+      const answeredCount = answers.filter(answer => answer !== null).length;
+      const percent = (answeredCount / quizData.length) * 100;
+      progressBar.style.width = `${percent}%`;
+      progressText.textContent = `You have completed ${answeredCount} of ${quizData.length} questions.`;
+    }
+
+    function submitQuiz() {
+      let score = 0;
+
+      for (let i = 0; i < quizData.length; i++) {
+        if (answers[i] === quizData[i].correct) {
+          score++;
+        }
+      }
+
+      scoreBox.className = "score-box show";
+      scoreBox.innerHTML = `
+        <h3>Your Quiz Result</h3>
+        <p>You scored <strong>${score} out of ${quizData.length}</strong>.</p>
+        <p>
+          ${
+            score === quizData.length
+              ? "Excellent. You understood the story very well and earned full rewards."
+              : score >= 3
+              ? "Good job. You understood the main ideas of the chapter."
+              : "Keep learning. Revisit the story and try again to improve your score."
+          }
+        </p>
+      `;
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      selectedOption = null;
+      answers = new Array(quizData.length).fill(null);
+      checkedQuestions = new Array(quizData.length).fill(false);
+      scoreBox.className = "score-box";
+      scoreBox.innerHTML = "";
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>

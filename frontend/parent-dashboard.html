@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MythoVerse Parent Dashboard</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:Arial,sans-serif;
+      background:linear-gradient(135deg,#f7f1ff,#eef6ff,#fffaf1);
+      color:#222;
+      min-height:100vh;
+    }
+    .navbar{
+      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      color:white;
+      padding:16px 28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      box-shadow:0 4px 12px rgba(0,0,0,0.12);
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+    .navbar h2{font-size:28px;}
+    .nav-links{list-style:none;display:flex;gap:16px;flex-wrap:wrap;}
+    .nav-links a{
+      color:white;text-decoration:none;font-weight:bold;
+      padding:8px 12px;border-radius:8px;transition:0.3s;
+    }
+    .nav-links a:hover{background:rgba(255,255,255,0.18);}
+    .hero{
+      background:linear-gradient(135deg,#ffd89b,#ffb6a3,#ff9fcf);
+      padding:35px 28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+    .hero h1{font-size:34px;color:#3b2066;margin-bottom:10px;}
+    .hero p{font-size:16px;line-height:1.6;max-width:620px;margin-bottom:14px;}
+    .hero img{width:140px;max-width:100%;}
+    .dashboard{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:22px;
+      padding:24px;
+    }
+    .card{
+      background:white;
+      border-radius:18px;
+      padding:22px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.08);
+      margin-bottom:20px;
+    }
+    .card h3{color:#4b2e83;margin-bottom:16px;font-size:22px;}
+    .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .info-box{
+      background:#f8f4ff;
+      padding:14px;
+      border-radius:12px;
+      font-size:15px;
+      line-height:1.6;
+    }
+    .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+    .stat-card{
+      background:linear-gradient(135deg,#eef7ff,#f4efff);
+      padding:16px;border-radius:14px;text-align:center;
+    }
+    .stat-card h4{font-size:26px;color:#5a189a;margin-bottom:6px;}
+    .progress-list{display:grid;gap:12px;}
+    .progress-item{
+      background:#fff9ec;
+      padding:14px;
+      border-radius:12px;
+      font-weight:bold;
+    }
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      background:#ede0ff;
+      color:#5a189a;
+      border-radius:20px;
+      font-size:13px;
+      font-weight:bold;
+      margin:4px 6px 0 0;
+    }
+    .activity-list{display:grid;gap:12px;}
+    .activity-item{
+      background:#eefcf1;
+      padding:14px;
+      border-radius:12px;
+      border-left:5px solid #22c55e;
+      font-weight:600;
+    }
+    .alert-box{
+      background:linear-gradient(135deg,#fff6e5,#fff0f6);
+      padding:16px;border-radius:12px;line-height:1.7;
+    }
+    button{
+      padding:10px 16px;
+      border:none;
+      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      color:white;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+      transition:0.3s;
+      margin-top:10px;
+    }
+    button:hover{transform:translateY(-2px);}
+    .loading{text-align:center;padding:40px;font-size:18px;color:#5a189a;font-weight:bold;}
+    footer{
+      text-align:center;
+      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      color:white;
+      padding:18px;
+      margin-top:10px;
+      font-weight:bold;
+    }
+    @media(max-width:1000px){.dashboard{grid-template-columns:1fr;}}
+    @media(max-width:700px){
+      .profile-grid,.stats-grid{grid-template-columns:1fr;}
+      .hero h1{font-size:26px;}
+      .navbar{flex-direction:column;gap:12px;}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <h2>MythoVerse Parent</h2>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#" onclick="refreshDashboard()">Child Progress</a></li>
+      <li><a href="#" onclick="showReport()">Reports</a></li>
+      <li><a href="#" onclick="showScreenTime()">Screen Time</a></li>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1 id="parentWelcome">Welcome Parent ✨</h1>
+      <p id="parentText">Track your child’s learning journey, progress, screen time, and achievements through one safe and meaningful dashboard.</p>
+      <button onclick="refreshDashboard()">Refresh Data</button>
+    </div>
+    <img src="https://cdn-icons-png.flaticon.com/512/4207/4207247.png" alt="parent dashboard">
+  </section>
+
+  <section class="dashboard">
+    <div id="leftSide">
+      <div class="card loading">Loading parent dashboard...</div>
+    </div>
+    <div id="rightSide"></div>
+  </section>
+
+  <footer>
+    <p>© 2026 MythoVerse | Parent Dashboard</p>
+  </footer>
+
+  <script>
+    const API_PARENT = "http://localhost:5000/api/parent";
+    const token = localStorage.getItem("token");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!token || !storedUser) {
+      alert("Please login first");
+      window.location.href = "login.html";
+    }
+
+    async function apiGet(url) {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Request failed");
+      }
+
+      return data;
+    }
+
+    async function loadDashboard() {
+      try {
+        const data = await apiGet(`${API_PARENT}/dashboard`);
+
+        const parent = data.parent;
+        const child = data.child;
+
+        document.getElementById("parentWelcome").textContent = `Welcome ${parent.name || "Parent"} ✨`;
+        document.getElementById("parentText").textContent =
+          `Monitor ${child.childName || "your child"}'s learning activity, progress, badges, and screen time easily.`;
+
+        document.getElementById("leftSide").innerHTML = `
+          <div class="card">
+            <h3>Parent Profile</h3>
+            <div class="profile-grid">
+              <div class="info-box"><strong>Name:</strong><br>${parent.name || "-"}</div>
+              <div class="info-box"><strong>Email:</strong><br>${parent.email || "-"}</div>
+              <div class="info-box"><strong>Phone:</strong><br>${parent.phone || "-"}</div>
+              <div class="info-box"><strong>Role:</strong><br>${parent.role || "-"}</div>
+              <div class="info-box"><strong>Interest:</strong><br>${parent.interest || "-"}</div>
+              <div class="info-box"><strong>Last Active:</strong><br>${parent.lastActive || "-"}</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Child Overview</h3>
+            <div class="profile-grid">
+              <div class="info-box"><strong>Child Name:</strong><br>${child.childName || "-"}</div>
+              <div class="info-box"><strong>Age Group:</strong><br>${child.age || "-"}</div>
+              <div class="info-box"><strong>Screen Time:</strong><br>${child.screenTime || "-"}</div>
+              <div class="info-box"><strong>Characters Unlocked:</strong><br>${child.charactersUnlocked ?? 0}</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Learning Progress</h3>
+            <div class="stats-grid">
+              <div class="stat-card"><h4>${child.storiesCompleted ?? 0}</h4><p>Stories Completed</p></div>
+              <div class="stat-card"><h4>${child.quizzesCompleted ?? 0}</h4><p>Quizzes Completed</p></div>
+              <div class="stat-card"><h4>${child.wordsLearned ?? 0}</h4><p>Sanskrit Words Learned</p></div>
+              <div class="stat-card"><h4>${child.dharmaPoints ?? 0}</h4><p>Dharma Points</p></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Progress Highlights</h3>
+            <div class="progress-list">
+              <div class="progress-item">Stories Completed: ${child.storiesCompleted ?? 0}</div>
+              <div class="progress-item">Quizzes Completed: ${child.quizzesCompleted ?? 0}</div>
+              <div class="progress-item">Words Learned: ${child.wordsLearned ?? 0}</div>
+              <div class="progress-item">Badges Earned: ${child.badgesEarned ?? 0}</div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("rightSide").innerHTML = `
+          <div class="card">
+            <h3>Achievements</h3>
+            <p><strong>Dharma Points:</strong> ${child.dharmaPoints ?? 0}</p>
+            <p><strong>Badges Earned:</strong> ${child.badgesEarned ?? 0}</p>
+            <p><strong>Characters Unlocked:</strong> ${child.charactersUnlocked ?? 0}</p>
+            ${(child.badges || []).map(b => `<span class="badge">${b}</span>`).join("")}
+          </div>
+
+          <div class="card">
+            <h3>Recent Activities</h3>
+            <div class="activity-list">
+              <div class="activity-item">${child.childName || "Child"} completed ${child.storiesCompleted ?? 0} story lessons.</div>
+              <div class="activity-item">${child.childName || "Child"} finished ${child.quizzesCompleted ?? 0} quizzes.</div>
+              <div class="activity-item">${child.childName || "Child"} learned ${child.wordsLearned ?? 0} Sanskrit words.</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Parent Insights</h3>
+            <div class="alert-box">
+              Your child is making good progress in mythology learning and Sanskrit activities.
+              <br><br>
+              <strong>Screen Time:</strong> ${child.screenTime || "-"}
+              <br>
+              <strong>Last Active:</strong> ${parent.lastActive || "-"}
+              <br><br>
+              <button onclick="showReport()">View Full Report</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Quick Actions</h3>
+            <button onclick="showScreenTime()">Check Screen Time</button><br>
+            <button onclick="showBadges()">View Badges</button><br>
+            <button onclick="showLearningPlan()">Learning Plan</button>
+          </div>
+        `;
+      } catch (error) {
+        document.getElementById("leftSide").innerHTML = `
+          <div class="card">
+            <h3>Error</h3>
+            <p>${error.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    async function refreshDashboard() {
+      await loadDashboard();
+    }
+
+    async function showReport() {
+      try {
+        const data = await apiGet(`${API_PARENT}/report`);
+        const r = data.report;
+        alert(
+          `Child Report\n\n` +
+          `Child Name: ${r.childName}\n` +
+          `Stories Completed: ${r.storiesCompleted}\n` +
+          `Quizzes Completed: ${r.quizzesCompleted}\n` +
+          `Words Learned: ${r.wordsLearned}\n` +
+          `Dharma Points: ${r.dharmaPoints}\n` +
+          `Badges Earned: ${r.badgesEarned}\n` +
+          `Screen Time: ${r.screenTime}\n` +
+          `Last Active: ${r.lastActive}`
+        );
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function showScreenTime() {
+      try {
+        const data = await apiGet(`${API_PARENT}/screen-time`);
+        alert(`${data.childName}'s Screen Time: ${data.screenTime}`);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function showBadges() {
+      try {
+        const data = await apiGet(`${API_PARENT}/badges`);
+        alert(
+          `${data.childName}'s Badges\n\n` +
+          `Badges Earned: ${data.badgesEarned}\n` +
+          `${data.badges.join(", ")}`
+        );
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function showLearningPlan() {
+      try {
+        const data = await apiGet(`${API_PARENT}/learning-plan`);
+        alert(
+          `${data.childName}'s Learning Plan\n\n` +
+          data.learningPlan.map((item, index) => `${index + 1}. ${item}`).join("\n")
+        );
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

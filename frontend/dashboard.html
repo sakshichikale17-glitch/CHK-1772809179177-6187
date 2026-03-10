@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MythoVerse Dashboard</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:linear-gradient(135deg,#f6f0ff,#eef6ff,#fff8ef);
+      color:#222;
+      min-height:100vh;
+    }
+
+    .navbar{
+      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      color:white;
+      padding:16px 28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      box-shadow:0 4px 12px rgba(0,0,0,0.12);
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+
+    .navbar h2{
+      font-size:28px;
+      letter-spacing:1px;
+    }
+
+    .nav-links{
+      list-style:none;
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:white;
+      text-decoration:none;
+      font-weight:bold;
+      padding:8px 12px;
+      border-radius:8px;
+      transition:0.3s;
+    }
+
+    .nav-links a:hover{
+      background:rgba(255,255,255,0.18);
+    }
+
+    .welcome{
+      background:linear-gradient(135deg,#ffd89b,#ffb6a3,#ff9fcf);
+      padding:35px 30px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+      box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .welcome h1{
+      font-size:36px;
+      margin-bottom:10px;
+      color:#3b2066;
+    }
+
+    .welcome p{
+      font-size:17px;
+      margin-bottom:16px;
+      line-height:1.6;
+      max-width:600px;
+    }
+
+    .welcome img{
+      width:150px;
+      max-width:100%;
+      filter:drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+    }
+
+    button{
+      padding:10px 16px;
+      border:none;
+      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      color:white;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+      transition:0.3s;
+      box-shadow:0 4px 10px rgba(75,46,131,0.25);
+    }
+
+    button:hover{
+      transform:translateY(-2px);
+      opacity:0.95;
+    }
+
+    .dashboard{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:22px;
+      padding:24px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.95);
+      padding:22px;
+      border-radius:18px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.08);
+      margin-bottom:20px;
+      border:1px solid rgba(255,255,255,0.45);
+    }
+
+    .card h3{
+      color:#4b2e83;
+      margin-bottom:16px;
+      font-size:22px;
+    }
+
+    .profile{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .avatar{
+      width:78px;
+      height:78px;
+      border-radius:50%;
+      border:4px solid #f3e8ff;
+      box-shadow:0 4px 10px rgba(0,0,0,0.12);
+    }
+
+    .profile div p{
+      margin-bottom:8px;
+      font-size:15px;
+    }
+
+    .progress-bar{
+      width:100%;
+      height:18px;
+      background:#ece7fb;
+      border-radius:50px;
+      margin-top:16px;
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#00c853,#64dd17);
+      border-radius:50px;
+      text-align:center;
+      font-size:12px;
+      font-weight:bold;
+      color:white;
+      line-height:18px;
+      transition:0.3s;
+    }
+
+    .realm-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+      gap:14px;
+    }
+
+    .realm{
+      background:linear-gradient(135deg,#efe6ff,#dfe9ff);
+      padding:16px;
+      text-align:center;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .continue{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .continue div{
+      background:linear-gradient(135deg,#fffaf0,#f7edff);
+      padding:18px;
+      border-radius:14px;
+      box-shadow:inset 0 0 0 1px #eee;
+    }
+
+    .continue p{
+      margin-bottom:12px;
+      font-weight:bold;
+      color:#333;
+      line-height:1.5;
+    }
+
+    .featured-story{
+      background:linear-gradient(135deg,#fff0f0,#fff8e7);
+    }
+
+    .featured-story p{
+      line-height:1.7;
+      margin-bottom:14px;
+    }
+
+    .word-box{
+      background:linear-gradient(135deg,#fff7e6,#fceaff);
+      padding:18px;
+      border-radius:14px;
+      text-align:center;
+      margin-top:10px;
+    }
+
+    #word{
+      font-size:32px;
+      color:#7b2cbf;
+      margin:10px 0;
+    }
+
+    #meaning{
+      font-size:16px;
+      margin-bottom:12px;
+      color:#444;
+    }
+
+    #pronunciation{
+      font-size:14px;
+      color:#777;
+      margin-bottom:15px;
+    }
+
+    .chat-buttons{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .chat-buttons button{
+      background:linear-gradient(90deg,#ff8fab,#ffb86b);
+      color:#3b2066;
+    }
+
+    .achievement{
+      background:linear-gradient(135deg,#eefcf1,#f4f1ff);
+    }
+
+    .achievement p{
+      margin:10px 0;
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      background:#ede0ff;
+      color:#5a189a;
+      border-radius:20px;
+      font-size:13px;
+      font-weight:bold;
+      margin:4px 6px 0 0;
+    }
+
+    .quest-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .quest-item{
+      background:#f8f4ff;
+      padding:14px;
+      border-radius:12px;
+      border-left:5px solid #7b2cbf;
+      font-weight:600;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .stat-box{
+      background:#eef7ff;
+      padding:14px;
+      border-radius:12px;
+      font-weight:bold;
+    }
+
+    .audio-list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .audio-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      background:#f6f6ff;
+      padding:12px;
+      border-radius:12px;
+      flex-wrap:wrap;
+    }
+
+    .recommend-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .recommend-item{
+      background:linear-gradient(135deg,#e7fbff,#eef2ff);
+      padding:14px;
+      border-radius:12px;
+      font-weight:600;
+    }
+
+    .parent-box{
+      background:linear-gradient(135deg,#fff6e5,#fff0f6);
+      padding:16px;
+      border-radius:12px;
+      line-height:1.7;
+    }
+
+    .leader{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:linear-gradient(90deg,#fff3cd,#ffe6a7);
+      padding:10px 12px;
+      margin-bottom:10px;
+      border-radius:10px;
+      font-weight:bold;
+    }
+
+    footer{
+      text-align:center;
+      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      color:white;
+      padding:18px;
+      margin-top:10px;
+      font-weight:bold;
+    }
+
+    @media(max-width:1000px){
+      .dashboard{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:800px){
+      .welcome{
+        padding:25px 20px;
+        text-align:center;
+        justify-content:center;
+      }
+
+      .continue{
+        grid-template-columns:1fr;
+      }
+
+      .chat-buttons{
+        grid-template-columns:1fr;
+      }
+
+      .navbar{
+        flex-direction:column;
+        gap:14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <h2>MythoVerse</h2>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="storyplayer.html">Stories</a></li>
+      <li><a href="#">Sanskrit</a></li>
+      <li><a href="#">Quiz</a></li>
+      <li><a href="#">Rewards</a></li>
+      <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+  </header>
+
+  <section class="welcome">
+    <div>
+      <h1 id="welcomeName">Welcome Explorer ✨</h1>
+      <p id="welcomeText">Loading your dashboard...</p>
+      <button onclick="startQuest()">Start Quest</button>
+    </div>
+    <img src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png" alt="welcome image">
+  </section>
+
+  <section class="dashboard">
+    <div>
+      <div class="card">
+        <h3>Profile</h3>
+        <div class="profile">
+          <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" class="avatar" alt="avatar">
+          <div>
+            <p><strong>Name:</strong> <span id="userName">-</span></p>
+            <p><strong>Email:</strong> <span id="userEmail">-</span></p>
+            <p><strong>Phone:</strong> <span id="userPhone">-</span></p>
+            <p><strong>Role:</strong> <span id="userRole">-</span></p>
+            <p><strong>Age Group:</strong> <span id="userAge">-</span></p>
+            <p><strong>Interest:</strong> <span id="userInterest">-</span></p>
+          </div>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Explore Realms</h3>
+        <div class="realm-grid">
+          <div class="realm" onclick="openRealm('Ramayan')">Ramayan</div>
+          <div class="realm" onclick="openRealm('Mahabharat')">Mahabharat</div>
+          <div class="realm" onclick="openRealm('Krishna Leela')">Krishna Leela</div>
+          <div class="realm" onclick="openRealm('Sanskrit')">Sanskrit</div>
+          <div class="realm" onclick="openRealm('Moral Stories')">Moral Stories</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Continue Learning</h3>
+        <div class="continue" id="continueContainer"></div>
+      </div>
+
+      <div class="card featured-story">
+        <h3>Featured Story</h3>
+        <p id="featuredStoryText">Loading featured story...</p>
+        <button onclick="openStory()">Read Story</button>
+      </div>
+
+      <div class="card">
+        <h3>Audio Stories</h3>
+        <div class="audio-list" id="audioContainer"></div>
+      </div>
+
+      <div class="card">
+        <h3>Recommended For You</h3>
+        <div class="recommend-list" id="recommendContainer"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>Daily Sanskrit Word</h3>
+        <div class="word-box">
+          <h2 id="word">-</h2>
+          <p id="meaning">-</p>
+          <p id="pronunciation">-</p>
+          <button onclick="changeWord()">Next Word</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>AI Character Chat</h3>
+        <div class="chat-buttons">
+          <button onclick="chat('Krishna')">Krishna</button>
+          <button onclick="chat('Hanuman')">Hanuman</button>
+          <button onclick="chat('Rama')">Rama</button>
+          <button onclick="chat('Ganesha')">Ganesha</button>
+        </div>
+      </div>
+
+      <div class="card achievement">
+        <h3>Achievements</h3>
+        <p>🌟 Dharma Points : <span id="dharmaPoints">0</span></p>
+        <p>🪙 Gyan Coins : <span id="gyanCoins">0</span></p>
+        <p>🏅 Badges : <span id="badgesEarned">0</span></p>
+        <p>🔓 Characters Unlocked : <span id="charactersUnlocked">0</span></p>
+
+        <div id="badgeContainer"></div>
+      </div>
+
+      <div class="card">
+        <h3>Quests & Challenges</h3>
+        <div class="quest-list" id="questContainer"></div>
+      </div>
+
+      <div class="card">
+        <h3>Progress Tracker</h3>
+        <div class="stats-grid">
+          <div class="stat-box">Stories Completed: <span id="storiesCompleted">0</span></div>
+          <div class="stat-box">Quizzes Completed: <span id="quizzesCompleted">0</span></div>
+          <div class="stat-box">Sanskrit Words Learned: <span id="wordsLearned">0</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Parent Dashboard</h3>
+        <div class="parent-box">
+          Track child progress, screen time, achievements, and learning journey.
+          <br><br>
+          <button onclick="viewParentDashboard()">View Dashboard</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Leaderboard</h3>
+        <div id="leaderboardContainer"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 MythoVerse | Learn Culture, Values & Sanskrit with Fun</p>
+  </footer>
+
+  <script>
+    const API_DASHBOARD = "http://localhost:5000/api/dashboard";
+    const token = localStorage.getItem("token");
+
+    let words = [];
+    let currentWordIndex = 0;
+    let currentUser = null;
+
+    if (!token) {
+      alert("Please login first");
+      window.location.href = "login.html";
+    }
+
+    async function apiGet(url) {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      const text = await response.text();
+      const data = JSON.parse(text);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Request failed");
+      }
+
+      return data;
+    }
+
+    async function apiPost(url, bodyData) {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(bodyData)
+      });
+
+      const text = await response.text();
+      const data = JSON.parse(text);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Request failed");
+      }
+
+      return data;
+    }
+
+    function renderUser(user) {
+      currentUser = user;
+
+      document.getElementById("welcomeName").textContent = `Welcome ${user.name || "Explorer"} ✨`;
+      document.getElementById("welcomeText").textContent = `Continue your journey, ${user.name || "Explorer"}! Explore stories, Sanskrit lessons, quizzes, rewards, and more.`;
+
+      document.getElementById("userName").textContent = user.name || "-";
+      document.getElementById("userEmail").textContent = user.email || "-";
+      document.getElementById("userPhone").textContent = user.phone || "-";
+      document.getElementById("userRole").textContent = user.role || "-";
+      document.getElementById("userAge").textContent = user.age || "-";
+      document.getElementById("userInterest").textContent = user.interest || "-";
+
+      document.getElementById("dharmaPoints").textContent = user.dharmaPoints || 0;
+      document.getElementById("gyanCoins").textContent = user.gyanCoins || 0;
+      document.getElementById("badgesEarned").textContent = user.badgesEarned || 0;
+      document.getElementById("charactersUnlocked").textContent = user.charactersUnlocked || 0;
+      document.getElementById("storiesCompleted").textContent = user.storiesCompleted || 0;
+      document.getElementById("quizzesCompleted").textContent = user.quizzesCompleted || 0;
+      document.getElementById("wordsLearned").textContent = user.wordsLearned || 0;
+
+      const progress = user.learningProgress || 0;
+      const fill = document.getElementById("progressFill");
+      fill.style.width = `${progress}%`;
+      fill.textContent = `${progress}%`;
+    }
+
+    function renderContent(content) {
+      words = content.dailyWords || [];
+      currentWordIndex = 0;
+
+      if (words.length > 0) {
+        updateWord();
+      }
+
+      document.getElementById("featuredStoryText").innerHTML =
+        `<strong>${content.featuredStory.title}</strong><br><br>${content.featuredStory.description}`;
+
+      const continueContainer = document.getElementById("continueContainer");
+      continueContainer.innerHTML = "";
+      (content.continueLearning || []).forEach(item => {
+        continueContainer.innerHTML += `
+          <div>
+            <p>${item.title}</p>
+            <button onclick="continueLearning('${item.title.replace(/'/g, "\\'")}')">Continue</button>
+          </div>
+        `;
+      });
+
+      const audioContainer = document.getElementById("audioContainer");
+      audioContainer.innerHTML = "";
+      (content.audioStories || []).forEach(item => {
+        audioContainer.innerHTML += `
+          <div class="audio-item">
+            <span>${item.title}</span>
+            <button onclick="playAudio('${item.title.replace(/'/g, "\\'")}')">Play</button>
+          </div>
+        `;
+      });
+
+      const recommendContainer = document.getElementById("recommendContainer");
+      recommendContainer.innerHTML = "";
+      (content.recommended || []).forEach(item => {
+        recommendContainer.innerHTML += `<div class="recommend-item">${item}</div>`;
+      });
+
+      const questContainer = document.getElementById("questContainer");
+      questContainer.innerHTML = "";
+      (content.quests || []).forEach(item => {
+        questContainer.innerHTML += `<div class="quest-item">${item}</div>`;
+      });
+
+      const leaderboardContainer = document.getElementById("leaderboardContainer");
+      leaderboardContainer.innerHTML = "";
+      (content.leaderboard || []).forEach((item, index) => {
+        leaderboardContainer.innerHTML += `
+          <div class="leader">
+            <span>${index + 1}. ${item.name}</span>
+            <span>${item.points} pts</span>
+          </div>
+        `;
+      });
+
+      const badgeContainer = document.getElementById("badgeContainer");
+      badgeContainer.innerHTML = `
+        <span class="badge">Story Star</span>
+        <span class="badge">Sanskrit Learner</span>
+        <span class="badge">Quest Hero</span>
+      `;
+    }
+
+    async function loadDashboard() {
+      try {
+        const data = await apiGet(API_DASHBOARD);
+        renderUser(data.user);
+        renderContent(data.content);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    function updateWord() {
+      if (!words.length) return;
+      document.getElementById("word").innerText = words[currentWordIndex].word;
+      document.getElementById("meaning").innerText = words[currentWordIndex].meaning;
+      document.getElementById("pronunciation").innerText =
+        "Pronunciation: " + words[currentWordIndex].pronunciation;
+    }
+
+    function changeWord() {
+      if (!words.length) return;
+      currentWordIndex++;
+      if (currentWordIndex >= words.length) currentWordIndex = 0;
+      updateWord();
+    }
+
+    async function chat(name) {
+      try {
+        const data = await apiPost(`${API_DASHBOARD}/chat`, { character: name });
+        alert(`${data.character} says: ${data.reply}`);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function startQuest() {
+      try {
+        const data = await apiPost(`${API_DASHBOARD}/start-quest`, {});
+        alert(data.message);
+        renderUser(data.user);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function continueLearning(sectionTitle) {
+      try {
+        const data = await apiPost(`${API_DASHBOARD}/continue`, { sectionTitle });
+        alert(data.message);
+        renderUser(data.user);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function openRealm(realmName) {
+      try {
+        const data = await apiPost(`${API_DASHBOARD}/realm`, { realmName });
+        alert(data.message);
+        renderUser(data.user);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function playAudio(storyName) {
+      try {
+        const data = await apiPost(`${API_DASHBOARD}/audio`, { storyName });
+        alert(data.message);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    function openStory() {
+      window.location.href = "storyplayer.html";
+    }
+
+    function viewParentDashboard() {
+      if (currentUser && currentUser.role === "Parent") {
+        window.location.href = "parent-dashboard.html";
+      } else {
+        alert("Parent dashboard is available for parent accounts.");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      loadDashboard();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | MythoVerse</title>
+  <meta name="description" content="Create your MythoVerse account and begin your mythology and Sanskrit learning journey." />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    :root {
+      --primary: #6a11cb;
+      --secondary: #2575fc;
+      --accent: #ff7b54;
+      --gold: #ffd166;
+      --dark: #1d1438;
+      --text: #5f5f76;
+      --white: #ffffff;
+      --light: #f7f4ff;
+      --border: rgba(106, 17, 203, 0.12);
+      --shadow: 0 18px 45px rgba(36, 18, 78, 0.12);
+      --gradient-main: linear-gradient(135deg, #6a11cb, #2575fc);
+      --gradient-warm: linear-gradient(135deg, #ff7b54, #ffb26b);
+      --gradient-bg:
+        radial-gradient(circle at top left, rgba(255, 209, 102, 0.2), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(37, 117, 252, 0.12), transparent 30%),
+        linear-gradient(135deg, #fcfbff, #f3efff);
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--gradient-bg);
+      color: var(--dark);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+
+    .left-panel {
+      position: relative;
+      padding: 60px 7%;
+      background: linear-gradient(160deg, #1f1440, #341b72 55%, #5a22b8 100%);
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .left-panel::before,
+    .left-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .left-panel::before {
+      width: 280px;
+      height: 280px;
+      top: -90px;
+      right: -70px;
+    }
+
+    .left-panel::after {
+      width: 220px;
+      height: 220px;
+      bottom: -70px;
+      left: -60px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.16);
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+    }
+
+    .brand h1 {
+      font-size: 1.7rem;
+      letter-spacing: 0.5px;
+    }
+
+    .intro {
+      position: relative;
+      z-index: 2;
+      max-width: 520px;
+      margin-top: 50px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.95rem;
+      font-weight: bold;
+      margin-bottom: 24px;
+    }
+
+    .intro h2 {
+      font-size: 3rem;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .intro p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 30px;
+    }
+
+    .benefits {
+      display: grid;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+    }
+
+    .benefit-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      background: var(--gradient-warm);
+      color: var(--white);
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .benefit h3 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .benefit p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.82);
+      margin: 0;
+    }
+
+    .right-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .register-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--white);
+      border-radius: 30px;
+      padding: 34px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .top-text {
+      margin-bottom: 26px;
+    }
+
+    .top-text h2 {
+      font-size: 2rem;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .top-text p {
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 0.97rem;
+    }
+
+    .message-box {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+      font-weight: bold;
+    }
+
+    .message-box.error {
+      display: block;
+      background: #ffe8e8;
+      color: #d62828;
+      border: 1px solid #ffc7c7;
+    }
+
+    .message-box.success {
+      display: block;
+      background: #e9fbe9;
+      color: #198754;
+      border: 1px solid #c9efcf;
+    }
+
+    form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-group label {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #302454;
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 16px;
+      border: 1px solid #d9d3ee;
+      outline: none;
+      font-size: 0.96rem;
+      background: #fcfbff;
+      color: var(--dark);
+      transition: 0.3s ease;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus,
+    .input-group textarea:focus {
+      border-color: #7b3df0;
+      box-shadow: 0 0 0 4px rgba(123, 61, 240, 0.1);
+      background: #fff;
+    }
+
+    .input-group textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .checkbox-group input {
+      margin-top: 4px;
+      accent-color: #6a11cb;
+    }
+
+    .checkbox-group label {
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 0.93rem;
+    }
+
+    .checkbox-group a {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .register-btn {
+      width: 100%;
+      border: none;
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--gradient-main);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 14px 28px rgba(37, 117, 252, 0.18);
+    }
+
+    .register-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .register-btn:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 6px 0;
+      color: #8e87a8;
+      font-size: 0.9rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e6e0f6;
+    }
+
+    .bottom-text {
+      text-align: center;
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    .bottom-text a {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .mini-note {
+      text-align: center;
+      margin-top: 14px;
+      color: #8a84a3;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255,255,255,0.4);
+      border-top: 3px solid #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 1050px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .left-panel {
+        padding: 40px 6%;
+      }
+
+      .intro {
+        max-width: 100%;
+        margin-top: 20px;
+      }
+
+      .intro h2 {
+        font-size: 2.4rem;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .register-card {
+        padding: 24px 18px;
+        border-radius: 24px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .intro h2 {
+        font-size: 2rem;
+      }
+
+      .top-text h2 {
+        font-size: 1.6rem;
+      }
+
+      .left-panel,
+      .right-panel {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="left-panel">
+      <div class="brand">
+        <div class="brand-icon">ॐ</div>
+        <h1>MythoVerse</h1>
+      </div>
+
+      <div class="intro">
+        <div class="badge">Interactive Mythology Learning Platform</div>
+        <h2>Create your magical learning journey</h2>
+        <p>
+          Join MythoVerse to explore Indian mythology, learn basic Sanskrit,
+          discover inspiring characters, and enjoy a colorful digital experience
+          designed for modern learners.
+        </p>
+
+        <div class="benefits">
+          <div class="benefit">
+            <div class="benefit-icon">📖</div>
+            <div>
+              <h3>Explore Story Worlds</h3>
+              <p>Access Ramayan, Mahabharat, Krishna Leela, Puran stories, and more.</p>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <div class="benefit-icon">🕉️</div>
+            <div>
+              <h3>Learn Sanskrit Easily</h3>
+              <p>Build vocabulary and learn simple shlokas in a child-friendly way.</p>
+            </div>
+          </div>
+
+          <div class="benefit">
+            <div class="benefit-icon">🏆</div>
+            <div>
+              <h3>Gamified Progress</h3>
+              <p>Complete activities, unlock achievements, and enjoy an engaging journey.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="register-card">
+        <div class="top-text">
+          <h2>Create Account</h2>
+          <p>Register now and begin your MythoVerse adventure with stories, culture, and learning.</p>
+        </div>
+
+        <div id="messageBox" class="message-box"></div>
+
+        <form id="registerForm">
+          <div class="row">
+            <div class="input-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+            </div>
+
+            <div class="input-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="Enter email address" required>
+            </div>
+
+            <div class="input-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-group">
+              <label for="role">Select Role</label>
+              <select id="role" name="role" required>
+                <option value="">Choose your role</option>
+                <option value="Child">Child</option>
+                <option value="Parent">Parent</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="age">Age Group</label>
+              <select id="age" name="age" required>
+                <option value="">Select age group</option>
+                <option value="5-8">5 - 8 Years</option>
+                <option value="9-12">9 - 12 Years</option>
+                <option value="13-16">13 - 16 Years</option>
+                <option value="17+">17+ Years</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="interest">Interest / Learning Goal</label>
+            <textarea id="interest" name="interest" placeholder="Tell us what you want to explore in MythoVerse..."></textarea>
+          </div>
+
+          <div class="row">
+            <div class="input-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" placeholder="Create password" required>
+            </div>
+
+            <div class="input-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">
+              I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>.
+            </label>
+          </div>
+
+          <button type="submit" class="register-btn" id="registerBtn">Create MythoVerse Account</button>
+
+          <div class="divider">Secure Registration</div>
+
+          <div class="bottom-text">
+            Already have an account? <a href="login.html">Login here</a>
+          </div>
+
+          <div class="mini-note">
+            This page is connected with backend API for registration.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const registerForm = document.getElementById("registerForm");
+    const registerBtn = document.getElementById("registerBtn");
+    const messageBox = document.getElementById("messageBox");
+
+    const API_BASE_URL = "http://localhost:5000/api/auth";
+
+    function showMessage(type, text) {
+      messageBox.className = "message-box " + type;
+      messageBox.textContent = text;
+    }
+
+    function validateEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    registerForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const role = document.getElementById("role").value;
+      const age = document.getElementById("age").value;
+      const interest = document.getElementById("interest").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const terms = document.getElementById("terms").checked;
+
+      if (!firstName || !lastName) {
+        showMessage("error", "First name and last name are required.");
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        showMessage("error", "Please enter a valid email address.");
+        return;
+      }
+
+      if (!phone) {
+        showMessage("error", "Phone number is required.");
+        return;
+      }
+
+      if (!role) {
+        showMessage("error", "Please select a role.");
+        return;
+      }
+
+      if (!age) {
+        showMessage("error", "Please select an age group.");
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage("error", "Password must be at least 6 characters.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage("error", "Passwords do not match.");
+        return;
+      }
+
+      if (!terms) {
+        showMessage("error", "Please accept terms and conditions.");
+        return;
+      }
+
+      try {
+        registerBtn.disabled = true;
+        registerBtn.innerHTML = '<span class="spinner"></span>Creating Account...';
+
+        const response = await fetch(`${API_BASE_URL}/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: firstName + " " + lastName,
+            email,
+            phone,
+            role,
+            age,
+            interest,
+            password
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showMessage("error", data.message || "Registration failed.");
+          registerBtn.disabled = false;
+          registerBtn.innerHTML = "Create MythoVerse Account";
+          return;
+        }
+
+        showMessage("success", "Registration successful! Redirecting to login...");
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1500);
+
+      } catch (error) {
+        showMessage("error", "Cannot connect to server. Please check backend.");
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = "Create MythoVerse Account";
+      }
+    });
+  </script>
+</body>
+</html>

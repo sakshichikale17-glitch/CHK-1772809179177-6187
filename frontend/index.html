@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MythoVerse | Interactive Mythology Learning Platform</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:linear-gradient(135deg,#f8f3ff,#eef6ff,#fff7ef);
+      color:#222;
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .container{
+      width:92%;
+      max-width:1200px;
+      margin:auto;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(10px);
+      box-shadow:0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .navbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 0;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:28px;
+      font-weight:bold;
+      color:#5b21b6;
+    }
+
+    .logo-icon{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#6a11cb,#2575fc);
+      color:white;
+      font-size:24px;
+      box-shadow:0 10px 24px rgba(106,17,203,0.25);
+    }
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    nav a, nav button{
+      font-weight:bold;
+      color:#444;
+      transition:0.3s;
+      padding:8px 12px;
+      border-radius:8px;
+      background:none;
+      border:none;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    nav a:hover, nav button:hover{
+      color:#5b21b6;
+      background:rgba(106,17,203,0.08);
+    }
+
+    .nav-btn{
+      background:linear-gradient(135deg,#6a11cb,#2575fc);
+      color:white !important;
+      border-radius:30px;
+      padding:12px 20px;
+      box-shadow:0 10px 24px rgba(37,117,252,0.22);
+    }
+
+    .menu-btn{
+      display:none;
+      font-size:26px;
+      background:none;
+      border:none;
+      color:#5b21b6;
+      cursor:pointer;
+    }
+
+    .hero{
+      padding:80px 0 60px;
+      background:
+      radial-gradient(circle at top left, rgba(255,209,102,0.25), transparent 30%),
+      radial-gradient(circle at top right, rgba(106,17,203,0.18), transparent 30%),
+      linear-gradient(135deg,#fdfbff,#f3efff);
+    }
+
+    .hero-wrapper{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:40px;
+      align-items:center;
+    }
+
+    .hero-badge{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(106,17,203,0.08);
+      color:#6a11cb;
+      font-weight:bold;
+      margin-bottom:20px;
+    }
+
+    .hero h1{
+      font-size:3.4rem;
+      line-height:1.15;
+      margin-bottom:18px;
+      color:#20163d;
+    }
+
+    .hero h1 span{
+      background:linear-gradient(135deg,#6a11cb,#2575fc);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .hero p{
+      font-size:1.06rem;
+      line-height:1.8;
+      color:#5b5b73;
+      margin-bottom:28px;
+      max-width:650px;
+    }
+
+    .hero-buttons{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:26px;
+    }
+
+    .btn-primary,
+    .btn-secondary{
+      padding:15px 24px;
+      border-radius:999px;
+      font-weight:bold;
+      display:inline-block;
+      transition:0.3s;
+      border:none;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#6a11cb,#2575fc);
+      color:white;
+      box-shadow:0 14px 30px rgba(37,117,252,0.24);
+    }
+
+    .btn-secondary{
+      background:white;
+      color:#6a11cb;
+      border:1px solid rgba(106,17,203,0.12);
+      box-shadow:0 8px 20px rgba(40,20,80,0.08);
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover{
+      transform:translateY(-3px);
+    }
+
+    .hero-stats{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .stat{
+      background:white;
+      padding:16px 18px;
+      border-radius:18px;
+      min-width:140px;
+      box-shadow:0 15px 40px rgba(40,20,80,0.1);
+    }
+
+    .stat h3{
+      color:#6a11cb;
+      margin-bottom:6px;
+      font-size:1.3rem;
+    }
+
+    .stat p{
+      margin:0;
+      font-size:0.92rem;
+      line-height:1.5;
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:520px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .main-card{
+      width:100%;
+      max-width:430px;
+      background:white;
+      border-radius:28px;
+      padding:26px;
+      box-shadow:0 30px 70px rgba(50,20,100,0.18);
+      position:relative;
+      z-index:2;
+    }
+
+    .main-card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:22px;
+    }
+
+    .tag{
+      font-size:0.84rem;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,123,84,0.12);
+      color:#e25b31;
+      font-weight:bold;
+    }
+
+    .mini-dots{
+      display:flex;
+      gap:6px;
+    }
+
+    .mini-dots span{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#ddd;
+    }
+
+    .story-banner{
+      background:linear-gradient(135deg,#6a11cb,#2575fc);
+      border-radius:22px;
+      padding:24px;
+      color:white;
+      margin-bottom:18px;
+    }
+
+    .story-banner h3{
+      font-size:1.4rem;
+      margin-bottom:10px;
+    }
+
+    .story-banner p{
+      color:rgba(255,255,255,0.92);
+      font-size:0.95rem;
+      line-height:1.7;
+      margin:0;
+    }
+
+    .feature-list{
+      display:grid;
+      gap:14px;
+    }
+
+    .feature-item{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      background:#faf8ff;
+      border-radius:18px;
+      padding:14px;
+      border:1px solid rgba(106,17,203,0.06);
+    }
+
+    .feature-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      background:linear-gradient(135deg,#ff7b54,#ffb26b);
+      font-size:1.1rem;
+      flex-shrink:0;
+    }
+
+    .floating-card{
+      position:absolute;
+      background:white;
+      border-radius:18px;
+      padding:14px 16px;
+      box-shadow:0 15px 40px rgba(40,20,80,0.12);
+      z-index:1;
+      max-width:220px;
+    }
+
+    .float-1{ top:20px; left:10px; }
+    .float-2{ bottom:20px; right:0; }
+
+    .floating-card h5{
+      font-size:0.95rem;
+      color:#6a11cb;
+      margin-bottom:6px;
+    }
+
+    .floating-card p{
+      font-size:0.85rem;
+      color:#5b5b73;
+      line-height:1.5;
+      margin:0;
+    }
+
+    section{
+      padding:80px 0;
+    }
+
+    .section-head{
+      text-align:center;
+      max-width:760px;
+      margin:0 auto 50px;
+    }
+
+    .section-head span{
+      display:inline-block;
+      margin-bottom:14px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(106,17,203,0.08);
+      color:#6a11cb;
+      font-weight:bold;
+    }
+
+    .section-head h2{
+      font-size:2.3rem;
+      margin-bottom:14px;
+      color:#1d1438;
+    }
+
+    .section-head p{
+      color:#5b5b73;
+      line-height:1.8;
+      font-size:1rem;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:24px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:24px;
+    }
+
+    .card{
+      background:white;
+      border-radius:24px;
+      padding:26px 22px;
+      box-shadow:0 15px 40px rgba(40,20,80,0.1);
+      transition:0.35s;
+      border:1px solid rgba(106,17,203,0.06);
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow:0 18px 50px rgba(40,20,80,0.16);
+    }
+
+    .icon-box{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:1.4rem;
+      color:white;
+      margin-bottom:18px;
+      background:linear-gradient(135deg,#ff7b54,#ffb26b);
+    }
+
+    .world-card{
+      cursor:pointer;
+    }
+
+    .world-badge{
+      display:inline-block;
+      margin-top:14px;
+      padding:8px 14px;
+      background:#f3ebff;
+      color:#6a11cb;
+      border-radius:999px;
+      font-size:0.9rem;
+      font-weight:bold;
+    }
+
+    .featured-story{
+      display:grid;
+      grid-template-columns:0.95fr 1.05fr;
+      gap:24px;
+      align-items:center;
+      background:linear-gradient(135deg,#fff8ef,#f5efff);
+    }
+
+    .featured-image{
+      background:linear-gradient(135deg,#6a11cb,#2575fc);
+      border-radius:24px;
+      min-height:280px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      font-size:5rem;
+      box-shadow:0 20px 50px rgba(37,117,252,0.22);
+    }
+
+    .story-tags{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:12px 0 18px;
+    }
+
+    .story-tags span{
+      background:#ede4ff;
+      color:#6a11cb;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:0.9rem;
+      font-weight:bold;
+    }
+
+    .sanskrit-box{
+      text-align:center;
+      background:linear-gradient(135deg,#fff8e6,#fceaff);
+    }
+
+    .sanskrit-word{
+      font-size:3rem;
+      color:#7b2cbf;
+      margin:14px 0 10px;
+      font-weight:bold;
+    }
+
+    .sanskrit-meaning{
+      font-size:1.1rem;
+      color:#444;
+      margin-bottom:8px;
+    }
+
+    .sanskrit-pronunciation{
+      color:#777;
+      margin-bottom:18px;
+    }
+
+    .reward-card{
+      text-align:center;
+      background:linear-gradient(135deg,#f9fcff,#f7f1ff);
+    }
+
+    .reward-value{
+      font-size:2rem;
+      color:#6a11cb;
+      font-weight:bold;
+      margin-bottom:8px;
+    }
+
+    .parent-list{
+      list-style:none;
+      display:grid;
+      gap:12px;
+      margin-top:15px;
+    }
+
+    .parent-list li{
+      padding:12px 14px;
+      background:#f8f4ff;
+      border-radius:12px;
+      color:#5b5b73;
+      font-weight:600;
+    }
+
+    .testimonial{
+      position:relative;
+    }
+
+    .testimonial::before{
+      content:"“";
+      font-size:4rem;
+      color:#e8dcff;
+      position:absolute;
+      top:6px;
+      left:18px;
+      font-weight:bold;
+    }
+
+    .testimonial p{
+      margin-top:24px;
+      margin-bottom:16px;
+    }
+
+    .testimonial h4{
+      color:#6a11cb;
+    }
+
+    .cta-box{
+      background:linear-gradient(135deg,#fff8ef,#f6efff);
+      border-radius:30px;
+      padding:46px 34px;
+      text-align:center;
+      box-shadow:0 15px 40px rgba(40,20,80,0.1);
+    }
+
+    .cta-box h2{
+      font-size:2.2rem;
+      color:#1e1538;
+      margin-bottom:14px;
+    }
+
+    .cta-box p{
+      max-width:760px;
+      margin:0 auto 24px;
+      color:#5b5b73;
+      line-height:1.8;
+    }
+
+    .cta-buttons{
+      display:flex;
+      justify-content:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    footer{
+      background:#161225;
+      color:rgba(255,255,255,0.88);
+      padding:28px 0;
+      margin-top:20px;
+    }
+
+    .footer-content{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links a:hover{
+      color:#ffd166;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(30px);
+      transition:all 0.7s ease;
+    }
+
+    .reveal.active{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .loading-text{
+      color:#6a11cb;
+      font-weight:bold;
+    }
+
+    @media(max-width:1100px){
+      .hero-wrapper,
+      .grid-3,
+      .grid-2,
+      .featured-story{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:820px){
+      .menu-btn{
+        display:block;
+      }
+
+      nav{
+        display:none;
+        width:100%;
+        flex-direction:column;
+        align-items:flex-start;
+        padding-top:10px;
+      }
+
+      nav.active{
+        display:flex;
+      }
+
+      .hero-wrapper,
+      .grid-3,
+      .grid-2,
+      .featured-story{
+        grid-template-columns:1fr;
+      }
+
+      .hero h1{
+        font-size:2.5rem;
+      }
+
+      .hero-visual{
+        min-height:auto;
+      }
+
+      .floating-card{
+        position:static;
+        margin-top:14px;
+        max-width:100%;
+      }
+
+      .main-card{
+        max-width:100%;
+      }
+    }
+
+    @media(max-width:500px){
+      .hero h1{
+        font-size:2.1rem;
+      }
+
+      .section-head h2{
+        font-size:1.65rem;
+      }
+
+      .hero-buttons,
+      .cta-buttons{
+        flex-direction:column;
+      }
+
+      .btn-primary,
+      .btn-secondary{
+        width:100%;
+        text-align:center;
+      }
+
+      .cta-box{
+        padding:32px 20px;
+      }
+
+      .card{
+        padding:22px 18px;
+      }
+
+      .sanskrit-word{
+        font-size:2.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container navbar">
+      <div class="logo">
+        <div class="logo-icon">ॐ</div>
+        <span>MythoVerse</span>
+      </div>
+
+      <button class="menu-btn" id="menuBtn">☰</button>
+
+      <nav id="navMenu">
+        <a href="index.html">Home</a>
+        <a href="story-library.html">Stories</a>
+        <a href="dashboard.html">Sanskrit Learning</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="reward.html">Rewards</a>
+        <a href="login.html" id="loginLink">Login</a>
+        <a href="register.html" class="nav-btn" id="registerLink">Register</a>
+        <button id="logoutBtn" style="display:none;">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-wrapper">
+      <div class="hero-content reveal">
+        <div class="hero-badge">Fun + Culture + Learning Platform for Kids</div>
+        <h1 id="heroTitle">Welcome to <span>MythoVerse</span></h1>
+        <p id="heroSubtitle" class="loading-text">Loading home content from database...</p>
+
+        <div class="hero-buttons">
+          <a href="login.html" class="btn-primary" id="startBtn">Start Learning</a>
+          <a href="story-library.html" class="btn-secondary">Explore Stories</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <h3 id="statWorlds">6+</h3>
+            <p>Story worlds like Ramayan, Mahabharat, Krishna Leela and more</p>
+          </div>
+          <div class="stat">
+            <h3 id="statMode">3-in-1</h3>
+            <p>Mythology, Sanskrit learning, and moral education together</p>
+          </div>
+          <div class="stat">
+            <h3 id="statExperience">100%</h3>
+            <p>Fun, child-friendly, and meaningful learning experience</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="floating-card float-1">
+          <h5>Interactive Story Learning</h5>
+          <p>Children make choices and learn values through story adventures.</p>
+        </div>
+
+        <div class="main-card">
+          <div class="main-card-top">
+            <span class="tag">Platform Preview</span>
+            <div class="mini-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="story-banner">
+            <h3>Krishna, Hanuman & Sanskrit Adventures</h3>
+            <p>
+              A child-friendly digital world where mythology becomes an exciting journey
+              with stories, characters, learning, and rewards.
+            </p>
+          </div>
+
+          <div class="feature-list">
+            <div class="feature-item">
+              <div class="feature-icon">📖</div>
+              <div>
+                <h4>Interactive Stories</h4>
+                <p>Kids learn through adventures instead of boring reading-only content.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">🕉️</div>
+              <div>
+                <h4>Basic Sanskrit</h4>
+                <p>Simple words, meanings, pronunciation, and short shlokas for beginners.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">🎮</div>
+              <div>
+                <h4>Gamified Learning</h4>
+                <p>Badges, points, quests, and rewards keep children excited to learn.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="floating-card float-2">
+          <h5>Child-Safe Experience</h5>
+          <p>Designed to blend culture, stories, and learning in a joyful digital format.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>About MythoVerse</span>
+        <h2>A magical universe for mythology and Sanskrit learning</h2>
+        <p>
+          MythoVerse helps children learn Indian mythology, traditional kathas, moral values,
+          and Sanskrit in a fun and engaging way. Instead of only reading stories, children
+          interact, explore, and learn through exciting digital experiences.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon-box">📚</div>
+          <h3>Indian Mythology</h3>
+          <p>Children discover Ramayan, Mahabharat, Krishna Leela, Puran stories, Devi tales, and more in an engaging format.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">✨</div>
+          <h3>Interactive Kathas</h3>
+          <p>Stories become more exciting when children explore them actively and connect with characters and values.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">🤖</div>
+          <h3>AI Character Interaction</h3>
+          <p>Kids can safely interact with mythological figures like Krishna, Hanuman, Rama, and Ganesha for guidance and learning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="story-worlds">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>Explore Story Worlds</span>
+        <h2>Enter different mythology realms</h2>
+        <p>
+          Children can explore different story worlds inspired by Indian epics, kathas, and moral tales.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card world-card reveal" data-page="story-library.html">
+          <div class="icon-box">🏹</div>
+          <h3>Ramayan</h3>
+          <p>Explore the journey of Rama, Sita, Lakshman, and Hanuman through exciting adventures.</p>
+          <span class="world-badge">Explore</span>
+        </div>
+
+        <div class="card world-card reveal" data-page="story-library.html">
+          <div class="icon-box">⚔️</div>
+          <h3>Mahabharat</h3>
+          <p>Learn about the Pandavas, Krishna, Arjuna, and heroic choices in powerful epic stories.</p>
+          <span class="world-badge">Explore</span>
+        </div>
+
+        <div class="card world-card reveal" data-page="story-library.html">
+          <div class="icon-box">🦚</div>
+          <h3>Krishna Leela</h3>
+          <p>Enjoy Krishna’s childhood adventures, playful stories, and lessons of love and wisdom.</p>
+          <span class="world-badge">Explore</span>
+        </div>
+
+        <div class="card world-card reveal" data-page="story-library.html">
+          <div class="icon-box">📜</div>
+          <h3>Puran Stories</h3>
+          <p>Discover stories of gods, sages, devotion, and values from traditional Puran kathas.</p>
+          <span class="world-badge">Explore</span>
+        </div>
+
+        <div class="card world-card reveal" data-page="story-library.html">
+          <div class="icon-box">🦊</div>
+          <h3>Panchatantra</h3>
+          <p>Read moral stories full of wisdom, cleverness, and life lessons for children.</p>
+          <span class="world-badge">Explore</span>
+        </div>
+
+        <div class="card world-card reveal" data-page="story-library.html">
+          <div class="icon-box">🌺</div>
+          <h3>Devi Stories</h3>
+          <p>Learn inspiring stories of strength, devotion, courage, and divine feminine power.</p>
+          <span class="world-badge">Explore</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>Platform Features</span>
+        <h2>Core features of MythoVerse</h2>
+        <p>
+          These features make learning more fun, child-friendly, and meaningful.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card reveal">
+          <div class="icon-box">📖</div>
+          <h3>Interactive Stories</h3>
+          <p>Children explore stories by participating in the journey instead of just reading passively.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">💬</div>
+          <h3>AI Character Chat</h3>
+          <p>Safe conversation with mythological characters makes learning more engaging and personal.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">🕉️</div>
+          <h3>Sanskrit Learning</h3>
+          <p>Learn basic Sanskrit words, meanings, pronunciation, and short shlokas in a simple way.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">📝</div>
+          <h3>Quizzes & Challenges</h3>
+          <p>Fun quizzes and activities help children revise stories, characters, and language concepts.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">🏅</div>
+          <h3>Rewards & Badges</h3>
+          <p>Progress feels exciting through badges, points, coins, and milestone achievements.</p>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">🌈</div>
+          <h3>Value-Based Learning</h3>
+          <p>Every story teaches values like courage, kindness, devotion, wisdom, and responsibility.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="featured-story">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>Featured Story</span>
+        <h2>A sample story preview</h2>
+        <p>
+          A highlighted story can attract children and make the homepage feel more interactive.
+        </p>
+      </div>
+
+      <div class="card featured-story reveal">
+        <div class="featured-image">🛡️</div>
+        <div>
+          <h3 id="featuredStoryTitle">Abhimanyu and the Chakravyuh</h3>
+          <p id="featuredStoryDescription">
+            Children explore the story of Abhimanyu and learn about bravery, wisdom, and difficult choices.
+          </p>
+
+          <div class="story-tags" id="featuredStoryTags">
+            <span>Courage</span>
+            <span>Wisdom</span>
+            <span>Responsibility</span>
+          </div>
+
+          <a href="storyplayer.html" class="btn-primary">Read Story</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sanskrit">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>Sanskrit Learning Preview</span>
+        <h2>Word of the Day</h2>
+        <p>
+          MythoVerse introduces Sanskrit in a playful and beginner-friendly way.
+        </p>
+      </div>
+
+      <div class="card sanskrit-box reveal">
+        <div class="icon-box" style="margin:0 auto 14px;">🕉️</div>
+        <div class="sanskrit-word" id="sanskritWord">धर्म</div>
+        <div class="sanskrit-meaning" id="sanskritMeaning">Dharma — Duty</div>
+        <div class="sanskrit-pronunciation" id="sanskritPronunciation">Pronunciation: Dhar-ma</div>
+        <button class="btn-primary" onclick="changeSanskritWord()">Next Word</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="rewards">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>Gamification</span>
+        <h2>Rewards that keep learning exciting</h2>
+        <p>
+          Children stay motivated when their learning journey feels like an adventure.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card reward-card reveal">
+          <div class="icon-box" style="margin:0 auto 16px;">🌟</div>
+          <div class="reward-value">240</div>
+          <h3>Dharma Points</h3>
+          <p>Earned by completing stories, lessons, and daily activities.</p>
+        </div>
+
+        <div class="card reward-card reveal">
+          <div class="icon-box" style="margin:0 auto 16px;">🪙</div>
+          <div class="reward-value">120</div>
+          <h3>Gyan Coins</h3>
+          <p>Used to unlock new characters, realms, and fun content.</p>
+        </div>
+
+        <div class="card reward-card reveal">
+          <div class="icon-box" style="margin:0 auto 16px;">🏅</div>
+          <div class="reward-value">8</div>
+          <h3>Story Badges</h3>
+          <p>Special rewards for finishing quests and mastering story worlds.</p>
+        </div>
+
+        <div class="card reward-card reveal">
+          <div class="icon-box" style="margin:0 auto 16px;">🔓</div>
+          <div class="reward-value">5</div>
+          <h3>Character Unlocks</h3>
+          <p>Unlock beloved mythological figures as learning companions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parents">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>Parent Benefits</span>
+        <h2>Why parents will love MythoVerse</h2>
+        <p>
+          MythoVerse offers a balanced digital experience with safety, values, and educational depth.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card reveal">
+          <div class="icon-box">👨‍👩‍👧</div>
+          <h3>Safe & Meaningful Learning</h3>
+          <p>
+            A child-focused environment where stories, values, and culture come together in a positive way.
+          </p>
+          <ul class="parent-list">
+            <li>Safe learning experience</li>
+            <li>Culture-rich content</li>
+            <li>Moral education</li>
+            <li>Fun engagement</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <div class="icon-box">📊</div>
+          <h3>Track Progress</h3>
+          <p>
+            Parents can follow the learning journey through stories completed, words learned, and achievements earned.
+          </p>
+          <ul class="parent-list">
+            <li>Progress tracking</li>
+            <li>Activity summary</li>
+            <li>Learning milestones</li>
+            <li>Achievement reports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-head reveal">
+        <span>Testimonials</span>
+        <h2>What people may say about MythoVerse</h2>
+        <p>
+          Reviews help the homepage feel more real and trustworthy.
+        </p>
+      </div>
+
+      <div class="grid-3" id="testimonialContainer">
+        <div class="card testimonial reveal">
+          <p>Loading testimonials...</p>
+          <h4>— MythoVerse</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>Start Your Mythological Journey Today</h2>
+        <p>
+          Join MythoVerse and help children discover mythology, values, Sanskrit, and interactive learning
+          in one magical digital universe.
+        </p>
+
+        <div class="cta-buttons">
+          <a href="register.html" class="btn-primary">Register</a>
+          <a href="login.html" class="btn-secondary">Login</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-content">
+      <p><strong>© 2026 MythoVerse</strong><br>Learn Culture, Values & Sanskrit with Fun</p>
+
+      <div class="footer-links">
+        <a href="#about">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Social Links</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const API_HOME = "http://localhost:5000/api/home";
+    const API_AUTH = "http://localhost:5000/api/auth";
+
+    const menuBtn = document.getElementById("menuBtn");
+    const navMenu = document.getElementById("navMenu");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginLink = document.getElementById("loginLink");
+    const registerLink = document.getElementById("registerLink");
+    const startBtn = document.getElementById("startBtn");
+
+    menuBtn.addEventListener("click", function(){
+      navMenu.classList.toggle("active");
+    });
+
+    async function apiGet(url, token = null) {
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers
+      });
+
+      const text = await response.text();
+
+      try {
+        const data = JSON.parse(text);
+
+        if (!response.ok) {
+          throw new Error(data.message || "Request failed");
+        }
+
+        return data;
+      } catch (error) {
+        console.error("Raw server response:", text);
+        throw new Error("Backend returned invalid response.");
+      }
+    }
+
+    async function loadHomeContent() {
+      try {
+        const data = await apiGet(API_HOME);
+        const content = data.content;
+
+        document.getElementById("heroTitle").innerHTML = `${content.heroTitle.replace("MythoVerse", "<span>MythoVerse</span>")}`;
+        document.getElementById("heroSubtitle").textContent = content.heroSubtitle;
+
+        document.getElementById("statWorlds").textContent = content.stats.storyWorlds;
+        document.getElementById("statMode").textContent = content.stats.learningMode;
+        document.getElementById("statExperience").textContent = content.stats.experience;
+
+        document.getElementById("featuredStoryTitle").textContent = content.featuredStory.title;
+        document.getElementById("featuredStoryDescription").textContent = content.featuredStory.description;
+
+        const tagsContainer = document.getElementById("featuredStoryTags");
+        tagsContainer.innerHTML = "";
+        content.featuredStory.tags.forEach(tag => {
+          tagsContainer.innerHTML += `<span>${tag}</span>`;
+        });
+
+        document.getElementById("sanskritWord").textContent = content.sanskritWord.word;
+        document.getElementById("sanskritMeaning").textContent = content.sanskritWord.meaning;
+        document.getElementById("sanskritPronunciation").textContent = content.sanskritWord.pronunciation;
+
+        const testimonialContainer = document.getElementById("testimonialContainer");
+        testimonialContainer.innerHTML = "";
+        content.testimonials.forEach((item, index) => {
+          const labels = ["Parent Review", "Teacher Review", "Student Feedback"];
+          testimonialContainer.innerHTML += `
+            <div class="card testimonial reveal active">
+              <p>${item}</p>
+              <h4>— ${labels[index] || "MythoVerse Review"}</h4>
+            </div>
+          `;
+        });
+
+      } catch (error) {
+        document.getElementById("heroSubtitle").textContent = "Could not load home content from backend.";
+      }
+    }
+
+    async function checkLoginStatus() {
+      const token = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (!token || !user) {
+        logoutBtn.style.display = "none";
+        loginLink.style.display = "inline-block";
+        registerLink.style.display = "inline-block";
+        startBtn.href = "login.html";
+        return;
+      }
+
+      try {
+        const data = await apiGet(`${API_AUTH}/profile`, token);
+
+        if (data.success) {
+          loginLink.style.display = "none";
+          registerLink.style.display = "none";
+          logoutBtn.style.display = "inline-block";
+
+          if (user.role === "Parent") {
+            startBtn.href = "parent-dashboard.html";
+          } else {
+            startBtn.href = "dashboard.html";
+          }
+        }
+      } catch (error) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+    }
+
+    const sanskritWords = [
+      {
+        word:"धर्म",
+        meaning:"Dharma — Duty",
+        pronunciation:"Pronunciation: Dhar-ma"
+      },
+      {
+        word:"ज्ञान",
+        meaning:"Gyan — Knowledge",
+        pronunciation:"Pronunciation: Gyaa-n"
+      },
+      {
+        word:"शांति",
+        meaning:"Shanti — Peace",
+        pronunciation:"Pronunciation: Shaan-ti"
+      },
+      {
+        word:"प्रेम",
+        meaning:"Prem — Love",
+        pronunciation:"Pronunciation: Pre-m"
+      },
+      {
+        word:"साहस",
+        meaning:"Sahas — Courage",
+        pronunciation:"Pronunciation: Saa-has"
+      }
+    ];
+
+    let currentWordIndex = 0;
+
+    function changeSanskritWord(){
+      currentWordIndex++;
+      if(currentWordIndex >= sanskritWords.length){
+        currentWordIndex = 0;
+      }
+
+      document.getElementById("sanskritWord").innerText = sanskritWords[currentWordIndex].word;
+      document.getElementById("sanskritMeaning").innerText = sanskritWords[currentWordIndex].meaning;
+      document.getElementById("sanskritPronunciation").innerText = sanskritWords[currentWordIndex].pronunciation;
+    }
+
+    const revealElements = document.querySelectorAll(".reveal");
+
+    function revealOnScroll(){
+      const windowHeight = window.innerHeight;
+
+      revealElements.forEach(function(element){
+        const elementTop = element.getBoundingClientRect().top;
+        const revealPoint = 100;
+
+        if(elementTop < windowHeight - revealPoint){
+          element.classList.add("active");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    window.addEventListener("load", revealOnScroll);
+
+    const storyCards = document.querySelectorAll(".world-card");
+    storyCards.forEach(function(card){
+      card.addEventListener("click", function(){
+        const page = card.getAttribute("data-page");
+        window.location.href = page;
+      });
+    });
+
+    loadHomeContent();
+    checkLoginStatus();
+  </script>
+</body>
+</html>
