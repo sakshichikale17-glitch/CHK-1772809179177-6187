@@ -19,7 +19,7 @@ const storySchema = new mongoose.Schema(
     },
     realm: {
       type: String,
-      default: "Mythology"
+      required: true
     },
     chapter: {
       type: Number,
@@ -27,7 +27,7 @@ const storySchema = new mongoose.Schema(
     },
     totalChapters: {
       type: Number,
-      default: 5
+      default: 1
     },
     image: {
       type: String,
@@ -79,7 +79,7 @@ const storySchema = new mongoose.Schema(
     },
     progress: {
       type: Number,
-      default: 40
+      default: 20
     },
     nextNarration: {
       type: String,
@@ -103,11 +103,11 @@ const storySchema = new mongoose.Schema(
     },
     characterName: {
       type: String,
-      default: "Hanuman"
+      default: "Guide"
     },
     characterReply: {
       type: String,
-      default: "Courage grows when you take one small step with faith."
+      default: "Stay brave, stay kind, and keep learning."
     }
   },
   { timestamps: true }

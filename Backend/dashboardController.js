@@ -3,10 +3,21 @@ const DashboardContent = require("./DashboardContent");
 
 const getOrCreateDashboardContent = async () => {
   let content = await DashboardContent.findOne();
+
   if (!content) {
     content = await DashboardContent.create({});
   }
+
   return content;
+};
+
+const normalizeUserStats = async (user) => {
+  user.progressPercent = Math.min(user.learningProgress || 0, 100);
+  user.currentLevel = Math.max(1, Math.floor((user.xp || 0) / 100) + 1);
+  user.nextLevel = user.currentLevel + 1;
+  user.xpNeeded = Math.max((user.currentLevel * 100) - (user.xp || 0), 0);
+  await user.save();
+  return user;
 };
 
 const getDashboardData = async (req, res) => {
@@ -21,13 +32,15 @@ const getDashboardData = async (req, res) => {
       });
     }
 
+    await normalizeUserStats(user);
+
     res.status(200).json({
       success: true,
       user,
       content
     });
   } catch (error) {
-    console.error("Dashboard load error:", error);
+    console.error("Get Dashboard Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to load dashboard",
@@ -38,21 +51,31 @@ const getDashboardData = async (req, res) => {
 
 const startQuest = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      {
-        $inc: { dharmaPoints: 5 },
-        $set: { lastActive: "Today" }
-      },
-      { new: true }
-    ).select("-password");
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.dharmaPoints += 10;
+    user.gyanCoins += 5;
+    user.xp += 15;
+    user.learningProgress = Math.min((user.learningProgress || 0) + 5, 100);
+    user.currentQuest = "Quest started";
+    user.lastActive = "Today";
+
+    await normalizeUserStats(user);
 
     res.status(200).json({
       success: true,
-      message: "Today's quest started! +5 Dharma Points",
+      message: "Quest started! +10 Dharma Points, +5 Gyan Coins",
       user
     });
   } catch (error) {
+    console.error("Start Quest Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to start quest",
@@ -65,21 +88,28 @@ const continueLearning = async (req, res) => {
   try {
     const { sectionTitle } = req.body;
 
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      {
-        $inc: { learningProgress: 3 },
-        $set: { lastActive: "Today" }
-      },
-      { new: true }
-    ).select("-password");
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.learningProgress = Math.min((user.learningProgress || 0) + 4, 100);
+    user.xp += 10;
+    user.lastActive = "Today";
+
+    await normalizeUserStats(user);
 
     res.status(200).json({
       success: true,
-      message: `Continuing: ${sectionTitle}`,
+      message: `Continuing ${sectionTitle}`,
       user
     });
   } catch (error) {
+    console.error("Continue Learning Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to continue learning",
@@ -88,23 +118,33 @@ const continueLearning = async (req, res) => {
   }
 };
 
-const chatCharacter = async (req, res) => {
+const openRealm = async (req, res) => {
   try {
-    const { character } = req.body;
-    const content = await getOrCreateDashboardContent();
+    const { realmName } = req.body;
 
-    const replies = content.chatReplies[character] || ["Keep learning with joy."];
-    const reply = replies[Math.floor(Math.random() * replies.length)];
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.currentRealm = realmName;
+    user.lastActive = "Today";
+    await user.save();
 
     res.status(200).json({
       success: true,
-      character,
-      reply
+      message: `${realmName} realm opened successfully`,
+      user
     });
   } catch (error) {
+    console.error("Open Realm Error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to get chat reply",
+      message: "Failed to open realm",
       error: error.message
     });
   }
@@ -119,6 +159,7 @@ const playAudioStory = async (req, res) => {
       message: `Now playing: ${storyName}`
     });
   } catch (error) {
+    console.error("Play Audio Error:", error);
     res.status(500).json({
       success: false,
       message: "Failed to play audio",
@@ -127,25 +168,48 @@ const playAudioStory = async (req, res) => {
   }
 };
 
-const openRealm = async (req, res) => {
+const chatCharacter = async (req, res) => {
   try {
-    const { realmName } = req.body;
+    const { character } = req.body;
+    const content = await getOrCreateDashboardContent();
 
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      { $set: { currentRealm: realmName, lastActive: "Today" } },
-      { new: true }
-    ).select("-password");
+    const replyList = content.chatReplies?.[character] || ["Keep learning with joy and courage."];
+    const reply = replyList[Math.floor(Math.random() * replyList.length)];
 
     res.status(200).json({
       success: true,
-      message: `Entering ${realmName} Realm`,
-      user
+      character,
+      reply
     });
   } catch (error) {
+    console.error("Chat Character Error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to open realm",
+      message: "Failed to chat with character",
+      error: error.message
+    });
+  }
+};
+
+const getGuideMessage = async (req, res) => {
+  try {
+    const { guide } = req.params;
+    const content = await getOrCreateDashboardContent();
+
+    const message =
+      content.guideMessages?.[guide] ||
+      "Keep learning with courage and wisdom.";
+
+    res.status(200).json({
+      success: true,
+      guide,
+      message
+    });
+  } catch (error) {
+    console.error("Guide Message Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to load guide message",
       error: error.message
     });
   }
@@ -155,7 +219,8 @@ module.exports = {
   getDashboardData,
   startQuest,
   continueLearning,
-  chatCharacter,
+  openRealm,
   playAudioStory,
-  openRealm
+  chatCharacter,
+  getGuideMessage
 };

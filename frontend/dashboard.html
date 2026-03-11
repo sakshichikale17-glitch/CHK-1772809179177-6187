@@ -12,97 +12,274 @@
       box-sizing:border-box;
     }
 
+    html{
+      scroll-behavior:smooth;
+    }
+
+    :root{
+      --primary:#6b46ff;
+      --primary-dark:#4b2e83;
+      --primary-light:#efe9ff;
+      --secondary:#ffb84d;
+      --secondary-light:#fff0c9;
+      --pink:#ff8ec7;
+      --pink-light:#ffe5f3;
+      --sky:#8dd8ff;
+      --sky-light:#e8f7ff;
+      --mint:#9df0c8;
+      --mint-light:#ebfff6;
+      --yellow:#ffe17a;
+      --yellow-light:#fff9de;
+      --text:#2f2445;
+      --text-soft:#6c6286;
+      --white:#ffffff;
+      --bg-1:#fbf6ff;
+      --bg-2:#eef7ff;
+      --bg-3:#fffaf2;
+      --shadow:0 14px 34px rgba(82, 49, 156, 0.10);
+      --shadow-hover:0 18px 40px rgba(82, 49, 156, 0.16);
+      --border:rgba(107,70,255,0.08);
+      --radius-xl:30px;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --radius-sm:12px;
+      --transition:0.3s ease;
+    }
+
     body{
       font-family:Arial, sans-serif;
-      background:linear-gradient(135deg,#f6f0ff,#eef6ff,#fff8ef);
-      color:#222;
+      background:
+        radial-gradient(circle at top left, rgba(255,184,77,0.22), transparent 20%),
+        radial-gradient(circle at top right, rgba(141,216,255,0.20), transparent 18%),
+        radial-gradient(circle at bottom left, rgba(255,142,199,0.14), transparent 18%),
+        linear-gradient(135deg,var(--bg-1),var(--bg-2),var(--bg-3));
+      color:var(--text);
       min-height:100vh;
+      overflow-x:hidden;
+      position:relative;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:radial-gradient(rgba(107,70,255,0.06) 1px, transparent 1px);
+      background-size:24px 24px;
+      opacity:0.45;
+      z-index:0;
+    }
+
+    .page-shell{
+      position:relative;
+      z-index:1;
     }
 
     .navbar{
-      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(75,46,131,0.90);
+      backdrop-filter:blur(14px);
       color:white;
-      padding:16px 28px;
+      padding:16px 24px;
       display:flex;
       justify-content:space-between;
       align-items:center;
       flex-wrap:wrap;
-      box-shadow:0 4px 12px rgba(0,0,0,0.12);
-      position:sticky;
-      top:0;
-      z-index:1000;
+      gap:14px;
+      box-shadow:0 10px 24px rgba(75,46,131,0.16);
+      border-bottom:1px solid rgba(255,255,255,0.12);
     }
 
-    .navbar h2{
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand-icon{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#ffd45c,#ffb84d);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:25px;
+      box-shadow:0 10px 20px rgba(255,184,77,0.28);
+      flex-shrink:0;
+    }
+
+    .brand-text h2{
       font-size:28px;
-      letter-spacing:1px;
+      line-height:1;
+      letter-spacing:0.5px;
+    }
+
+    .brand-text p{
+      font-size:12px;
+      color:rgba(255,255,255,0.82);
+      margin-top:4px;
     }
 
     .nav-links{
       list-style:none;
       display:flex;
-      gap:18px;
+      gap:10px;
       flex-wrap:wrap;
+      align-items:center;
     }
 
     .nav-links a{
       color:white;
       text-decoration:none;
-      font-weight:bold;
-      padding:8px 12px;
-      border-radius:8px;
-      transition:0.3s;
+      font-weight:700;
+      padding:10px 14px;
+      border-radius:999px;
+      transition:var(--transition);
+      font-size:14px;
+      display:inline-block;
     }
 
     .nav-links a:hover{
-      background:rgba(255,255,255,0.18);
+      background:rgba(255,255,255,0.16);
+      transform:translateY(-1px);
+    }
+
+    .hero-wrap{
+      padding:24px 24px 0;
     }
 
     .welcome{
-      background:linear-gradient(135deg,#ffd89b,#ffb6a3,#ff9fcf);
-      padding:35px 30px;
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.25), transparent 24%),
+        linear-gradient(135deg,#ffd89b,#ffb6a3,#ff9fcf,#bbb0ff);
+      padding:34px 30px;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:20px;
+      gap:24px;
       flex-wrap:wrap;
-      box-shadow:0 4px 10px rgba(0,0,0,0.05);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      min-height:250px;
+    }
+
+    .welcome::after{
+      content:"";
+      position:absolute;
+      right:-70px;
+      top:-70px;
+      width:230px;
+      height:230px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.14);
+    }
+
+    .welcome-text{
+      max-width:640px;
+      position:relative;
+      z-index:1;
+    }
+
+    .mini-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.24);
+      color:#4b2e83;
+      font-weight:800;
+      font-size:13px;
+      margin-bottom:14px;
+      box-shadow:0 8px 18px rgba(75,46,131,0.08);
     }
 
     .welcome h1{
-      font-size:36px;
-      margin-bottom:10px;
-      color:#3b2066;
+      font-size:42px;
+      line-height:1.12;
+      margin-bottom:12px;
+      color:#3a2168;
     }
 
     .welcome p{
       font-size:17px;
-      margin-bottom:16px;
-      line-height:1.6;
-      max-width:600px;
+      line-height:1.75;
+      color:#4c376f;
+      margin-bottom:18px;
+      max-width:610px;
     }
 
-    .welcome img{
-      width:150px;
-      max-width:100%;
-      filter:drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
     button{
-      padding:10px 16px;
+      padding:11px 18px;
       border:none;
-      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      background:linear-gradient(135deg,var(--primary-dark),var(--primary));
       color:white;
-      border-radius:10px;
+      border-radius:14px;
       cursor:pointer;
-      font-weight:bold;
-      transition:0.3s;
-      box-shadow:0 4px 10px rgba(75,46,131,0.25);
+      font-weight:800;
+      transition:var(--transition);
+      box-shadow:0 8px 18px rgba(75,46,131,0.18);
+      font-size:14px;
     }
 
     button:hover{
       transform:translateY(-2px);
-      opacity:0.95;
+      box-shadow:0 12px 22px rgba(75,46,131,0.22);
+    }
+
+    .soft-btn{
+      background:rgba(255,255,255,0.25);
+      color:#3f266e;
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow:none;
+    }
+
+    .soft-btn:hover{
+      background:rgba(255,255,255,0.34);
+    }
+
+    .welcome-visual{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .welcome-main-image{
+      width:180px;
+      max-width:100%;
+      filter:drop-shadow(0 14px 20px rgba(58,33,104,0.18));
+    }
+
+    .floating-badges{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .floating-badge{
+      background:rgba(255,255,255,0.85);
+      color:#4b2e83;
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      font-weight:800;
+      box-shadow:0 8px 18px rgba(58,33,104,0.08);
+      white-space:nowrap;
     }
 
     .dashboard{
@@ -113,18 +290,41 @@
     }
 
     .card{
-      background:rgba(255,255,255,0.95);
+      background:rgba(255,255,255,0.94);
+      backdrop-filter:blur(10px);
       padding:22px;
-      border-radius:18px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.08);
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow);
       margin-bottom:20px;
-      border:1px solid rgba(255,255,255,0.45);
+      border:1px solid var(--border);
+      transition:var(--transition);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--shadow-hover);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:5px;
+      background:linear-gradient(90deg,var(--primary),var(--pink),var(--secondary));
+      opacity:0.85;
     }
 
     .card h3{
-      color:#4b2e83;
+      color:var(--primary-dark);
       margin-bottom:16px;
       font-size:22px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
 
     .profile{
@@ -135,53 +335,77 @@
     }
 
     .avatar{
-      width:78px;
-      height:78px;
+      width:88px;
+      height:88px;
       border-radius:50%;
-      border:4px solid #f3e8ff;
-      box-shadow:0 4px 10px rgba(0,0,0,0.12);
+      border:5px solid #f3ebff;
+      box-shadow:0 10px 20px rgba(75,46,131,0.12);
+      background:white;
+      flex-shrink:0;
+      object-fit:cover;
     }
 
-    .profile div p{
+    .profile-info{
+      flex:1;
+      min-width:220px;
+    }
+
+    .profile-info p{
       margin-bottom:8px;
       font-size:15px;
+      color:#3e3554;
+    }
+
+    .profile-info strong{
+      color:#4b2e83;
     }
 
     .progress-bar{
       width:100%;
-      height:18px;
+      height:20px;
       background:#ece7fb;
-      border-radius:50px;
-      margin-top:16px;
+      border-radius:999px;
+      margin-top:18px;
       overflow:hidden;
+      box-shadow:inset 0 2px 6px rgba(0,0,0,0.06);
     }
 
     .progress-fill{
       height:100%;
       width:0%;
       background:linear-gradient(90deg,#00c853,#64dd17);
-      border-radius:50px;
+      border-radius:999px;
       text-align:center;
       font-size:12px;
-      font-weight:bold;
+      font-weight:800;
       color:white;
-      line-height:18px;
-      transition:0.3s;
+      line-height:20px;
+      transition:0.45s ease;
     }
 
     .realm-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
       gap:14px;
     }
 
     .realm{
-      background:linear-gradient(135deg,#efe6ff,#dfe9ff);
-      padding:16px;
+      background:linear-gradient(135deg,#efe6ff,#dfe9ff,#f6f1ff);
+      padding:18px 14px;
       text-align:center;
-      border-radius:14px;
+      border-radius:18px;
       cursor:pointer;
-      font-weight:bold;
+      font-weight:800;
+      color:#4a386f;
+      transition:var(--transition);
+      border:1px solid rgba(106,76,195,0.08);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,0.42);
+      user-select:none;
+    }
+
+    .realm:hover{
+      transform:translateY(-4px) scale(1.02);
+      background:linear-gradient(135deg,#eadcff,#d4ecff,#fdf6ff);
     }
 
     .continue{
@@ -190,47 +414,58 @@
       gap:14px;
     }
 
-    .continue div{
-      background:linear-gradient(135deg,#fffaf0,#f7edff);
+    .continue-card{
+      background:linear-gradient(135deg,#fffaf0,#f7edff,#f1fbff);
       padding:18px;
-      border-radius:14px;
-      box-shadow:inset 0 0 0 1px #eee;
+      border-radius:18px;
+      box-shadow:inset 0 0 0 1px rgba(106,76,195,0.06);
+      transition:var(--transition);
     }
 
-    .continue p{
+    .continue-card:hover{
+      transform:translateY(-3px);
+    }
+
+    .continue-card p{
       margin-bottom:12px;
-      font-weight:bold;
+      font-weight:800;
       color:#333;
-      line-height:1.5;
+      line-height:1.6;
+      min-height:48px;
     }
 
     .featured-story{
-      background:linear-gradient(135deg,#fff0f0,#fff8e7);
+      background:linear-gradient(135deg,#fff0f0,#fff8e7,#fff5fb);
     }
 
     .featured-story p{
-      line-height:1.7;
+      line-height:1.75;
       margin-bottom:14px;
+      color:#4c425f;
     }
 
     .word-box{
-      background:linear-gradient(135deg,#fff7e6,#fceaff);
-      padding:18px;
-      border-radius:14px;
+      background:linear-gradient(135deg,#fff7e6,#fceaff,#eef9ff);
+      padding:20px;
+      border-radius:18px;
       text-align:center;
       margin-top:10px;
+      box-shadow:inset 0 0 0 1px rgba(106,76,195,0.07);
     }
 
     #word{
-      font-size:32px;
+      font-size:38px;
       color:#7b2cbf;
-      margin:10px 0;
+      margin:12px 0;
+      font-weight:900;
+      letter-spacing:1px;
     }
 
     #meaning{
       font-size:16px;
       margin-bottom:12px;
       color:#444;
+      font-weight:700;
     }
 
     #pronunciation{
@@ -246,29 +481,31 @@
     }
 
     .chat-buttons button{
-      background:linear-gradient(90deg,#ff8fab,#ffb86b);
+      background:linear-gradient(135deg,#ff8fab,#ffb86b);
       color:#3b2066;
+      box-shadow:0 8px 16px rgba(255,143,171,0.16);
     }
 
     .achievement{
-      background:linear-gradient(135deg,#eefcf1,#f4f1ff);
+      background:linear-gradient(135deg,#eefcf1,#f4f1ff,#fffbea);
     }
 
     .achievement p{
       margin:10px 0;
       font-size:15px;
-      font-weight:600;
+      font-weight:700;
     }
 
     .badge{
       display:inline-block;
-      padding:6px 10px;
-      background:#ede0ff;
+      padding:8px 12px;
+      background:linear-gradient(135deg,#ede0ff,#f6edff);
       color:#5a189a;
-      border-radius:20px;
+      border-radius:999px;
       font-size:13px;
-      font-weight:bold;
-      margin:4px 6px 0 0;
+      font-weight:800;
+      margin:6px 8px 0 0;
+      box-shadow:0 4px 10px rgba(90,24,154,0.08);
     }
 
     .quest-list{
@@ -278,11 +515,12 @@
     }
 
     .quest-item{
-      background:#f8f4ff;
-      padding:14px;
-      border-radius:12px;
+      background:linear-gradient(135deg,#f8f4ff,#f5fbff);
+      padding:14px 16px;
+      border-radius:14px;
       border-left:5px solid #7b2cbf;
-      font-weight:600;
+      font-weight:700;
+      color:#453b5a;
     }
 
     .stats-grid{
@@ -292,10 +530,11 @@
     }
 
     .stat-box{
-      background:#eef7ff;
-      padding:14px;
-      border-radius:12px;
-      font-weight:bold;
+      background:linear-gradient(135deg,#eef7ff,#f7f3ff);
+      padding:14px 16px;
+      border-radius:14px;
+      font-weight:800;
+      color:#3f3555;
     }
 
     .audio-list{
@@ -310,9 +549,11 @@
       align-items:center;
       gap:10px;
       background:#f6f6ff;
-      padding:12px;
-      border-radius:12px;
+      padding:12px 14px;
+      border-radius:14px;
       flex-wrap:wrap;
+      font-weight:700;
+      color:#41365a;
     }
 
     .recommend-list{
@@ -321,17 +562,20 @@
     }
 
     .recommend-item{
-      background:linear-gradient(135deg,#e7fbff,#eef2ff);
-      padding:14px;
-      border-radius:12px;
-      font-weight:600;
+      background:linear-gradient(135deg,#e7fbff,#eef2ff,#f9f4ff);
+      padding:14px 16px;
+      border-radius:14px;
+      font-weight:700;
+      color:#3c3551;
     }
 
     .parent-box{
       background:linear-gradient(135deg,#fff6e5,#fff0f6);
       padding:16px;
-      border-radius:12px;
-      line-height:1.7;
+      border-radius:14px;
+      line-height:1.8;
+      color:#473d5b;
+      font-weight:700;
     }
 
     .leader{
@@ -341,8 +585,69 @@
       background:linear-gradient(90deg,#fff3cd,#ffe6a7);
       padding:10px 12px;
       margin-bottom:10px;
-      border-radius:10px;
-      font-weight:bold;
+      border-radius:12px;
+      font-weight:800;
+      color:#5b4511;
+    }
+
+    .character-guides{
+      position:fixed;
+      right:22px;
+      bottom:18px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      z-index:2000;
+    }
+
+    .character{
+      position:relative;
+      cursor:pointer;
+      animation:floatGuide 3s ease-in-out infinite;
+      transition:var(--transition);
+    }
+
+    .character:hover{
+      transform:scale(1.05);
+    }
+
+    .character img{
+      width:98px;
+      height:auto;
+      filter:drop-shadow(0 10px 20px rgba(0,0,0,0.18));
+      display:block;
+    }
+
+    .bubble{
+      position:absolute;
+      right:92px;
+      top:12px;
+      background:white;
+      color:#4b2e83;
+      padding:10px 14px;
+      border-radius:16px;
+      font-size:13px;
+      font-weight:800;
+      box-shadow:0 8px 18px rgba(75,46,131,0.10);
+      white-space:nowrap;
+    }
+
+    .bubble::after{
+      content:"";
+      position:absolute;
+      right:-8px;
+      top:16px;
+      width:16px;
+      height:16px;
+      background:white;
+      transform:rotate(45deg);
+      border-radius:3px;
+    }
+
+    @keyframes floatGuide{
+      0%{ transform:translateY(0px); }
+      50%{ transform:translateY(-10px); }
+      100%{ transform:translateY(0px); }
     }
 
     footer{
@@ -350,21 +655,48 @@
       background:linear-gradient(90deg,#4b2e83,#6a4cc3);
       color:white;
       padding:18px;
-      margin-top:10px;
-      font-weight:bold;
+      margin:10px 24px 24px;
+      font-weight:800;
+      border-radius:20px;
+      box-shadow:0 10px 22px rgba(75,46,131,0.12);
     }
 
-    @media(max-width:1000px){
+    @media(max-width:1100px){
       .dashboard{
         grid-template-columns:1fr;
       }
     }
 
-    @media(max-width:800px){
+    @media(max-width:860px){
+      .navbar{
+        padding:16px 18px;
+        flex-direction:column;
+      }
+
+      .nav-links{
+        justify-content:center;
+      }
+
+      .hero-wrap{
+        padding:18px 18px 0;
+      }
+
       .welcome{
-        padding:25px 20px;
+        padding:26px 20px;
         text-align:center;
         justify-content:center;
+      }
+
+      .welcome h1{
+        font-size:34px;
+      }
+
+      .hero-actions{
+        justify-content:center;
+      }
+
+      .dashboard{
+        padding:18px;
       }
 
       .continue{
@@ -375,212 +707,303 @@
         grid-template-columns:1fr;
       }
 
-      .navbar{
-        flex-direction:column;
-        gap:14px;
+      .floating-badges{
+        width:100%;
+        align-items:center;
+      }
+
+      .character-guides{
+        right:12px;
+        bottom:12px;
+      }
+
+      .bubble{
+        display:none;
+      }
+
+      footer{
+        margin:0 18px 18px;
+      }
+    }
+
+    @media(max-width:560px){
+      .brand-text h2{
+        font-size:24px;
+      }
+
+      .welcome h1{
+        font-size:28px;
+      }
+
+      .card{
+        padding:18px;
+      }
+
+      .profile{
+        align-items:flex-start;
+      }
+
+      .character img{
+        width:80px;
+      }
+
+      .nav-links a{
+        font-size:13px;
+        padding:8px 10px;
       }
     }
   </style>
 </head>
 <body>
+  <div class="page-shell">
 
-  <header class="navbar">
-    <h2>MythoVerse</h2>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="storyplayer.html">Stories</a></li>
-      <li><a href="#">Sanskrit</a></li>
-      <li><a href="#">Quiz</a></li>
-      <li><a href="#">Rewards</a></li>
-      <li><a href="#" onclick="logout()">Logout</a></li>
-    </ul>
-  </header>
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon">🪔</div>
+        <div class="brand-text">
+          <h2>MythoVerse</h2>
+          <p>Learn • Play • Explore</p>
+        </div>
+      </div>
 
-  <section class="welcome">
-    <div>
-      <h1 id="welcomeName">Welcome Explorer ✨</h1>
-      <p id="welcomeText">Loading your dashboard...</p>
-      <button onclick="startQuest()">Start Quest</button>
-    </div>
-    <img src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png" alt="welcome image">
-  </section>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="story-library.html">Stories</a></li>
+        <li><a href="dashboard.html#daily-sanskrit-card">Sanskrit</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="reward.html">Rewards</a></li>
+        <li><a href="javascript:void(0)" onclick="logout()">Logout</a></li>
+      </ul>
+    </header>
 
-  <section class="dashboard">
-    <div>
-      <div class="card">
-        <h3>Profile</h3>
-        <div class="profile">
-          <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" class="avatar" alt="avatar">
-          <div>
-            <p><strong>Name:</strong> <span id="userName">-</span></p>
-            <p><strong>Email:</strong> <span id="userEmail">-</span></p>
-            <p><strong>Phone:</strong> <span id="userPhone">-</span></p>
-            <p><strong>Role:</strong> <span id="userRole">-</span></p>
-            <p><strong>Age Group:</strong> <span id="userAge">-</span></p>
-            <p><strong>Interest:</strong> <span id="userInterest">-</span></p>
+    <div class="hero-wrap">
+      <section class="welcome">
+        <div class="welcome-text">
+          <div class="mini-badge">✨ Today’s Mythology Adventure Awaits</div>
+          <h1 id="welcomeName">Welcome Explorer ✨</h1>
+          <p id="welcomeText">Loading your dashboard...</p>
+          <div class="hero-actions">
+            <button onclick="startQuest()">Start Quest</button>
+            <button class="soft-btn" onclick="openStory()">Read Featured Story</button>
           </div>
         </div>
 
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill">0%</div>
+        <div class="welcome-visual">
+          <img src="images/dashboard-kid-hero.png" alt="MythoVerse Hero" class="welcome-main-image">
+          <div class="floating-badges">
+            <div class="floating-badge">🕉 Sanskrit Fun</div>
+            <div class="floating-badge">📖 Story Adventures</div>
+            <div class="floating-badge">🏆 Earn Rewards</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="dashboard">
+      <div>
+        <div class="card">
+          <h3>👤 Profile</h3>
+          <div class="profile">
+            <img src="images/child-avatar.png" class="avatar" alt="avatar">
+            <div class="profile-info">
+              <p><strong>Name:</strong> <span id="userName">-</span></p>
+              <p><strong>Email:</strong> <span id="userEmail">-</span></p>
+              <p><strong>Phone:</strong> <span id="userPhone">-</span></p>
+              <p><strong>Role:</strong> <span id="userRole">-</span></p>
+              <p><strong>Age Group:</strong> <span id="userAge">-</span></p>
+              <p><strong>Interest:</strong> <span id="userInterest">-</span></p>
+            </div>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill">0%</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🌍 Explore Realms</h3>
+          <div class="realm-grid">
+            <div class="realm" onclick="openRealm('Ramayan')">Ramayan</div>
+            <div class="realm" onclick="openRealm('Mahabharat')">Mahabharat</div>
+            <div class="realm" onclick="openRealm('Krishna Leela')">Krishna Leela</div>
+            <div class="realm" onclick="openRealm('Sanskrit')">Sanskrit</div>
+            <div class="realm" onclick="openRealm('Moral Stories')">Moral Stories</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📘 Continue Learning</h3>
+          <div class="continue" id="continueContainer"></div>
+        </div>
+
+        <div class="card featured-story">
+          <h3>📖 Featured Story</h3>
+          <p id="featuredStoryText">Loading featured story...</p>
+          <button onclick="openStory()">Read Story</button>
+        </div>
+
+        <div class="card">
+          <h3>🔊 Audio Stories</h3>
+          <div class="audio-list" id="audioContainer"></div>
+        </div>
+
+        <div class="card">
+          <h3>💡 Recommended For You</h3>
+          <div class="recommend-list" id="recommendContainer"></div>
         </div>
       </div>
 
-      <div class="card">
-        <h3>Explore Realms</h3>
-        <div class="realm-grid">
-          <div class="realm" onclick="openRealm('Ramayan')">Ramayan</div>
-          <div class="realm" onclick="openRealm('Mahabharat')">Mahabharat</div>
-          <div class="realm" onclick="openRealm('Krishna Leela')">Krishna Leela</div>
-          <div class="realm" onclick="openRealm('Sanskrit')">Sanskrit</div>
-          <div class="realm" onclick="openRealm('Moral Stories')">Moral Stories</div>
+      <div>
+        <div class="card" id="daily-sanskrit-card">
+          <h3>🕉 Daily Sanskrit Word</h3>
+          <div class="word-box">
+            <h2 id="word">-</h2>
+            <p id="meaning">-</p>
+            <p id="pronunciation">-</p>
+            <button onclick="changeWord()">Next Word</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🤖 AI Character Chat</h3>
+          <div class="chat-buttons">
+            <button onclick="chat('Krishna')">Krishna</button>
+            <button onclick="chat('Hanuman')">Hanuman</button>
+            <button onclick="chat('Rama')">Rama</button>
+            <button onclick="chat('Ganesha')">Ganesha</button>
+          </div>
+        </div>
+
+        <div class="card achievement">
+          <h3>🏆 Achievements</h3>
+          <p>🌟 Dharma Points : <span id="dharmaPoints">0</span></p>
+          <p>🪙 Gyan Coins : <span id="gyanCoins">0</span></p>
+          <p>🏅 Badges : <span id="badgesEarned">0</span></p>
+          <p>🔓 Characters Unlocked : <span id="charactersUnlocked">0</span></p>
+          <div id="badgeContainer"></div>
+        </div>
+
+        <div class="card">
+          <h3>🎯 Quests & Challenges</h3>
+          <div class="quest-list" id="questContainer"></div>
+        </div>
+
+        <div class="card">
+          <h3>📊 Progress Tracker</h3>
+          <div class="stats-grid">
+            <div class="stat-box">Stories Completed: <span id="storiesCompleted">0</span></div>
+            <div class="stat-box">Quizzes Completed: <span id="quizzesCompleted">0</span></div>
+            <div class="stat-box">Sanskrit Words Learned: <span id="wordsLearned">0</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>👨‍👩‍👧 Parent Dashboard</h3>
+          <div class="parent-box">
+            Track child progress, screen time, achievements, and learning journey.
+            <br><br>
+            <button onclick="viewParentDashboard()">View Dashboard</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🏅 Leaderboard</h3>
+          <div id="leaderboardContainer"></div>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <h3>Continue Learning</h3>
-        <div class="continue" id="continueContainer"></div>
+    <div class="character-guides">
+      <div class="character krishna" onclick="krishnaGuide()">
+        <img src="images/krishna.gif" alt="Little Krishna">
+        <div class="bubble">Need wisdom?</div>
       </div>
 
-      <div class="card featured-story">
-        <h3>Featured Story</h3>
-        <p id="featuredStoryText">Loading featured story...</p>
-        <button onclick="openStory()">Read Story</button>
-      </div>
-
-      <div class="card">
-        <h3>Audio Stories</h3>
-        <div class="audio-list" id="audioContainer"></div>
-      </div>
-
-      <div class="card">
-        <h3>Recommended For You</h3>
-        <div class="recommend-list" id="recommendContainer"></div>
+      <div class="character hanuman" onclick="hanumanGuide()">
+        <img src="images/hanuman.gif" alt="Hanuman">
+        <div class="bubble">Ready for a quest?</div>
       </div>
     </div>
 
-    <div>
-      <div class="card">
-        <h3>Daily Sanskrit Word</h3>
-        <div class="word-box">
-          <h2 id="word">-</h2>
-          <p id="meaning">-</p>
-          <p id="pronunciation">-</p>
-          <button onclick="changeWord()">Next Word</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>AI Character Chat</h3>
-        <div class="chat-buttons">
-          <button onclick="chat('Krishna')">Krishna</button>
-          <button onclick="chat('Hanuman')">Hanuman</button>
-          <button onclick="chat('Rama')">Rama</button>
-          <button onclick="chat('Ganesha')">Ganesha</button>
-        </div>
-      </div>
-
-      <div class="card achievement">
-        <h3>Achievements</h3>
-        <p>🌟 Dharma Points : <span id="dharmaPoints">0</span></p>
-        <p>🪙 Gyan Coins : <span id="gyanCoins">0</span></p>
-        <p>🏅 Badges : <span id="badgesEarned">0</span></p>
-        <p>🔓 Characters Unlocked : <span id="charactersUnlocked">0</span></p>
-
-        <div id="badgeContainer"></div>
-      </div>
-
-      <div class="card">
-        <h3>Quests & Challenges</h3>
-        <div class="quest-list" id="questContainer"></div>
-      </div>
-
-      <div class="card">
-        <h3>Progress Tracker</h3>
-        <div class="stats-grid">
-          <div class="stat-box">Stories Completed: <span id="storiesCompleted">0</span></div>
-          <div class="stat-box">Quizzes Completed: <span id="quizzesCompleted">0</span></div>
-          <div class="stat-box">Sanskrit Words Learned: <span id="wordsLearned">0</span></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Parent Dashboard</h3>
-        <div class="parent-box">
-          Track child progress, screen time, achievements, and learning journey.
-          <br><br>
-          <button onclick="viewParentDashboard()">View Dashboard</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Leaderboard</h3>
-        <div id="leaderboardContainer"></div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <p>© 2026 MythoVerse | Learn Culture, Values & Sanskrit with Fun</p>
-  </footer>
+    <footer>
+      <p>© 2026 MythoVerse | Learn Culture, Values & Sanskrit with Fun</p>
+    </footer>
+  </div>
 
   <script>
     const API_DASHBOARD = "http://localhost:5000/api/dashboard";
     const token = localStorage.getItem("token");
 
-    let words = [];
-    let currentWordIndex = 0;
     let currentUser = null;
+    let featuredStorySlug = "abhimanyu";
 
-    if (!token) {
-      alert("Please login first");
-      window.location.href = "login.html";
+    let words = [
+      { word: "धर्म", meaning: "Duty / righteousness", pronunciation: "Dharma" },
+      { word: "सत्य", meaning: "Truth", pronunciation: "Satya" },
+      { word: "वीर", meaning: "Brave", pronunciation: "Veer" },
+      { word: "आनन्द", meaning: "Joy", pronunciation: "Ananda" }
+    ];
+
+    let currentWordIndex = 0;
+
+    async function parseResponse(response) {
+      const text = await response.text();
+      let data = {};
+
+      try {
+        data = JSON.parse(text);
+      } catch (error) {
+        throw new Error("Invalid server response");
+      }
+
+      if (!response.ok) {
+        throw new Error(data.message || "Request failed");
+      }
+
+      return data;
     }
 
     async function apiGet(url) {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
-      });
+      const headers = {
+        "Content-Type": "application/json"
+      };
 
-      const text = await response.text();
-      const data = JSON.parse(text);
-
-      if (!response.ok) {
-        throw new Error(data.message || "Request failed");
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
 
-      return data;
+      const response = await fetch(url, {
+        method: "GET",
+        headers
+      });
+
+      return parseResponse(response);
     }
 
     async function apiPost(url, bodyData) {
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
+        headers,
         body: JSON.stringify(bodyData)
       });
 
-      const text = await response.text();
-      const data = JSON.parse(text);
-
-      if (!response.ok) {
-        throw new Error(data.message || "Request failed");
-      }
-
-      return data;
+      return parseResponse(response);
     }
 
     function renderUser(user) {
       currentUser = user;
 
       document.getElementById("welcomeName").textContent = `Welcome ${user.name || "Explorer"} ✨`;
-      document.getElementById("welcomeText").textContent = `Continue your journey, ${user.name || "Explorer"}! Explore stories, Sanskrit lessons, quizzes, rewards, and more.`;
+      document.getElementById("welcomeText").textContent =
+        `Continue your journey, ${user.name || "Explorer"}! Explore stories, Sanskrit lessons, quizzes, rewards, and more.`;
 
       document.getElementById("userName").textContent = user.name || "-";
       document.getElementById("userEmail").textContent = user.email || "-";
@@ -604,21 +1027,23 @@
     }
 
     function renderContent(content) {
-      words = content.dailyWords || [];
-      currentWordIndex = 0;
-
-      if (words.length > 0) {
-        updateWord();
+      if (content.dailyWords && content.dailyWords.length > 0) {
+        words = content.dailyWords;
       }
 
+      currentWordIndex = 0;
+      updateWord();
+
+      featuredStorySlug = content.featuredStory?.slug || "abhimanyu";
+
       document.getElementById("featuredStoryText").innerHTML =
-        `<strong>${content.featuredStory.title}</strong><br><br>${content.featuredStory.description}`;
+        `<strong>${content.featuredStory?.title || "Story"}</strong><br><br>${content.featuredStory?.description || ""}`;
 
       const continueContainer = document.getElementById("continueContainer");
       continueContainer.innerHTML = "";
       (content.continueLearning || []).forEach(item => {
         continueContainer.innerHTML += `
-          <div>
+          <div class="continue-card">
             <p>${item.title}</p>
             <button onclick="continueLearning('${item.title.replace(/'/g, "\\'")}')">Continue</button>
           </div>
@@ -660,33 +1085,89 @@
       });
 
       const badgeContainer = document.getElementById("badgeContainer");
-      badgeContainer.innerHTML = `
-        <span class="badge">Story Star</span>
-        <span class="badge">Sanskrit Learner</span>
-        <span class="badge">Quest Hero</span>
-      `;
+      badgeContainer.innerHTML = "";
+      (content.badges || ["Story Star", "Sanskrit Learner", "Quest Hero"]).forEach(badge => {
+        badgeContainer.innerHTML += `<span class="badge">${badge}</span>`;
+      });
     }
 
     async function loadDashboard() {
       try {
         const data = await apiGet(API_DASHBOARD);
-        renderUser(data.user);
-        renderContent(data.content);
+        renderUser(data.user || {});
+        renderContent(data.content || {});
       } catch (error) {
-        alert(error.message);
+        console.log("Dashboard load error:", error.message);
+
+        renderUser({
+          name: "Explorer",
+          email: "-",
+          phone: "-",
+          role: "Child",
+          age: "8-12",
+          interest: "Mythology",
+          dharmaPoints: 0,
+          gyanCoins: 0,
+          badgesEarned: 0,
+          charactersUnlocked: 0,
+          storiesCompleted: 0,
+          quizzesCompleted: 0,
+          wordsLearned: 0,
+          learningProgress: 45
+        });
+
+        renderContent({
+          dailyWords: words,
+          featuredStory: {
+            title: "Abhimanyu and the Chakravyuh",
+            description: "A brave story from Mahabharat.",
+            slug: "abhimanyu"
+          },
+          continueLearning: [
+            { title: "Abhimanyu and the Chakravyuh" },
+            { title: "Krishna Butter Leela" },
+            { title: "Birth of Lord Rama" }
+          ],
+          audioStories: [
+            { title: "Abhimanyu and the Chakravyuh" },
+            { title: "Krishna Butter Leela" }
+          ],
+          recommended: [
+            "Complete one Mahabharat story today",
+            "Learn 2 new Sanskrit words",
+            "Take a mini quiz and earn Dharma Points"
+          ],
+          quests: [
+            "Finish one story chapter",
+            "Answer one quiz correctly",
+            "Learn today’s Sanskrit word"
+          ],
+          leaderboard: [
+            { name: "Aarav", points: 220 },
+            { name: "Diya", points: 180 },
+            { name: "You", points: 0 }
+          ],
+          badges: ["Story Star", "Sanskrit Learner", "Quest Hero"]
+        });
       }
     }
 
     function updateWord() {
-      if (!words.length) return;
-      document.getElementById("word").innerText = words[currentWordIndex].word;
-      document.getElementById("meaning").innerText = words[currentWordIndex].meaning;
+      if (!words || words.length === 0) {
+        document.getElementById("word").innerText = "धर्म";
+        document.getElementById("meaning").innerText = "Duty / righteousness";
+        document.getElementById("pronunciation").innerText = "Pronunciation: Dharma";
+        return;
+      }
+
+      document.getElementById("word").innerText = words[currentWordIndex].word || "-";
+      document.getElementById("meaning").innerText = words[currentWordIndex].meaning || "-";
       document.getElementById("pronunciation").innerText =
-        "Pronunciation: " + words[currentWordIndex].pronunciation;
+        "Pronunciation: " + (words[currentWordIndex].pronunciation || "-");
     }
 
     function changeWord() {
-      if (!words.length) return;
+      if (!words || words.length === 0) return;
       currentWordIndex++;
       if (currentWordIndex >= words.length) currentWordIndex = 0;
       updateWord();
@@ -705,7 +1186,9 @@
       try {
         const data = await apiPost(`${API_DASHBOARD}/start-quest`, {});
         alert(data.message);
-        renderUser(data.user);
+        if (data.user) {
+          renderUser(data.user);
+        }
       } catch (error) {
         alert(error.message);
       }
@@ -714,8 +1197,19 @@
     async function continueLearning(sectionTitle) {
       try {
         const data = await apiPost(`${API_DASHBOARD}/continue`, { sectionTitle });
-        alert(data.message);
-        renderUser(data.user);
+
+        if (data.user) {
+          renderUser(data.user);
+        }
+
+        const storySlugMap = {
+          "Abhimanyu and the Chakravyuh": "abhimanyu",
+          "Krishna Butter Leela": "krishna-butter-leela",
+          "Birth of Lord Rama": "birth-of-rama"
+        };
+
+        const storySlug = storySlugMap[sectionTitle] || "abhimanyu";
+        window.location.href = `storyplayer.html?story=${encodeURIComponent(storySlug)}`;
       } catch (error) {
         alert(error.message);
       }
@@ -724,8 +1218,21 @@
     async function openRealm(realmName) {
       try {
         const data = await apiPost(`${API_DASHBOARD}/realm`, { realmName });
-        alert(data.message);
-        renderUser(data.user);
+
+        if (data.user) {
+          renderUser(data.user);
+        }
+
+        const realmSlugMap = {
+          "Ramayan": "ramayan",
+          "Mahabharat": "mahabharat",
+          "Krishna Leela": "krishna-leela",
+          "Sanskrit": "sanskrit",
+          "Moral Stories": "moral-stories"
+        };
+
+        const realmSlug = realmSlugMap[realmName] || "all";
+        window.location.href = `story-library.html?realm=${encodeURIComponent(realmSlug)}`;
       } catch (error) {
         alert(error.message);
       }
@@ -741,7 +1248,7 @@
     }
 
     function openStory() {
-      window.location.href = "storyplayer.html";
+      window.location.href = `storyplayer.html?story=${featuredStorySlug}`;
     }
 
     function viewParentDashboard() {
@@ -752,6 +1259,24 @@
       }
     }
 
+    async function krishnaGuide() {
+  try {
+    const data = await apiGet(`${API_DASHBOARD}/guide/krishna`);
+    alert(data.message);
+  } catch (error) {
+    alert("Krishna says: Knowledge is the greatest power. Learn a new Sanskrit word today!");
+  }
+}
+
+async function hanumanGuide() {
+  try {
+    const data = await apiGet(`${API_DASHBOARD}/guide/hanuman`);
+    alert(data.message);
+  } catch (error) {
+    alert("Hanuman challenge: Complete today’s story and earn more Dharma Points!");
+  }
+}
+
     function logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -759,6 +1284,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
+      updateWord();
       loadDashboard();
     });
   </script>

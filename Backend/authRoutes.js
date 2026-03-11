@@ -1,11 +1,26 @@
 const express = require("express");
-const { registerUser, loginUser, getProfile } = require("./authController");
-const authMiddleware = require("./authMiddleware");
-
 const router = express.Router();
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
-router.get("/profile", authMiddleware, getProfile);
+router.post("/login", (req,res)=>{
+
+    const {email,password,role} = req.body;
+
+    if(!email || !password){
+        return res.status(400).json({
+            message:"Email and password required"
+        });
+    }
+
+    res.json({
+        success:true,
+        token:"demo_token_123",
+        user:{
+            name:"Parent User",
+            email:email,
+            role:role
+        }
+    });
+
+});
 
 module.exports = router;

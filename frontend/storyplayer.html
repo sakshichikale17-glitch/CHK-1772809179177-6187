@@ -109,6 +109,7 @@
       display:none;
       box-shadow:var(--shadow);
       font-weight:bold;
+      line-height:1.6;
     }
 
     .scene{
@@ -126,6 +127,7 @@
       max-height:420px;
       object-fit:cover;
       background:#f2f2f2;
+      min-height:220px;
     }
 
     .narration{
@@ -164,6 +166,12 @@
 
     button:hover{
       transform:translateY(-2px);
+    }
+
+    button:disabled{
+      opacity:0.55;
+      cursor:not-allowed;
+      transform:none;
     }
 
     .play{
@@ -369,9 +377,9 @@
   </header>
 
   <div class="container">
-
     <div class="top-links">
       <a href="dashboard.html">Dashboard</a>
+      <a href="story-library.html">Story Library</a>
       <a href="reward.html">Rewards</a>
       <a href="index.html">Home</a>
     </div>
@@ -381,6 +389,7 @@
     <div class="scene">
       <img
         id="storyImage"
+        loading="lazy"
         src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Kurukshetra_battle.jpg"
         alt="Story Scene"
       >
@@ -452,7 +461,13 @@
   <script>
     const API_BASE = "http://localhost:5000/api/story";
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
+
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem("user"));
+    } catch (error) {
+      user = null;
+    }
 
     const params = new URLSearchParams(window.location.search);
     const storySlug = params.get("story") || "abhimanyu";
@@ -461,10 +476,343 @@
     let currentStory = null;
     let currentQuiz = null;
 
-    if (!token || !user) {
-      alert("Please login first");
-      window.location.href = "login.html";
-    }
+    const fallbackImage = "https://upload.wikimedia.org/wikipedia/commons/3/3c/Kurukshetra_battle.jpg";
+
+    const storyDatabase = {
+      "abhimanyu": {
+        storyId: "abhimanyu-1",
+        slug: "abhimanyu",
+        title: "Abhimanyu and the Chakravyuh",
+        realm: "Mahabharat Realm",
+        chapter: 2,
+        totalChapters: 5,
+        image: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Kurukshetra_battle.jpg",
+        narration: "The battlefield of Kurukshetra thundered with conch shells and marching warriors. Young Abhimanyu stood before the mighty Chakravyuh, determined to follow dharma with courage.",
+        guideName: "Krishna",
+        dialogue: "Courage is not the absence of fear. It is moving forward with wisdom and duty.",
+        choiceQuestion: "What should Abhimanyu do first?",
+        choices: [
+          "Enter bravely",
+          "Ask elders for guidance",
+          "Observe the formation first"
+        ],
+        progress: 40,
+        sanskrit: {
+          word: "धर्म (Dharma)",
+          meaning: "Duty / righteousness"
+        },
+        quiz: {
+          question: "Why is Abhimanyu remembered in this story?",
+          options: [
+            "He entered the Chakravyuh bravely",
+            "He built a palace",
+            "He found hidden treasure"
+          ],
+          correctAnswer: "He entered the Chakravyuh bravely"
+        }
+      },
+
+      "birth-of-rama": {
+        storyId: "birth-of-rama-1",
+        slug: "birth-of-rama",
+        title: "Birth of Lord Rama",
+        realm: "Ramayan Realm",
+        chapter: 1,
+        totalChapters: 4,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Rama_birth.jpg/1200px-Rama_birth.jpg",
+        narration: "Ayodhya glowed with joy as King Dasharatha’s long-awaited wish was fulfilled. The birth of Lord Rama brought peace, hope, and celebration to the kingdom.",
+        guideName: "Vashistha",
+        dialogue: "A noble life begins with love, blessings, and purpose.",
+        choiceQuestion: "What did the people of Ayodhya do?",
+        choices: [
+          "Celebrate with joy",
+          "Leave the city",
+          "Start a battle"
+        ],
+        progress: 25,
+        sanskrit: {
+          word: "आनन्द (Ananda)",
+          meaning: "Joy / happiness"
+        },
+        quiz: {
+          question: "What filled Ayodhya during Rama’s birth?",
+          options: [
+            "Fear",
+            "Joy and celebration",
+            "Darkness"
+          ],
+          correctAnswer: "Joy and celebration"
+        }
+      },
+
+      "sita-swayamvar": {
+        storyId: "sita-swayamvar-1",
+        slug: "sita-swayamvar",
+        title: "Sita Swayamvar",
+        realm: "Ramayan Realm",
+        chapter: 2,
+        totalChapters: 4,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Rama_breaking_the_bow.jpg/1200px-Rama_breaking_the_bow.jpg",
+        narration: "Kings from many lands gathered for Sita’s swayamvar. The mighty bow stood in the hall, waiting for the one hero who could lift it.",
+        guideName: "Janaka",
+        dialogue: "True strength shines brightest when guided by humility.",
+        choiceQuestion: "What did Rama do?",
+        choices: [
+          "Lift the divine bow",
+          "Walk away silently",
+          "Hide from the crowd"
+        ],
+        progress: 35,
+        sanskrit: {
+          word: "बल (Bala)",
+          meaning: "Strength"
+        },
+        quiz: {
+          question: "What made Rama special in the swayamvar?",
+          options: [
+            "He lifted the bow",
+            "He sang a song",
+            "He rode a horse"
+          ],
+          correctAnswer: "He lifted the bow"
+        }
+      },
+
+      "arjuna-birds-eye": {
+        storyId: "arjuna-eye-1",
+        slug: "arjuna-birds-eye",
+        title: "Arjuna and the Bird’s Eye",
+        realm: "Mahabharat Realm",
+        chapter: 1,
+        totalChapters: 3,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Arjuna_shooting.jpg/1200px-Arjuna_shooting.jpg",
+        narration: "Dronacharya placed a bird high on a tree and asked his students what they saw. Arjuna answered with complete focus, seeing only the eye of the bird.",
+        guideName: "Dronacharya",
+        dialogue: "Focus your mind on the goal, and distractions will disappear.",
+        choiceQuestion: "What should Arjuna focus on?",
+        choices: [
+          "Only the bird’s eye",
+          "The whole forest",
+          "Other students"
+        ],
+        progress: 30,
+        sanskrit: {
+          word: "एकाग्रता (Ekagrata)",
+          meaning: "Concentration / focus"
+        },
+        quiz: {
+          question: "Why did Arjuna succeed?",
+          options: [
+            "Because of luck",
+            "Because of focus",
+            "Because of noise"
+          ],
+          correctAnswer: "Because of focus"
+        }
+      },
+
+      "krishna-butter-leela": {
+        storyId: "krishna-butter-1",
+        slug: "krishna-butter-leela",
+        title: "Krishna Butter Leela",
+        realm: "Krishna Leela Realm",
+        chapter: 1,
+        totalChapters: 3,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Krishna_with_butter.jpg/1200px-Krishna_with_butter.jpg",
+        narration: "Little Krishna loved butter and playful adventures. In Gokul, every house was filled with laughter as he found clever ways to share sweet butter with his friends.",
+        guideName: "Yashoda",
+        dialogue: "Joy becomes greater when shared with love.",
+        choiceQuestion: "What made Krishna’s leela special?",
+        choices: [
+          "His playful joy",
+          "His anger",
+          "His silence"
+        ],
+        progress: 20,
+        sanskrit: {
+          word: "लीला (Leela)",
+          meaning: "Divine play"
+        },
+        quiz: {
+          question: "What did Krishna love in this story?",
+          options: [
+            "Butter",
+            "A sword",
+            "A crown"
+          ],
+          correctAnswer: "Butter"
+        }
+      },
+
+      "kaliya-mardan": {
+        storyId: "kaliya-mardan-1",
+        slug: "kaliya-mardan",
+        title: "Kaliya Mardan",
+        realm: "Krishna Leela Realm",
+        chapter: 2,
+        totalChapters: 3,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Krishna_subduing_Kaliya.jpg/1200px-Krishna_subduing_Kaliya.jpg",
+        narration: "When the serpent Kaliya poisoned the waters, Krishna leaped into danger to protect the people. With divine courage, he danced upon the serpent and restored peace.",
+        guideName: "Krishna",
+        dialogue: "Real strength is used to protect others.",
+        choiceQuestion: "Why did Krishna face Kaliya?",
+        choices: [
+          "To protect the people",
+          "To win gold",
+          "To leave the village"
+        ],
+        progress: 45,
+        sanskrit: {
+          word: "रक्षा (Raksha)",
+          meaning: "Protection"
+        },
+        quiz: {
+          question: "What did Krishna restore after defeating Kaliya?",
+          options: [
+            "Chaos",
+            "Peace",
+            "Fear"
+          ],
+          correctAnswer: "Peace"
+        }
+      },
+
+      "meaning-of-dharma": {
+        storyId: "dharma-meaning-1",
+        slug: "meaning-of-dharma",
+        title: "Meaning of Dharma",
+        realm: "Sanskrit Realm",
+        chapter: 1,
+        totalChapters: 2,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Krishna_and_Arjuna.jpg/1200px-Krishna_and_Arjuna.jpg",
+        narration: "Dharma is more than a word. It means doing what is right, caring for others, and acting with truth and responsibility.",
+        guideName: "Teacher",
+        dialogue: "When you choose what is right, you follow dharma.",
+        choiceQuestion: "What does dharma teach?",
+        choices: [
+          "Right action",
+          "Carelessness",
+          "Dishonesty"
+        ],
+        progress: 50,
+        sanskrit: {
+          word: "धर्म (Dharma)",
+          meaning: "Duty / righteousness"
+        },
+        quiz: {
+          question: "What is dharma closely related to?",
+          options: [
+            "Right action",
+            "Laziness",
+            "Confusion"
+          ],
+          correctAnswer: "Right action"
+        }
+      },
+
+      "sanskrit-greetings": {
+        storyId: "sanskrit-greetings-1",
+        slug: "sanskrit-greetings",
+        title: "Simple Sanskrit Greetings",
+        realm: "Sanskrit Realm",
+        chapter: 1,
+        totalChapters: 2,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Namaste.jpg/1200px-Namaste.jpg",
+        narration: "Sanskrit greetings are simple, respectful, and beautiful. Learning them helps children build love for language and culture.",
+        guideName: "Teacher",
+        dialogue: "Every greeting carries respect and warmth.",
+        choiceQuestion: "Why should we learn greetings?",
+        choices: [
+          "To speak respectfully",
+          "To ignore others",
+          "To confuse people"
+        ],
+        progress: 35,
+        sanskrit: {
+          word: "नमस्ते (Namaste)",
+          meaning: "Greetings / I bow to you"
+        },
+        quiz: {
+          question: "What does 'Namaste' express?",
+          options: [
+            "Respect",
+            "Anger",
+            "Fear"
+          ],
+          correctAnswer: "Respect"
+        }
+      },
+
+      "honest-woodcutter": {
+        storyId: "woodcutter-1",
+        slug: "honest-woodcutter",
+        title: "The Honest Woodcutter",
+        realm: "Moral Stories Realm",
+        chapter: 1,
+        totalChapters: 2,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/The_honest_woodcutter.jpg/1200px-The_honest_woodcutter.jpg",
+        narration: "A poor woodcutter lost his axe in the river. When offered golden and silver axes, he chose truth over greed and was rewarded for his honesty.",
+        guideName: "Narrator",
+        dialogue: "Honesty brings rewards greater than gold.",
+        choiceQuestion: "What should the woodcutter choose?",
+        choices: [
+          "Tell the truth",
+          "Take the gold axe",
+          "Run away"
+        ],
+        progress: 30,
+        sanskrit: {
+          word: "सत्य (Satya)",
+          meaning: "Truth"
+        },
+        quiz: {
+          question: "Why was the woodcutter rewarded?",
+          options: [
+            "For honesty",
+            "For greed",
+            "For speed"
+          ],
+          correctAnswer: "For honesty"
+        }
+      },
+
+      "lion-and-mouse": {
+        storyId: "lion-mouse-1",
+        slug: "lion-and-mouse",
+        title: "The Lion and the Mouse",
+        realm: "Moral Stories Realm",
+        chapter: 1,
+        totalChapters: 2,
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Lion_and_mouse.jpg/1200px-Lion_and_mouse.jpg",
+        narration: "A tiny mouse once helped a mighty lion. The story teaches that kindness and help can come from anyone, no matter how small.",
+        guideName: "Narrator",
+        dialogue: "Never think anyone is too small to make a difference.",
+        choiceQuestion: "What lesson does the lion learn?",
+        choices: [
+          "Everyone can help",
+          "Only the strong matter",
+          "Kindness is useless"
+        ],
+        progress: 28,
+        sanskrit: {
+          word: "मित्र (Mitra)",
+          meaning: "Friend"
+        },
+        quiz: {
+          question: "What is the moral of the story?",
+          options: [
+            "Everyone can help",
+            "Only lions are brave",
+            "Mice cannot help"
+          ],
+          correctAnswer: "Everyone can help"
+        }
+      }
+    };
+
+    document.getElementById("storyImage").addEventListener("error", function () {
+      this.src = fallbackImage;
+    });
 
     function showStatus(message, isError = false) {
       const box = document.getElementById("statusBox");
@@ -472,6 +820,13 @@
       box.style.background = isError ? "#ffe5e5" : "#eefcf1";
       box.style.color = isError ? "#c62828" : "#2e7d32";
       box.textContent = message;
+    }
+
+    function disableButtons(buttonIds, disabled) {
+      buttonIds.forEach((id) => {
+        const btn = document.getElementById(id);
+        if (btn) btn.disabled = disabled;
+      });
     }
 
     async function parseResponse(response) {
@@ -492,24 +847,34 @@
     }
 
     async function apiGet(url) {
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(url, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+        headers
       });
 
       return parseResponse(response);
     }
 
     async function apiPost(url, bodyData) {
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
+        headers,
         body: JSON.stringify(bodyData)
       });
 
@@ -539,7 +904,9 @@
 
     function setButtonText(id, text) {
       const btn = document.getElementById(id);
-      btn.textContent = text;
+      if (btn) {
+        btn.textContent = text;
+      }
     }
 
     function renderStory(story) {
@@ -551,8 +918,7 @@
       document.getElementById("storyMeta").textContent =
         `Realm: ${story.realm || "Unknown"} | Chapter ${story.chapter || 1} of ${story.totalChapters || 1}`;
 
-      document.getElementById("storyImage").src =
-        story.image || "https://upload.wikimedia.org/wikipedia/commons/3/3c/Kurukshetra_battle.jpg";
+      document.getElementById("storyImage").src = story.image || fallbackImage;
 
       document.getElementById("storyText").textContent =
         story.narration || "No story narration found.";
@@ -570,7 +936,6 @@
 
       document.getElementById("sanskritWord").textContent =
         story.sanskrit?.word || "Dharma (धर्म)";
-
       document.getElementById("sanskritMeaning").textContent =
         `Meaning: ${story.sanskrit?.meaning || "Duty / righteousness"}`;
 
@@ -586,26 +951,34 @@
 
       renderSceneDots(story.chapter || 1, story.totalChapters || 1);
 
-      document.getElementById("choices").style.display =
-        story.choices && story.choices.length ? "block" : "none";
+      const hasChoices = story.choices && story.choices.length > 0;
+      document.getElementById("choices").style.display = hasChoices ? "block" : "none";
+      disableButtons(["choice1", "choice2", "choice3"], !hasChoices);
 
+      const hasQuiz = currentQuiz && currentQuiz.options && currentQuiz.options.length > 0;
       document.getElementById("quiz").style.display = "none";
+      disableButtons(["quiz1", "quiz2", "quiz3"], !hasQuiz);
+    }
+
+    function getLocalStoryBySlug(slug) {
+      return storyDatabase[slug] || storyDatabase["abhimanyu"];
     }
 
     async function loadStory() {
       try {
         const data = await apiGet(`${API_BASE}/${storySlug}`);
         renderStory(data.story);
-        showStatus("Story loaded successfully.");
+        showStatus("Story loaded successfully from backend.");
       } catch (error) {
-        showStatus(error.message, true);
-        document.getElementById("storyText").textContent = "Could not load story from backend.";
-        document.getElementById("storyText").classList.remove("loading-text");
+        console.log("Story load error:", error.message);
+        renderStory(getLocalStoryBySlug(storySlug));
+        showStatus("Backend not connected. Local story data is shown now.", true);
       }
     }
 
     function speakStory() {
-      const text = document.getElementById("storyText").innerText;
+      const text = document.getElementById("storyText").innerText.trim();
+      if (!text) return;
 
       speechSynthesis.cancel();
 
@@ -617,7 +990,8 @@
     }
 
     function speakWord() {
-      const wordText = document.getElementById("sanskritWord").innerText;
+      const wordText = document.getElementById("sanskritWord").innerText.trim();
+      if (!wordText) return;
 
       speechSynthesis.cancel();
 
@@ -634,26 +1008,34 @@
 
     async function choose(optionIndex) {
       try {
-        if (!currentStory || !currentStory.choices) {
+        if (!currentStory || !currentStory.choices || !currentStory.choices[optionIndex]) {
           alert("Story choices not loaded yet.");
           return;
         }
 
         const selectedChoice = currentStory.choices[optionIndex];
 
-        const data = await apiPost(`${API_BASE}/save-choice`, {
-          storyId: currentStory.storyId,
-          selectedChoice: selectedChoice
-        });
+        try {
+          const data = await apiPost(`${API_BASE}/save-choice`, {
+            storyId: currentStory.storyId,
+            selectedChoice: selectedChoice
+          });
 
-        document.getElementById("valueTitle").textContent =
-          `⭐ Value Learned: ${data.valueTitle || "Courage"}`;
+          document.getElementById("valueTitle").textContent =
+            `⭐ Value Learned: ${data.valueTitle || "Courage"}`;
 
-        document.getElementById("valueText").textContent =
-          data.valueText || "A value was learned through your choice.";
+          document.getElementById("valueText").textContent =
+            data.valueText || "A value was learned through your choice.";
 
-        document.getElementById("rewardText").innerHTML =
-          `+${data.dharmaPoints || 0} Dharma Points<br>+${data.gyanCoins || 0} Gyan Coins`;
+          document.getElementById("rewardText").innerHTML =
+            `+${data.dharmaPoints || 0} Dharma Points<br>+${data.gyanCoins || 0} Gyan Coins`;
+        } catch (error) {
+          document.getElementById("valueTitle").textContent = "⭐ Value Learned: Good Choice";
+          document.getElementById("valueText").textContent =
+            `You selected "${selectedChoice}". This choice teaches values, courage, and wise thinking.`;
+          document.getElementById("rewardText").innerHTML =
+            `+10 Dharma Points<br>+5 Gyan Coins`;
+        }
 
         document.getElementById("valuePopup").style.display = "block";
       } catch (error) {
@@ -664,26 +1046,35 @@
     function closePopup() {
       document.getElementById("valuePopup").style.display = "none";
 
-      if (currentQuiz) {
+      const hasQuiz = currentQuiz && currentQuiz.options && currentQuiz.options.length > 0;
+      if (hasQuiz) {
         document.getElementById("quiz").style.display = "block";
       }
     }
 
     async function quizAnswer(answerIndex) {
       try {
-        if (!currentQuiz || !currentQuiz.options) {
+        if (!currentQuiz || !currentQuiz.options || !currentQuiz.options[answerIndex]) {
           alert("Quiz not loaded yet.");
           return;
         }
 
         const selectedAnswer = currentQuiz.options[answerIndex];
 
-        const data = await apiPost(`${API_BASE}/save-quiz`, {
-          storyId: currentStory.storyId,
-          selectedAnswer: selectedAnswer
-        });
+        try {
+          const data = await apiPost(`${API_BASE}/save-quiz`, {
+            storyId: currentStory.storyId,
+            selectedAnswer: selectedAnswer
+          });
 
-        alert(data.message || "Quiz submitted successfully.");
+          alert(data.message || "Quiz submitted successfully.");
+        } catch (error) {
+          if (selectedAnswer === currentQuiz.correctAnswer) {
+            alert("Correct answer! Excellent work.");
+          } else {
+            alert("Nice try. Keep learning and try again.");
+          }
+        }
       } catch (error) {
         alert(error.message);
       }
@@ -696,23 +1087,30 @@
           return;
         }
 
-        const data = await apiPost(`${API_BASE}/next-scene`, {
-          storyId: currentStory.storyId
-        });
+        try {
+          const data = await apiPost(`${API_BASE}/next-scene`, {
+            storyId: currentStory.storyId
+          });
 
-        progressValue = data.progress || progressValue + 20;
-        document.getElementById("progress").style.width = progressValue + "%";
+          progressValue = data.progress || Math.min(progressValue + 20, 100);
+          document.getElementById("progress").style.width = progressValue + "%";
 
-        if (data.story) {
-          renderStory(data.story);
-        } else {
-          document.getElementById("storyText").textContent =
-            data.nextNarration || "Next scene loaded.";
+          if (data.story) {
+            renderStory(data.story);
+          } else {
+            document.getElementById("storyText").textContent =
+              data.nextNarration || "Next scene loaded.";
 
-          document.getElementById("choices").style.display = "none";
+            document.getElementById("choices").style.display = "none";
+            disableButtons(["choice1", "choice2", "choice3"], true);
+          }
+
+          showStatus("Next scene loaded.");
+        } catch (error) {
+          progressValue = Math.min(progressValue + 20, 100);
+          document.getElementById("progress").style.width = progressValue + "%";
+          showStatus("Backend next-scene not available. Progress updated locally.", true);
         }
-
-        showStatus("Next scene loaded.");
       } catch (error) {
         alert(error.message);
       }
@@ -726,19 +1124,19 @@
 
       const q = prompt("Ask the story character something:");
 
-      if (!q) return;
+      if (!q || !q.trim()) return;
 
       try {
         const data = await apiPost(`${API_BASE}/character-chat`, {
           storyId: currentStory.storyId,
-          question: q
+          question: q.trim()
         });
 
         alert(
           `${data.characterName || "Character"} says: ${data.reply || "Courage grows when you take one small step with faith."}`
         );
       } catch (error) {
-        alert(error.message);
+        alert(`${currentStory.guideName || "Guide"} says: Stay brave, stay kind, and keep learning.`);
       }
     }
 

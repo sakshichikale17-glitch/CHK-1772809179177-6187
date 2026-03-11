@@ -1,217 +1,703 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MythoVerse Story Library</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MythoVerse Story Library</title>
 
-<style>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-body{
-font-family: Arial, sans-serif;
-background:#f5f7fb;
-margin:0;
-padding:0;
-}
+    :root{
+      --primary:#6b46ff;
+      --primary-dark:#4b2e83;
+      --primary-light:#efe9ff;
+      --secondary:#ffb84d;
+      --pink:#ff8ec7;
+      --sky:#8dd8ff;
+      --mint:#9df0c8;
+      --text:#2f2445;
+      --text-soft:#6c6286;
+      --white:#ffffff;
+      --bg-1:#fbf6ff;
+      --bg-2:#eef7ff;
+      --bg-3:#fffaf2;
+      --shadow:0 14px 34px rgba(82, 49, 156, 0.10);
+      --shadow-hover:0 18px 40px rgba(82, 49, 156, 0.16);
+      --border:rgba(107,70,255,0.08);
+      --radius-xl:28px;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --radius-sm:12px;
+      --transition:0.3s ease;
+    }
 
-header{
-background:#4b2e83;
-color:white;
-padding:20px;
-text-align:center;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,184,77,0.20), transparent 20%),
+        radial-gradient(circle at top right, rgba(141,216,255,0.18), transparent 18%),
+        radial-gradient(circle at bottom left, rgba(255,142,199,0.14), transparent 18%),
+        linear-gradient(135deg,var(--bg-1),var(--bg-2),var(--bg-3));
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
 
-.realm-section{
-padding:30px;
-}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:radial-gradient(rgba(107,70,255,0.06) 1px, transparent 1px);
+      background-size:24px 24px;
+      opacity:0.45;
+      z-index:0;
+    }
 
-.realm-title{
-font-size:24px;
-margin-bottom:20px;
-}
+    .page-shell{
+      position:relative;
+      z-index:1;
+    }
 
-.story-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
+    .navbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(75,46,131,0.90);
+      backdrop-filter:blur(14px);
+      color:white;
+      padding:16px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:14px;
+      box-shadow:0 10px 24px rgba(75,46,131,0.16);
+      border-bottom:1px solid rgba(255,255,255,0.12);
+    }
 
-.story-card{
-background:white;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-padding:15px;
-transition:0.2s;
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
 
-.story-card:hover{
-transform:scale(1.03);
-}
+    .brand-icon{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#ffd45c,#ffb84d);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:25px;
+      box-shadow:0 10px 20px rgba(255,184,77,0.28);
+      flex-shrink:0;
+    }
 
-.story-image{
-width:100%;
-height:130px;
-background:#ddd;
-border-radius:8px;
-margin-bottom:10px;
-}
+    .brand-text h2{
+      font-size:28px;
+      line-height:1;
+      letter-spacing:0.5px;
+    }
 
-.story-title{
-font-size:18px;
-font-weight:bold;
-margin-bottom:6px;
-}
+    .brand-text p{
+      font-size:12px;
+      color:rgba(255,255,255,0.82);
+      margin-top:4px;
+    }
 
-.story-label{
-font-size:13px;
-color:#666;
-margin-bottom:4px;
-}
+    .nav-links{
+      list-style:none;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
 
-.value{
-color:#2a7a2a;
-font-weight:bold;
-}
+    .nav-links a{
+      color:white;
+      text-decoration:none;
+      font-weight:700;
+      padding:10px 14px;
+      border-radius:999px;
+      transition:var(--transition);
+      font-size:14px;
+      display:inline-block;
+    }
 
-button{
-margin-top:10px;
-padding:8px 12px;
-background:#ff9800;
-border:none;
-border-radius:5px;
-color:white;
-cursor:pointer;
-}
+    .nav-links a:hover{
+      background:rgba(255,255,255,0.16);
+      transform:translateY(-1px);
+    }
 
-button:hover{
-background:#e68900;
-}
+    .hero{
+      padding:24px;
+    }
 
-.progress{
-background:#e0e0e0;
-height:8px;
-border-radius:5px;
-margin-top:10px;
-}
+    .hero-box{
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 24%),
+        linear-gradient(135deg,#c7b7ff,#ffc8df,#ffe4b2);
+      border-radius:var(--radius-xl);
+      padding:30px 28px;
+      box-shadow:var(--shadow);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
 
-.progress-bar{
-height:8px;
-background:#4caf50;
-border-radius:5px;
-width:60%;
-}
+    .hero-text h1{
+      font-size:40px;
+      color:#3a2168;
+      margin-bottom:10px;
+    }
 
-</style>
+    .hero-text p{
+      color:#4c376f;
+      line-height:1.7;
+      max-width:650px;
+      font-size:16px;
+    }
+
+    .hero-badge{
+      display:inline-block;
+      margin-bottom:12px;
+      background:rgba(255,255,255,0.28);
+      color:#4b2e83;
+      padding:8px 14px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:13px;
+    }
+
+    .hero-image{
+      width:140px;
+      max-width:100%;
+      filter:drop-shadow(0 12px 18px rgba(58,33,104,0.16));
+    }
+
+    .toolbar{
+      padding:0 24px 24px;
+      display:grid;
+      grid-template-columns:1.3fr auto;
+      gap:16px;
+      align-items:center;
+    }
+
+    .search-box{
+      background:rgba(255,255,255,0.9);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .search-box input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      font-size:15px;
+      color:var(--text);
+    }
+
+    .search-box input::placeholder{
+      color:var(--text-soft);
+    }
+
+    .active-realm{
+      background:rgba(255,255,255,0.9);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:14px 18px;
+      font-weight:800;
+      color:var(--primary-dark);
+      min-height:54px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+
+    .realm-tabs-wrap{
+      padding:0 24px 18px;
+    }
+
+    .realm-tabs{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .realm-tab{
+      border:none;
+      cursor:pointer;
+      padding:12px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.92);
+      color:var(--primary-dark);
+      box-shadow:var(--shadow);
+      border:1px solid var(--border);
+      font-weight:800;
+      transition:var(--transition);
+    }
+
+    .realm-tab:hover,
+    .realm-tab.active{
+      background:linear-gradient(135deg,var(--primary-dark),var(--primary));
+      color:white;
+      transform:translateY(-2px);
+    }
+
+    .stories-section{
+      padding:0 24px 28px;
+    }
+
+    .stories-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+
+    .story-card{
+      background:rgba(255,255,255,0.95);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--border);
+      overflow:hidden;
+      transition:var(--transition);
+      position:relative;
+    }
+
+    .story-card:hover{
+      transform:translateY(-5px);
+      box-shadow:var(--shadow-hover);
+    }
+
+    .story-top{
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:52px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .story-top::after{
+      content:"";
+      position:absolute;
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.15);
+      right:-30px;
+      top:-30px;
+    }
+
+    .ramayan-bg{ background:linear-gradient(135deg,#ffd89b,#ffb6a3); }
+    .mahabharat-bg{ background:linear-gradient(135deg,#c7b7ff,#9fd5ff); }
+    .krishna-bg{ background:linear-gradient(135deg,#9df0c8,#8dd8ff); }
+    .sanskrit-bg{ background:linear-gradient(135deg,#ffe17a,#ffc8df); }
+    .moral-bg{ background:linear-gradient(135deg,#ffd9ee,#f5d4ff); }
+
+    .story-content{
+      padding:18px;
+    }
+
+    .story-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+      font-size:12px;
+      font-weight:800;
+      color:var(--text-soft);
+    }
+
+    .story-title{
+      font-size:28px;
+      font-weight:900;
+      color:var(--primary-dark);
+      margin-bottom:10px;
+      line-height:1.18;
+    }
+
+    .story-desc{
+      font-size:15px;
+      color:#4d435f;
+      line-height:1.65;
+      margin-bottom:16px;
+      min-height:72px;
+    }
+
+    .story-tags{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .story-tag{
+      background:var(--primary-light);
+      color:var(--primary-dark);
+      font-size:12px;
+      font-weight:800;
+      padding:7px 10px;
+      border-radius:999px;
+    }
+
+    .story-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .story-btn{
+      flex:1;
+      min-width:120px;
+      border:none;
+      border-radius:14px;
+      padding:11px 14px;
+      cursor:pointer;
+      font-weight:800;
+      transition:var(--transition);
+      font-size:14px;
+    }
+
+    .read-btn{
+      background:linear-gradient(135deg,var(--primary-dark),var(--primary));
+      color:white;
+      box-shadow:0 8px 18px rgba(75,46,131,0.16);
+    }
+
+    .read-btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .quiz-btn{
+      background:linear-gradient(135deg,#ff8fab,#ffb86b);
+      color:#3b2066;
+      box-shadow:0 8px 18px rgba(255,143,171,0.16);
+    }
+
+    .quiz-btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .empty-state{
+      display:none;
+      background:rgba(255,255,255,0.94);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      border-radius:24px;
+      padding:30px 22px;
+      text-align:center;
+      color:var(--text-soft);
+      font-weight:700;
+    }
+
+    .empty-state h3{
+      color:var(--primary-dark);
+      margin-bottom:10px;
+      font-size:24px;
+    }
+
+    footer{
+      text-align:center;
+      background:linear-gradient(90deg,#4b2e83,#6a4cc3);
+      color:white;
+      padding:18px;
+      margin:0 24px 24px;
+      font-weight:800;
+      border-radius:20px;
+      box-shadow:0 10px 22px rgba(75,46,131,0.12);
+    }
+
+    @media(max-width:920px){
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:860px){
+      .navbar{
+        padding:16px 18px;
+        flex-direction:column;
+      }
+
+      .nav-links{
+        justify-content:center;
+      }
+
+      .hero,
+      .stories-section,
+      .realm-tabs-wrap,
+      .toolbar{
+        padding-left:18px;
+        padding-right:18px;
+      }
+
+      .hero-box{
+        text-align:center;
+        justify-content:center;
+      }
+
+      .hero-text h1{
+        font-size:32px;
+      }
+
+      footer{
+        margin:0 18px 18px;
+      }
+    }
+
+    @media(max-width:560px){
+      .brand-text h2{
+        font-size:24px;
+      }
+
+      .story-title{
+        font-size:24px;
+      }
+
+      .nav-links a{
+        font-size:13px;
+        padding:8px 10px;
+      }
+
+      .story-actions{
+        flex-direction:column;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page-shell">
 
-<header>
-<h1>📚 MythoVerse Story Library</h1>
-<p>Explore Epic Stories & Unlock Adventures</p>
-</header>
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon">📚</div>
+        <div class="brand-text">
+          <h2>MythoVerse</h2>
+          <p>Stories • Wisdom • Adventure</p>
+        </div>
+      </div>
 
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="reward.html">Rewards</a></li>
+      </ul>
+    </header>
 
-<!-- RAMAYAN REALM -->
+    <section class="hero">
+      <div class="hero-box">
+        <div class="hero-text">
+          <div class="hero-badge">✨ Explore Magical Story Worlds</div>
+          <h1>Story Library</h1>
+          <p>
+            Discover mythological adventures, moral stories, Sanskrit learning journeys,
+            and inspiring tales from Ramayan, Mahabharat, Krishna Leela, and more.
+          </p>
+        </div>
 
-<section class="realm-section">
+        <img src="images/dashboard-kid-hero.png" alt="Story Hero" class="hero-image">
+      </div>
+    </section>
 
-<div class="realm-title">🏹 Ramayan Realm</div>
+    <section class="toolbar">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Search stories by title, realm, or tag...">
+      </div>
 
-<div class="story-grid">
+      <div class="active-realm" id="activeRealmLabel">
+        Showing: All Realms
+      </div>
+    </section>
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Birth of Lord Rama</div>
-<div class="story-label">Difficulty: Easy</div>
-<div class="story-label value">Value: Truth</div>
-<button>Enter Story</button>
-<div class="progress"><div class="progress-bar"></div></div>
-</div>
+    <section class="realm-tabs-wrap">
+      <div class="realm-tabs">
+        <button class="realm-tab active" data-realm="all">All</button>
+        <button class="realm-tab" data-realm="ramayan">Ramayan</button>
+        <button class="realm-tab" data-realm="mahabharat">Mahabharat</button>
+        <button class="realm-tab" data-realm="krishna-leela">Krishna Leela</button>
+        <button class="realm-tab" data-realm="sanskrit">Sanskrit</button>
+        <button class="realm-tab" data-realm="moral-stories">Moral Stories</button>
+      </div>
+    </section>
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Sita Swayamvar</div>
-<div class="story-label">Difficulty: Medium</div>
-<div class="story-label value">Value: Courage</div>
-<button>Enter Story</button>
-</div>
+    <section class="stories-section">
+      <div class="stories-grid" id="storiesGrid"></div>
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Hanuman Lanka Quest</div>
-<div class="story-label">Difficulty: Hero Quest</div>
-<div class="story-label value">Value: Devotion</div>
-<button>Locked 🔒</button>
-</div>
+      <div class="empty-state" id="emptyState">
+        <h3>No stories found</h3>
+        <p>Try another realm or search word.</p>
+      </div>
+    </section>
 
-</div>
-</section>
+    <footer>
+      <p>© 2026 MythoVerse | Explore Stories, Values & Culture</p>
+    </footer>
+  </div>
 
+  <script>
+  const API_STORY = "http://localhost:5000/api/story";
 
-<!-- KRISHNA REALM -->
+  const storiesGrid = document.getElementById("storiesGrid");
+  const emptyState = document.getElementById("emptyState");
+  const searchInput = document.getElementById("searchInput");
+  const activeRealmLabel = document.getElementById("activeRealmLabel");
+  const realmTabs = document.querySelectorAll(".realm-tab");
 
-<section class="realm-section">
+  const params = new URLSearchParams(window.location.search);
+  let selectedRealm = params.get("realm") || "all";
+  let allStories = [];
 
-<div class="realm-title">🦚 Krishna Leela Realm</div>
+  function formatRealmLabel(realm) {
+    const map = {
+      "all": "All Realms",
+      "ramayan": "Ramayan",
+      "mahabharat": "Mahabharat",
+      "krishna-leela": "Krishna Leela",
+      "sanskrit": "Sanskrit",
+      "moral-stories": "Moral Stories"
+    };
 
-<div class="story-grid">
+    return map[realm] || "All Realms";
+  }
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Krishna Birth</div>
-<div class="story-label">Difficulty: Easy</div>
-<div class="story-label value">Value: Faith</div>
-<button>Enter Story</button>
-</div>
+  function updateActiveRealmUI() {
+    activeRealmLabel.textContent = `Showing: ${formatRealmLabel(selectedRealm)}`;
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Krishna Lifts Govardhan</div>
-<div class="story-label">Difficulty: Medium</div>
-<div class="story-label value">Value: Protection</div>
-<button>Enter Story</button>
-</div>
+    realmTabs.forEach(tab => {
+      if (tab.dataset.realm === selectedRealm) {
+        tab.classList.add("active");
+      } else {
+        tab.classList.remove("active");
+      }
+    });
+  }
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Kaliya Naag Defeat</div>
-<div class="story-label">Difficulty: Hero Quest</div>
-<div class="story-label value">Value: Courage</div>
-<button>Enter Story</button>
-</div>
+  function openStory(storySlug) {
+    window.location.href = `storyplayer.html?story=${encodeURIComponent(storySlug)}`;
+  }
 
-</div>
-</section>
+  function openQuiz(storySlug) {
+    window.location.href = `quiz.html?story=${encodeURIComponent(storySlug)}`;
+  }
 
+  function renderStories() {
+    const searchValue = searchInput.value.trim().toLowerCase();
 
-<!-- MAHABHARAT REALM -->
+    const filtered = allStories.filter(story => {
+      const realmMatch = selectedRealm === "all" || story.realm === selectedRealm;
 
-<section class="realm-section">
+      const textToSearch = `
+        ${story.title}
+        ${story.realmLabel}
+        ${story.desc}
+        ${(story.tags || []).join(" ")}
+      `.toLowerCase();
 
-<div class="realm-title">⚔️ Mahabharat Realm</div>
+      const searchMatch = textToSearch.includes(searchValue);
 
-<div class="story-grid">
+      return realmMatch && searchMatch;
+    });
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Bhishma Pratigya</div>
-<div class="story-label">Difficulty: Medium</div>
-<div class="story-label value">Value: Sacrifice</div>
-<button>Enter Story</button>
-</div>
+    storiesGrid.innerHTML = "";
 
-<div class="story-card">
-<div class="story-image"></div>
-<div class="story-title">Abhimanyu Chakravyuh</div>
-<div class="story-label">Difficulty: Hero Quest</div>
-<div class="story-label value">Value: Bravery</div>
-<button>Enter Story</button>
-</div>
+    if (filtered.length === 0) {
+      emptyState.style.display = "block";
+      return;
+    }
 
-</div>
-</section>
+    emptyState.style.display = "none";
 
+    filtered.forEach(story => {
+      storiesGrid.innerHTML += `
+        <div class="story-card">
+          <div class="story-top ${story.bgClass}">
+            <span>${story.emoji}</span>
+          </div>
 
+          <div class="story-content">
+            <div class="story-meta">
+              <span>${story.realmLabel}</span>
+              <span>Interactive Story</span>
+            </div>
+
+            <div class="story-title">${story.title}</div>
+            <div class="story-desc">${story.desc}</div>
+
+            <div class="story-tags">
+              ${(story.tags || []).map(tag => `<span class="story-tag">${tag}</span>`).join("")}
+            </div>
+
+            <div class="story-actions">
+              <button class="story-btn read-btn" onclick="openStory('${story.slug}')">Read Story</button>
+              <button class="story-btn quiz-btn" onclick="openQuiz('${story.slug}')">Take Quiz</button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  async function loadStoryLibrary() {
+    try {
+      const response = await fetch(`${API_STORY}/library`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to load stories");
+      }
+
+      allStories = data.stories || [];
+      renderStories();
+    } catch (error) {
+      console.error(error);
+      storiesGrid.innerHTML = "";
+      emptyState.style.display = "block";
+      emptyState.innerHTML = `
+        <h3>Could not load stories</h3>
+        <p>${error.message}</p>
+      `;
+    }
+  }
+
+  realmTabs.forEach(tab => {
+    tab.addEventListener("click", function () {
+      selectedRealm = this.dataset.realm;
+      updateActiveRealmUI();
+      renderStories();
+
+      const newUrl = `${window.location.pathname}?realm=${encodeURIComponent(selectedRealm)}`;
+      history.replaceState({}, "", newUrl);
+    });
+  });
+
+  searchInput.addEventListener("input", renderStories);
+
+  document.addEventListener("DOMContentLoaded", function () {
+    updateActiveRealmUI();
+    loadStoryLibrary();
+  });
+</script>
 </body>
 </html>
