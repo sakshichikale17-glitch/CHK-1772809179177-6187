@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MythoVerse | Interactive Mythology Learning Platform</title>
+  <meta
+    name="description"
+    content="MythoVerse is an interactive learning platform where children explore mythology, Sanskrit, values, and magical stories in one joyful digital universe."
+  />
 
   <style>
     *{
@@ -15,44 +19,34 @@
 
     :root{
       --primary:#6a11cb;
-      --primary-dark:#4c1d95;
+      --primary-dark:#4b2e83;
       --secondary:#2575fc;
-      --accent:#ff9f43;
-      --accent-2:#ff6ba6;
-      --success:#22c55e;
-      --warning:#f59e0b;
+      --accent:#ff8a4c;
+      --accent-soft:#ffd166;
       --text:#20163d;
       --text-soft:#625c7c;
       --white:#ffffff;
       --bg-1:#fcf8ff;
       --bg-2:#eef6ff;
-      --bg-3:#fffaf1;
+      --bg-3:#fffaf2;
       --card-border:rgba(106,17,203,0.08);
-      --shadow-sm:0 8px 20px rgba(53,30,100,0.08);
-      --shadow-md:0 18px 50px rgba(53,30,100,0.10);
-      --shadow-lg:0 26px 70px rgba(53,30,100,0.16);
-      --radius-xl:32px;
-      --radius-lg:24px;
-      --radius-md:18px;
-      --radius-sm:12px;
-      --transition:0.3s ease;
-      --container:1240px;
+      --shadow-sm:0 8px 20px rgba(53,32,100,0.08);
+      --shadow-md:0 14px 34px rgba(53,32,100,0.12);
+      --shadow-lg:0 24px 60px rgba(53,32,100,0.16);
+      --gradient-main:linear-gradient(135deg,#6a11cb,#2575fc);
+      --gradient-warm:linear-gradient(135deg,#ff8a4c,#ffb84d);
+      --gradient-soft:linear-gradient(135deg,#ffffff,#f5f0ff);
     }
 
     body{
       font-family:Arial, sans-serif;
       color:var(--text);
-      overflow-x:hidden;
       background:
-        radial-gradient(circle at 0% 0%, rgba(255,159,67,0.18), transparent 22%),
-        radial-gradient(circle at 100% 0%, rgba(37,117,252,0.16), transparent 20%),
-        radial-gradient(circle at 15% 100%, rgba(255,107,166,0.10), transparent 18%),
+        radial-gradient(circle at top left, rgba(255,209,102,0.20), transparent 25%),
+        radial-gradient(circle at top right, rgba(106,17,203,0.12), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(37,117,252,0.12), transparent 22%),
         linear-gradient(135deg,var(--bg-1),var(--bg-2),var(--bg-3));
-    }
-
-    img{
-      display:block;
-      max-width:100%;
+      overflow-x:hidden;
     }
 
     a{
@@ -60,104 +54,61 @@
       color:inherit;
     }
 
-    button{
-      font-family:inherit;
-    }
-
     .container{
-      width:min(92%, var(--container));
+      width:min(1180px,92%);
       margin:auto;
     }
-
-    .section-space{
-      padding:88px 0;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(28px);
-      transition:all 0.7s ease;
-    }
-
-    .reveal.active{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    /* HEADER */
 
     header{
       position:sticky;
       top:0;
       z-index:1000;
-      background:rgba(255,255,255,0.86);
-      backdrop-filter:blur(16px);
-      border-bottom:1px solid rgba(106,17,203,0.06);
-      box-shadow:0 8px 24px rgba(0,0,0,0.05);
+      background:rgba(255,255,255,0.88);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(106,17,203,0.08);
     }
 
     .navbar{
-      min-height:84px;
       display:flex;
-      align-items:center;
       justify-content:space-between;
+      align-items:center;
       gap:20px;
-      padding:14px 0;
-      position:relative;
+      padding:16px 0;
+      flex-wrap:wrap;
     }
 
     .logo{
       display:flex;
       align-items:center;
-      gap:12px;
-      min-width:0;
+      gap:14px;
     }
 
     .logo-icon{
       width:54px;
       height:54px;
-      border-radius:18px;
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      border-radius:16px;
+      background:var(--gradient-main);
+      color:white;
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#fff;
-      font-size:26px;
+      font-size:28px;
       font-weight:bold;
-      box-shadow:0 14px 28px rgba(106,17,203,0.22);
+      box-shadow:0 12px 28px rgba(106,17,203,0.24);
       flex-shrink:0;
     }
 
-    .logo-text{
-      min-width:0;
-    }
-
-    .logo-text h1{
-      font-size:28px;
-      line-height:1;
+    .logo-text h2{
+      font-size:2rem;
       color:var(--primary-dark);
-      letter-spacing:0.2px;
+      line-height:1;
+      margin-bottom:4px;
     }
 
     .logo-text p{
-      font-size:12px;
-      color:#7b7594;
-      margin-top:4px;
-      font-weight:700;
-      letter-spacing:0.4px;
-    }
-
-    .menu-btn{
-      display:none;
-      width:48px;
-      height:48px;
-      border:none;
-      background:#f3edff;
-      border-radius:14px;
-      font-size:26px;
-      color:var(--primary-dark);
-      cursor:pointer;
-      flex-shrink:0;
+      color:var(--text-soft);
+      font-size:0.95rem;
+      font-weight:600;
     }
 
     nav{
@@ -165,268 +116,208 @@
       align-items:center;
       gap:10px;
       flex-wrap:wrap;
-      justify-content:flex-end;
     }
 
-    nav a,
-    nav button{
-      border:none;
-      background:none;
+    nav a{
       padding:10px 14px;
       border-radius:999px;
-      color:#4a4563;
-      font-size:15px;
-      font-weight:800;
-      cursor:pointer;
-      transition:var(--transition);
-      white-space:nowrap;
+      font-weight:700;
+      color:#40395a;
+      transition:0.25s;
     }
 
-    nav a:hover,
-    nav button:hover{
-      color:var(--primary-dark);
+    nav a:hover{
       background:rgba(106,17,203,0.08);
+      color:var(--primary);
     }
 
     .nav-btn{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:#fff !important;
-      box-shadow:0 14px 28px rgba(37,117,252,0.22);
-      padding:12px 20px;
+      background:var(--gradient-main);
+      color:white;
+      box-shadow:0 10px 24px rgba(37,117,252,0.20);
     }
-
-    .nav-btn:hover{
-      transform:translateY(-2px);
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-    }
-
-    /* HERO */
 
     .hero{
-      position:relative;
-      padding:72px 0 60px;
-      overflow:hidden;
-    }
-
-    .hero::before,
-    .hero::after{
-      content:"";
-      position:absolute;
-      border-radius:50%;
-      filter:blur(8px);
-      pointer-events:none;
-      z-index:0;
-    }
-
-    .hero::before{
-      width:320px;
-      height:320px;
-      top:-90px;
-      left:-110px;
-      background:rgba(255,209,102,0.18);
-    }
-
-    .hero::after{
-      width:260px;
-      height:260px;
-      top:30px;
-      right:-90px;
-      background:rgba(106,17,203,0.10);
+      padding:70px 0 50px;
     }
 
     .hero-wrapper{
-      position:relative;
-      z-index:1;
       display:grid;
-      grid-template-columns:minmax(0, 1.08fr) minmax(320px, 0.92fr);
-      gap:34px;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:48px;
       align-items:center;
-    }
-
-    .hero-content{
-      min-width:0;
     }
 
     .hero-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display:inline-block;
       padding:10px 16px;
       border-radius:999px;
       background:rgba(106,17,203,0.08);
       color:var(--primary);
       font-weight:800;
-      font-size:14px;
       margin-bottom:18px;
       box-shadow:var(--shadow-sm);
     }
 
-    .hero h2{
-      font-size:clamp(2.3rem, 5vw, 4rem);
+    .hero h1{
+      font-size:4.2rem;
       line-height:1.08;
-      letter-spacing:-1px;
       margin-bottom:18px;
-      color:var(--text);
-      max-width:720px;
+      color:#1d1438;
     }
 
-    .hero h2 span{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
+    .hero h1 span{
+      background:var(--gradient-main);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
     }
 
-    .hero-subtitle{
-      max-width:700px;
-      font-size:1.06rem;
+    .hero p{
+      font-size:1.12rem;
       line-height:1.85;
       color:var(--text-soft);
       margin-bottom:28px;
+      max-width:650px;
     }
 
     .hero-buttons{
       display:flex;
-      gap:14px;
+      gap:16px;
       flex-wrap:wrap;
-      margin-bottom:28px;
+      margin-bottom:30px;
     }
 
     .btn-primary,
     .btn-secondary{
-      min-width:180px;
-      padding:15px 22px;
-      border:none;
+      display:inline-block;
+      padding:15px 24px;
       border-radius:999px;
       font-weight:800;
-      font-size:15px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      transition:var(--transition);
-      cursor:pointer;
+      transition:0.28s;
     }
 
     .btn-primary{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:#fff;
-      box-shadow:0 16px 34px rgba(37,117,252,0.24);
+      background:var(--gradient-main);
+      color:white;
+      box-shadow:0 14px 30px rgba(37,117,252,0.22);
     }
 
     .btn-secondary{
-      background:#fff;
+      background:white;
       color:var(--primary);
-      border:1px solid rgba(106,17,203,0.12);
+      border:1px solid rgba(106,17,203,0.10);
       box-shadow:var(--shadow-sm);
     }
 
     .btn-primary:hover,
-    .btn-secondary:hover{
+    .btn-secondary:hover,
+    .nav-btn:hover{
       transform:translateY(-3px);
     }
 
     .hero-stats{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:14px;
-      max-width:760px;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
     }
 
     .stat{
-      background:rgba(255,255,255,0.95);
+      background:white;
       border:1px solid var(--card-border);
       border-radius:22px;
       padding:18px;
       box-shadow:var(--shadow-md);
-      min-width:0;
     }
 
     .stat h3{
-      font-size:1.5rem;
       color:var(--primary);
+      font-size:1.8rem;
       margin-bottom:8px;
-      font-weight:900;
     }
 
     .stat p{
+      margin:0;
+      font-size:0.95rem;
+      line-height:1.6;
       color:var(--text-soft);
-      line-height:1.55;
-      font-size:0.92rem;
     }
 
     .hero-visual{
-      min-width:0;
       position:relative;
-      min-height:560px;
+      min-height:650px;
       display:flex;
       align-items:center;
       justify-content:center;
+      padding:30px 0;
     }
 
     .main-card{
       width:100%;
-      max-width:460px;
-      background:#fff;
-      border-radius:var(--radius-xl);
+      max-width:520px;
+      background:white;
+      border-radius:34px;
       padding:28px;
       box-shadow:var(--shadow-lg);
-      border:1px solid rgba(106,17,203,0.06);
+      border:1px solid var(--card-border);
       position:relative;
-      z-index:2;
+      z-index:3;
     }
 
     .main-card-top{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:12px;
-      margin-bottom:22px;
+      align-items:center;
+      margin-bottom:20px;
+      gap:10px;
     }
 
     .tag{
-      background:rgba(255,123,84,0.12);
-      color:#e25b31;
+      font-size:0.92rem;
+      padding:10px 14px;
       border-radius:999px;
-      padding:8px 12px;
-      font-size:13px;
+      background:rgba(255,138,76,0.12);
+      color:#e56a30;
       font-weight:800;
     }
 
     .mini-dots{
       display:flex;
-      gap:6px;
-      flex-shrink:0;
+      gap:8px;
     }
 
     .mini-dots span{
-      width:10px;
-      height:10px;
+      width:11px;
+      height:11px;
       border-radius:50%;
       background:#ddd;
     }
 
     .story-banner{
-      border-radius:24px;
-      padding:24px;
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:#fff;
+      background:var(--gradient-main);
+      border-radius:28px;
+      padding:28px 24px;
+      color:white;
       margin-bottom:18px;
-      box-shadow:0 16px 36px rgba(37,117,252,0.18);
+      box-shadow:0 16px 32px rgba(37,117,252,0.20);
     }
 
     .story-banner h3{
-      font-size:1.45rem;
-      margin-bottom:10px;
+      font-size:2rem;
+      line-height:1.15;
+      margin-bottom:12px;
     }
 
     .story-banner p{
-      font-size:0.96rem;
-      line-height:1.75;
-      color:rgba(255,255,255,0.94);
+      color:rgba(255,255,255,0.92);
+      line-height:1.8;
+      font-size:1rem;
+      margin:0;
+      max-width:100%;
     }
 
     .feature-list{
       display:grid;
-      gap:14px;
+      gap:16px;
     }
 
     .feature-item{
@@ -434,76 +325,80 @@
       gap:14px;
       align-items:flex-start;
       background:#faf8ff;
-      border:1px solid rgba(106,17,203,0.06);
+      border:1px solid rgba(106,17,203,0.07);
       border-radius:20px;
-      padding:15px;
+      padding:16px;
     }
 
     .feature-icon{
-      width:46px;
-      height:46px;
+      width:52px;
+      height:52px;
       border-radius:16px;
+      background:var(--gradient-warm);
+      color:white;
       display:flex;
       align-items:center;
       justify-content:center;
-      color:#fff;
-      font-size:1.1rem;
-      background:linear-gradient(135deg,#ff7b54,#ffb26b);
-      box-shadow:0 10px 22px rgba(255,123,84,0.18);
       flex-shrink:0;
+      font-size:1.25rem;
+      box-shadow:0 10px 20px rgba(255,138,76,0.18);
     }
 
     .feature-item h4{
-      font-size:1rem;
-      margin-bottom:4px;
-      color:var(--text);
+      margin-bottom:5px;
+      color:#251a43;
+      font-size:1.06rem;
     }
 
     .feature-item p{
-      font-size:0.9rem;
-      line-height:1.65;
+      font-size:0.95rem;
       color:var(--text-soft);
+      line-height:1.65;
+      margin:0;
     }
 
     .floating-card{
       position:absolute;
-      z-index:1;
-      max-width:240px;
-      background:#fff;
-      border:1px solid rgba(106,17,203,0.05);
-      box-shadow:var(--shadow-md);
-      border-radius:20px;
+      background:white;
+      border-radius:22px;
       padding:16px 18px;
-    }
-
-    .floating-card h5{
-      color:var(--primary);
-      font-size:0.95rem;
-      margin-bottom:6px;
-    }
-
-    .floating-card p{
-      color:var(--text-soft);
-      font-size:0.86rem;
-      line-height:1.6;
+      box-shadow:var(--shadow-md);
+      border:1px solid var(--card-border);
+      z-index:1;
+      max-width:220px;
     }
 
     .float-1{
-      top:20px;
-      left:0;
+      top:30px;
+      left:-10px;
     }
 
     .float-2{
-      bottom:18px;
-      right:0;
+      bottom:34px;
+      right:-10px;
     }
 
-    /* COMMON SECTIONS */
+    .floating-card h5{
+      font-size:1rem;
+      margin-bottom:6px;
+      color:var(--primary);
+    }
+
+    .floating-card p{
+      margin:0;
+      font-size:0.9rem;
+      color:var(--text-soft);
+      line-height:1.6;
+    }
+
+    section{
+      padding:80px 0;
+    }
 
     .section-head{
       text-align:center;
       max-width:760px;
-      margin:0 auto 52px;
+      margin:0 auto 50px;
     }
 
     .section-head span{
@@ -517,253 +412,232 @@
     }
 
     .section-head h2{
-      font-size:clamp(1.8rem, 4vw, 2.6rem);
-      letter-spacing:-0.7px;
+      font-size:2.5rem;
       margin-bottom:14px;
-      color:var(--text);
+      color:#1d1438;
     }
 
     .section-head p{
       color:var(--text-soft);
-      line-height:1.85;
+      line-height:1.8;
       font-size:1rem;
     }
 
-    .grid-3{
+    .two-col{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:24px;
+      grid-template-columns:repeat(2,1fr);
+      gap:26px;
     }
 
-    .grid-2{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:24px;
-    }
-
-    .card{
-      background:#fff;
+    .info-box{
+      background:white;
+      border-radius:28px;
+      padding:30px;
+      box-shadow:var(--shadow-md);
       border:1px solid var(--card-border);
+    }
+
+    .info-box h3{
+      font-size:1.6rem;
+      margin-bottom:16px;
+      color:#20163d;
+    }
+
+    .info-box ul{
+      list-style:none;
+      display:grid;
+      gap:14px;
+    }
+
+    .info-box li{
+      position:relative;
+      padding-left:28px;
+      color:var(--text-soft);
+      line-height:1.7;
+    }
+
+    .info-box li::before{
+      content:"✦";
+      position:absolute;
+      left:0;
+      top:0;
+      color:var(--accent);
+      font-weight:bold;
+    }
+
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:24px;
+    }
+
+    .feature-card{
+      background:white;
       border-radius:26px;
       padding:28px 24px;
-      box-shadow:var(--card-shadow);
+      box-shadow:var(--shadow-md);
+      border:1px solid var(--card-border);
+      transition:0.28s;
       position:relative;
       overflow:hidden;
-      transition:var(--transition);
-      min-width:0;
     }
 
-    .card::before{
+    .feature-card::after{
       content:"";
       position:absolute;
-      top:0;
       left:0;
-      right:0;
-      height:5px;
-      background:linear-gradient(90deg,var(--primary),var(--accent-2),var(--accent));
-      opacity:0.85;
+      bottom:0;
+      width:100%;
+      height:6px;
+      background:var(--gradient-main);
     }
 
-    .card:hover{
+    .feature-card:hover{
       transform:translateY(-8px);
-      box-shadow:var(--card-shadow-hover);
+      box-shadow:var(--shadow-lg);
     }
 
     .icon-box{
       width:60px;
       height:60px;
-      border-radius:20px;
+      border-radius:18px;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:1.4rem;
-      color:#fff;
-      background:linear-gradient(135deg,#ff7b54,#ffb26b);
-      box-shadow:0 12px 24px rgba(255,123,84,0.18);
+      background:var(--gradient-warm);
+      color:white;
+      font-size:1.5rem;
       margin-bottom:18px;
+      box-shadow:0 10px 20px rgba(255,138,76,0.16);
     }
 
-    .card h3{
-      font-size:1.26rem;
+    .feature-card h3{
+      font-size:1.24rem;
       margin-bottom:12px;
-      color:var(--text);
+      color:#21183f;
     }
 
-    .card p{
+    .feature-card p{
       color:var(--text-soft);
       line-height:1.75;
+      font-size:0.96rem;
     }
 
-    .world-card{
-      cursor:pointer;
-    }
-
-    .world-badge{
-      display:inline-block;
-      margin-top:16px;
-      padding:8px 14px;
-      border-radius:999px;
-      background:#f3ebff;
-      color:var(--primary);
-      font-size:0.9rem;
-      font-weight:800;
-    }
-
-    .featured-story{
+    .steps{
       display:grid;
-      grid-template-columns:minmax(0, 0.95fr) minmax(0, 1.05fr);
-      gap:24px;
-      align-items:center;
-      background:linear-gradient(135deg,#fff8ef,#f5efff);
+      grid-template-columns:repeat(4,1fr);
+      gap:22px;
     }
 
-    .featured-image{
-      min-height:300px;
+    .step{
+      background:white;
       border-radius:26px;
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:#fff;
+      padding:28px 22px;
+      box-shadow:var(--shadow-md);
+      border:1px solid var(--card-border);
+      text-align:center;
+    }
+
+    .step-number{
+      width:54px;
+      height:54px;
+      margin:0 auto 18px;
+      border-radius:50%;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:5rem;
-      box-shadow:0 20px 50px rgba(37,117,252,0.22);
-    }
-
-    .story-tags{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:14px 0 20px;
-    }
-
-    .story-tags span{
-      background:#ede4ff;
-      color:var(--primary);
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:0.9rem;
+      background:var(--gradient-main);
+      color:white;
       font-weight:800;
+      box-shadow:0 12px 26px rgba(37,117,252,0.20);
     }
 
-    .sanskrit-box{
-      text-align:center;
-      background:linear-gradient(135deg,#fff8e6,#fceaff);
+    .step h3{
+      margin-bottom:10px;
+      color:#251a43;
     }
 
-    .sanskrit-word{
-      font-size:3.1rem;
-      color:#7b2cbf;
-      margin:14px 0 10px;
-      font-weight:900;
-    }
-
-    .sanskrit-meaning{
-      font-size:1.08rem;
-      font-weight:800;
-      color:#444;
-      margin-bottom:8px;
-    }
-
-    .sanskrit-pronunciation{
-      color:#777;
-      font-weight:700;
-      margin-bottom:18px;
-    }
-
-    .reward-card{
-      text-align:center;
-      background:linear-gradient(135deg,#f9fcff,#f7f1ff);
-    }
-
-    .reward-value{
-      font-size:2.1rem;
-      font-weight:900;
-      color:var(--primary);
-      margin-bottom:8px;
-    }
-
-    .parent-list{
-      list-style:none;
-      display:grid;
-      gap:12px;
-      margin-top:18px;
-    }
-
-    .parent-list li{
-      padding:12px 14px;
-      background:#f8f4ff;
-      border:1px solid rgba(106,17,203,0.05);
-      border-radius:14px;
+    .step p{
       color:var(--text-soft);
-      font-weight:700;
+      line-height:1.7;
+      font-size:0.95rem;
     }
 
-    .testimonial{
-      position:relative;
+    .impact{
+      background:linear-gradient(135deg,#1b1234,#2e1e58);
+      color:white;
     }
 
-    .testimonial::before{
-      content:"“";
-      position:absolute;
-      top:8px;
-      left:18px;
-      font-size:4rem;
-      line-height:1;
-      color:#eadfff;
-      font-weight:bold;
+    .impact .section-head h2,
+    .impact .section-head p,
+    .impact .section-head span{
+      color:white;
     }
 
-    .testimonial p{
-      margin-top:28px;
-      margin-bottom:16px;
+    .impact .section-head span{
+      background:rgba(255,255,255,0.12);
     }
 
-    .testimonial h4{
-      color:var(--primary);
-      font-size:1rem;
+    .impact-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:22px;
+    }
+
+    .impact-card{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:26px;
+      padding:28px 22px;
+      text-align:center;
+      backdrop-filter:blur(10px);
+    }
+
+    .impact-card h3{
+      font-size:2rem;
+      color:var(--accent-soft);
+      margin-bottom:10px;
+    }
+
+    .impact-card p{
+      color:rgba(255,255,255,0.90);
+      line-height:1.7;
     }
 
     .cta-box{
-      text-align:center;
       background:linear-gradient(135deg,#fff8ef,#f6efff);
       border:1px solid var(--card-border);
-      box-shadow:var(--card-shadow);
       border-radius:34px;
-      padding:52px 34px;
+      padding:46px 34px;
+      text-align:center;
+      box-shadow:var(--shadow-md);
     }
 
     .cta-box h2{
-      font-size:clamp(1.9rem, 4vw, 2.6rem);
-      color:var(--text);
+      font-size:2.4rem;
+      color:#1e1538;
       margin-bottom:14px;
     }
 
     .cta-box p{
+      color:var(--text-soft);
       max-width:760px;
       margin:0 auto 24px;
-      color:var(--text-soft);
-      line-height:1.85;
-    }
-
-    .cta-buttons{
-      display:flex;
-      justify-content:center;
-      gap:16px;
-      flex-wrap:wrap;
+      line-height:1.8;
     }
 
     footer{
-      margin-top:20px;
       background:#161225;
       color:rgba(255,255,255,0.88);
-      padding:30px 0;
+      padding:28px 0;
+      margin-top:30px;
     }
 
     .footer-content{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:16px;
+      gap:14px;
       flex-wrap:wrap;
     }
 
@@ -777,82 +651,68 @@
       flex-wrap:wrap;
     }
 
-    .footer-links a{
-      transition:var(--transition);
-    }
-
     .footer-links a:hover{
-      color:#ffd166;
+      color:var(--accent-soft);
     }
 
-    .loading-text{
-      color:var(--primary);
-      font-weight:800;
+    @media (max-width:1200px){
+      .float-1{
+        left:0;
+      }
+
+      .float-2{
+        right:0;
+      }
     }
 
-    /* RESPONSIVE */
+    @media (max-width:1100px){
+      .hero-wrapper,
+      .two-col,
+      .features-grid,
+      .steps,
+      .impact-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
 
-    @media(max-width:1100px){
-      .hero-wrapper{
-        grid-template-columns:1fr;
+      .hero h1{
+        font-size:3.4rem;
       }
 
       .hero-visual{
-        min-height:auto;
-      }
-
-      .grid-3{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-      }
-
-      .featured-story{
-        grid-template-columns:1fr;
+        min-height:600px;
       }
     }
 
-    @media(max-width:860px){
-      .menu-btn{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-      }
-
-      nav{
-        display:none;
-        width:100%;
-        flex-direction:column;
-        align-items:flex-start;
-        padding-top:10px;
-        gap:8px;
-      }
-
-      nav.active{
-        display:flex;
-      }
-
-      nav a,
-      nav button{
-        width:100%;
-        text-align:left;
-      }
-
-      .grid-3,
-      .grid-2{
+    @media (max-width:900px){
+      .hero-wrapper,
+      .two-col,
+      .features-grid,
+      .steps,
+      .impact-grid{
         grid-template-columns:1fr;
       }
 
-      .hero h2{
-        font-size:2.7rem;
+      .hero{
+        padding-top:50px;
+      }
+
+      .hero h1{
+        font-size:2.8rem;
       }
 
       .hero-stats{
         grid-template-columns:1fr;
       }
 
+      .hero-visual{
+        min-height:auto;
+        padding-top:10px;
+      }
+
       .floating-card{
         position:static;
         max-width:100%;
-        margin-top:14px;
+        margin:14px 0 0;
       }
 
       .main-card{
@@ -860,48 +720,78 @@
       }
     }
 
-    @media(max-width:520px){
+    @media (max-width:680px){
       .navbar{
-        min-height:auto;
+        justify-content:center;
       }
 
-      .logo-text h1{
-        font-size:24px;
+      nav{
+        justify-content:center;
       }
 
-      .hero{
-        padding:56px 0 48px;
+      .logo{
+        width:100%;
+        justify-content:center;
       }
 
-      .hero h2{
-        font-size:2.15rem;
+      .hero h1{
+        font-size:2.3rem;
       }
 
-      .hero-buttons,
-      .cta-buttons{
+      .section-head h2,
+      .cta-box h2{
+        font-size:1.9rem;
+      }
+
+      .hero-buttons{
         flex-direction:column;
       }
 
       .btn-primary,
       .btn-secondary{
         width:100%;
+        text-align:center;
       }
 
-      .card{
+      .story-banner h3{
+        font-size:1.6rem;
+      }
+    }
+
+    @media (max-width:480px){
+      .logo-text h2{
+        font-size:1.6rem;
+      }
+
+      .logo-icon{
+        width:48px;
+        height:48px;
+        font-size:24px;
+      }
+
+      nav a{
+        padding:8px 12px;
+        font-size:0.92rem;
+      }
+
+      .hero{
+        padding-top:36px;
+      }
+
+      .hero h1{
+        font-size:2rem;
+      }
+
+      .main-card,
+      .info-box,
+      .feature-card,
+      .step,
+      .impact-card{
         padding:22px 18px;
       }
 
-      .cta-box{
-        padding:34px 20px;
-      }
-
-      .sanskrit-word{
-        font-size:2.4rem;
-      }
-
-      .featured-image{
-        min-height:220px;
-        font-size:4rem;
+      .story-banner{
+        padding:22px 18px;
       }
     }
   </style>
@@ -913,61 +803,58 @@
       <div class="logo">
         <div class="logo-icon">ॐ</div>
         <div class="logo-text">
-          <h1>MythoVerse</h1>
+          <h2>MythoVerse</h2>
           <p>Learn • Play • Explore</p>
         </div>
       </div>
 
-      <button class="menu-btn" id="menuBtn">☰</button>
-
-      <nav id="navMenu">
-        <a href="index.html">Home</a>
-        <a href="story-library.html">Stories</a>
-        <a href="dashboard.html">Sanskrit Learning</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="reward.html">Rewards</a>
-        <a href="login.html" id="loginLink">Login</a>
-        <a href="register.html" class="nav-btn" id="registerLink">Register</a>
-        <button id="logoutBtn" style="display:none;">Logout</button>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#story-worlds">Stories</a>
+        <a href="#sanskrit">Sanskrit Learning</a>
+        <a href="#features">Quiz</a>
+        <a href="#rewards">Rewards</a>
+        <a href="login.html">Login</a>
+        <a href="register.html" class="nav-btn">Register</a>
       </nav>
     </div>
   </header>
 
-  <section class="hero">
+  <section class="hero" id="home">
     <div class="container hero-wrapper">
-      <div class="hero-content reveal">
+      <div class="hero-content">
         <div class="hero-badge">✨ Fun + Culture + Learning Platform for Kids</div>
-
-        <h2 id="heroTitle">Welcome to <span>MythoVerse</span></h2>
-
-        <p id="heroSubtitle" class="hero-subtitle loading-text">
-          Loading home content from database...
+        <h1>Welcome to <span>MythoVerse</span></h1>
+        <p>
+          MythoVerse is an interactive learning platform where children explore Indian mythology,
+          traditional kathas, moral values, and basic Sanskrit through fun stories, mythological
+          characters, gamified learning, and magical story worlds.
         </p>
 
         <div class="hero-buttons">
-          <a href="login.html" class="btn-primary" id="startBtn">Start Learning</a>
-          <a href="story-library.html" class="btn-secondary">Explore Stories</a>
+          <a href="login.html" class="btn-primary">Start Learning</a>
+          <a href="#story-worlds" class="btn-secondary">Explore Stories</a>
         </div>
 
         <div class="hero-stats">
           <div class="stat">
-            <h3 id="statWorlds">6+</h3>
+            <h3>6+</h3>
             <p>Story worlds like Ramayan, Mahabharat, Krishna Leela and more</p>
           </div>
 
           <div class="stat">
-            <h3 id="statMode">3-in-1</h3>
+            <h3>3-in-1</h3>
             <p>Mythology, Sanskrit learning, and moral education together</p>
           </div>
 
           <div class="stat">
-            <h3 id="statExperience">100%</h3>
+            <h3>100%</h3>
             <p>Fun, child-friendly, and meaningful learning experience</p>
           </div>
         </div>
       </div>
 
-      <div class="hero-visual reveal">
+      <div class="hero-visual">
         <div class="floating-card float-1">
           <h5>Interactive Story Learning</h5>
           <p>Children make choices and learn values through story adventures.</p>
@@ -977,7 +864,9 @@
           <div class="main-card-top">
             <span class="tag">Platform Preview</span>
             <div class="mini-dots">
-              <span></span><span></span><span></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
           </div>
 
@@ -1024,9 +913,9 @@
     </div>
   </section>
 
-  <section id="about" class="section-space">
+  <section id="about">
     <div class="container">
-      <div class="section-head reveal">
+      <div class="section-head">
         <span>About MythoVerse</span>
         <h2>A magical universe for mythology and Sanskrit learning</h2>
         <p>
@@ -1036,31 +925,33 @@
         </p>
       </div>
 
-      <div class="grid-3">
-        <div class="card reveal">
-          <div class="icon-box">📚</div>
-          <h3>Indian Mythology</h3>
-          <p>Children discover Ramayan, Mahabharat, Krishna Leela, Puran stories, Devi tales, and more in an engaging format.</p>
+      <div class="two-col">
+        <div class="info-box">
+          <h3>Why children love it</h3>
+          <ul>
+            <li>Stories become exciting, colorful, and interactive.</li>
+            <li>Learning values feels joyful instead of boring.</li>
+            <li>Sanskrit becomes simple and beginner-friendly.</li>
+            <li>Rewards and badges keep motivation high.</li>
+          </ul>
         </div>
 
-        <div class="card reveal">
-          <div class="icon-box">✨</div>
-          <h3>Interactive Kathas</h3>
-          <p>Stories become more exciting when children explore them actively and connect with characters and values.</p>
-        </div>
-
-        <div class="card reveal">
-          <div class="icon-box">🤖</div>
-          <h3>AI Character Interaction</h3>
-          <p>Kids can safely interact with mythological figures like Krishna, Hanuman, Rama, and Ganesha for guidance and learning.</p>
+        <div class="info-box">
+          <h3>Why parents value it</h3>
+          <ul>
+            <li>Combines culture, language, and life values.</li>
+            <li>Creates safe and meaningful screen time.</li>
+            <li>Encourages curiosity, focus, and kindness.</li>
+            <li>Supports learning through stories children enjoy.</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="story-worlds" class="section-space">
+  <section id="story-worlds">
     <div class="container">
-      <div class="section-head reveal">
+      <div class="section-head">
         <span>Explore Story Worlds</span>
         <h2>Enter different mythology realms</h2>
         <p>
@@ -1068,55 +959,49 @@
         </p>
       </div>
 
-      <div class="grid-3">
-        <div class="card world-card reveal" data-page="story-library.html?realm=ramayan">
+      <div class="features-grid">
+        <div class="feature-card">
           <div class="icon-box">🏹</div>
           <h3>Ramayan</h3>
-          <p>Explore the journey of Rama, Sita, Lakshman, and Hanuman through exciting adventures.</p>
-          <span class="world-badge">Explore</span>
+          <p>Explore the journey of Rama, Sita, Lakshman, and Hanuman through inspiring adventures and values.</p>
         </div>
 
-        <div class="card world-card reveal" data-page="story-library.html?realm=mahabharat">
+        <div class="feature-card">
           <div class="icon-box">⚔️</div>
           <h3>Mahabharat</h3>
-          <p>Learn about the Pandavas, Krishna, Arjuna, and heroic choices in powerful epic stories.</p>
-          <span class="world-badge">Explore</span>
+          <p>Discover bravery, duty, focus, and wisdom through the epic stories of Arjuna, Abhimanyu, and Krishna.</p>
         </div>
 
-        <div class="card world-card reveal" data-page="story-library.html?realm=krishna-leela">
+        <div class="feature-card">
           <div class="icon-box">🦚</div>
           <h3>Krishna Leela</h3>
-          <p>Enjoy Krishna’s childhood adventures, playful stories, and lessons of love and wisdom.</p>
-          <span class="world-badge">Explore</span>
+          <p>Enjoy joyful stories of Krishna’s childhood, playfulness, courage, and divine protection.</p>
         </div>
 
-        <div class="card world-card reveal" data-page="story-library.html?realm=all">
-          <div class="icon-box">📜</div>
-          <h3>Puran Stories</h3>
-          <p>Discover stories of gods, sages, devotion, and values from traditional Puran kathas.</p>
-          <span class="world-badge">Explore</span>
+        <div class="feature-card">
+          <div class="icon-box">🕉️</div>
+          <h3>Sanskrit Learning</h3>
+          <p>Learn simple words, greetings, meanings, and pronunciation through fun and easy activities.</p>
         </div>
 
-        <div class="card world-card reveal" data-page="story-library.html?realm=moral-stories">
-          <div class="icon-box">🦊</div>
-          <h3>Panchatantra</h3>
-          <p>Read moral stories full of wisdom, cleverness, and life lessons for children.</p>
-          <span class="world-badge">Explore</span>
+        <div class="feature-card">
+          <div class="icon-box">🌟</div>
+          <h3>Moral Stories</h3>
+          <p>Build honesty, kindness, friendship, and courage through timeless stories and life lessons.</p>
         </div>
 
-        <div class="card world-card reveal" data-page="story-library.html?realm=all">
-          <div class="icon-box">🌺</div>
-          <h3>Devi Stories</h3>
-          <p>Learn inspiring stories of strength, devotion, courage, and divine feminine power.</p>
-          <span class="world-badge">Explore</span>
+        <div class="feature-card">
+          <div class="icon-box">🎁</div>
+          <h3>Rewards Zone</h3>
+          <p>Unlock badges, coins, characters, and progress milestones as children continue learning.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="features" class="section-space">
+  <section id="features">
     <div class="container">
-      <div class="section-head reveal">
+      <div class="section-head">
         <span>Platform Features</span>
         <h2>Core features of MythoVerse</h2>
         <p>
@@ -1124,212 +1009,111 @@
         </p>
       </div>
 
-      <div class="grid-3">
-        <div class="card reveal">
-          <div class="icon-box">📖</div>
-          <h3>Interactive Stories</h3>
-          <p>Children explore stories by participating in the journey instead of just reading passively.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">01</div>
+          <h3>Read Stories</h3>
+          <p>Children read exciting mythology and moral stories designed in a simple, engaging way.</p>
         </div>
 
-        <div class="card reveal">
-          <div class="icon-box">💬</div>
-          <h3>AI Character Chat</h3>
-          <p>Safe conversation with mythological characters makes learning more engaging and personal.</p>
+        <div class="step">
+          <div class="step-number">02</div>
+          <h3>Learn Sanskrit</h3>
+          <p>They explore beginner-friendly words, greetings, and meanings with easy pronunciation support.</p>
         </div>
 
-        <div class="card reveal">
-          <div class="icon-box">🕉️</div>
-          <h3>Sanskrit Learning</h3>
-          <p>Learn basic Sanskrit words, meanings, pronunciation, and short shlokas in a simple way.</p>
+        <div class="step">
+          <div class="step-number">03</div>
+          <h3>Take Quizzes</h3>
+          <p>Mini quizzes help children remember key lessons, characters, and values from each story.</p>
         </div>
 
-        <div class="card reveal">
-          <div class="icon-box">📝</div>
-          <h3>Quizzes & Challenges</h3>
-          <p>Fun quizzes and activities help children revise stories, characters, and language concepts.</p>
-        </div>
-
-        <div class="card reveal">
-          <div class="icon-box">🏅</div>
-          <h3>Rewards & Badges</h3>
-          <p>Progress feels exciting through badges, points, coins, and milestone achievements.</p>
-        </div>
-
-        <div class="card reveal">
-          <div class="icon-box">🌈</div>
-          <h3>Value-Based Learning</h3>
-          <p>Every story teaches values like courage, kindness, devotion, wisdom, and responsibility.</p>
+        <div class="step">
+          <div class="step-number">04</div>
+          <h3>Earn Rewards</h3>
+          <p>Badges, coins, quests, and characters create a motivating learning journey every day.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="featured-story" class="section-space">
+  <section id="sanskrit">
     <div class="container">
-      <div class="section-head reveal">
-        <span>Featured Story</span>
-        <h2>A sample story preview</h2>
+      <div class="section-head">
+        <span>Sanskrit Learning</span>
+        <h2>Simple words, deep values</h2>
         <p>
-          A highlighted story can attract children and make the homepage feel more interactive.
+          Children learn the beauty of Sanskrit with beginner-friendly meanings, pronunciation, and fun practice.
         </p>
       </div>
 
-      <div class="card featured-story reveal">
-        <div class="featured-image">🛡️</div>
-        <div>
-          <h3 id="featuredStoryTitle">Abhimanyu and the Chakravyuh</h3>
-          <p id="featuredStoryDescription">
-            Children explore the story of Abhimanyu and learn about bravery, wisdom, and difficult choices.
-          </p>
-
-          <div class="story-tags" id="featuredStoryTags">
-            <span>Courage</span>
-            <span>Wisdom</span>
-            <span>Responsibility</span>
-          </div>
-
-          <a href="storyplayer.html?story=abhimanyu" class="btn-primary">Read Story</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="sanskrit" class="section-space">
-    <div class="container">
-      <div class="section-head reveal">
-        <span>Sanskrit Learning Preview</span>
-        <h2>Word of the Day</h2>
-        <p>
-          MythoVerse introduces Sanskrit in a playful and beginner-friendly way.
-        </p>
-      </div>
-
-      <div class="card sanskrit-box reveal">
-        <div class="icon-box" style="margin:0 auto 14px;">🕉️</div>
-        <div class="sanskrit-word" id="sanskritWord">धर्म</div>
-        <div class="sanskrit-meaning" id="sanskritMeaning">Dharma — Duty</div>
-        <div class="sanskrit-pronunciation" id="sanskritPronunciation">Pronunciation: Dhar-ma</div>
-        <button class="btn-primary" onclick="changeSanskritWord()">Next Word</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="rewards" class="section-space">
-    <div class="container">
-      <div class="section-head reveal">
-        <span>Gamification</span>
-        <h2>Rewards that keep learning exciting</h2>
-        <p>
-          Children stay motivated when their learning journey feels like an adventure.
-        </p>
-      </div>
-
-      <div class="grid-2">
-        <div class="card reward-card reveal">
-          <div class="icon-box" style="margin:0 auto 16px;">🌟</div>
-          <div class="reward-value">240</div>
-          <h3>Dharma Points</h3>
-          <p>Earned by completing stories, lessons, and daily activities.</p>
-        </div>
-
-        <div class="card reward-card reveal">
-          <div class="icon-box" style="margin:0 auto 16px;">🪙</div>
-          <div class="reward-value">120</div>
-          <h3>Gyan Coins</h3>
-          <p>Used to unlock new characters, realms, and fun content.</p>
-        </div>
-
-        <div class="card reward-card reveal">
-          <div class="icon-box" style="margin:0 auto 16px;">🏅</div>
-          <div class="reward-value">8</div>
-          <h3>Story Badges</h3>
-          <p>Special rewards for finishing quests and mastering story worlds.</p>
-        </div>
-
-        <div class="card reward-card reveal">
-          <div class="icon-box" style="margin:0 auto 16px;">🔓</div>
-          <div class="reward-value">5</div>
-          <h3>Character Unlocks</h3>
-          <p>Unlock beloved mythological figures as learning companions.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="parents" class="section-space">
-    <div class="container">
-      <div class="section-head reveal">
-        <span>Parent Benefits</span>
-        <h2>Why parents will love MythoVerse</h2>
-        <p>
-          MythoVerse offers a balanced digital experience with safety, values, and educational depth.
-        </p>
-      </div>
-
-      <div class="grid-2">
-        <div class="card reveal">
-          <div class="icon-box">👨‍👩‍👧</div>
-          <h3>Safe & Meaningful Learning</h3>
-          <p>
-            A child-focused environment where stories, values, and culture come together in a positive way.
-          </p>
-          <ul class="parent-list">
-            <li>Safe learning experience</li>
-            <li>Culture-rich content</li>
-            <li>Moral education</li>
-            <li>Fun engagement</li>
+      <div class="two-col">
+        <div class="info-box">
+          <h3>What children learn</h3>
+          <ul>
+            <li>Simple daily words like Dharma, Satya, Mitra, and Ananda.</li>
+            <li>Basic greetings and respectful expressions.</li>
+            <li>Pronunciation through listening and repetition.</li>
+            <li>Word meanings connected to stories and values.</li>
           </ul>
         </div>
 
-        <div class="card reveal">
-          <div class="icon-box">📊</div>
-          <h3>Track Progress</h3>
-          <p>
-            Parents can follow the learning journey through stories completed, words learned, and achievements earned.
-          </p>
-          <ul class="parent-list">
-            <li>Progress tracking</li>
-            <li>Activity summary</li>
-            <li>Learning milestones</li>
-            <li>Achievement reports</li>
+        <div class="info-box">
+          <h3>Why it matters</h3>
+          <ul>
+            <li>Builds early love for language and culture.</li>
+            <li>Makes Sanskrit approachable for beginners.</li>
+            <li>Connects words with values children can practice.</li>
+            <li>Supports memory, curiosity, and expression.</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="testimonials" class="section-space">
+  <section id="rewards" class="impact">
     <div class="container">
-      <div class="section-head reveal">
-        <span>Testimonials</span>
-        <h2>What people may say about MythoVerse</h2>
+      <div class="section-head">
+        <span>Rewards & Growth</span>
+        <h2>Learning that feels magical</h2>
         <p>
-          Reviews help the homepage feel more real and trustworthy.
+          MythoVerse combines knowledge with fun so children feel excited to keep going.
         </p>
       </div>
 
-      <div class="grid-3" id="testimonialContainer">
-        <div class="card testimonial reveal">
-          <p>Loading testimonials...</p>
-          <h4>— MythoVerse</h4>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <h3>Badges</h3>
+          <p>Celebrate progress with visual rewards for stories, quizzes, and Sanskrit learning.</p>
+        </div>
+
+        <div class="impact-card">
+          <h3>Coins</h3>
+          <p>Earn Gyan Coins and Dharma Points for positive learning actions and quest completion.</p>
+        </div>
+
+        <div class="impact-card">
+          <h3>Quests</h3>
+          <p>Daily challenges create routine, consistency, and fun in the learning journey.</p>
+        </div>
+
+        <div class="impact-card">
+          <h3>Characters</h3>
+          <p>Unlock beloved mythological figures as companions in stories and guided learning.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="cta" class="section-space">
+  <section id="cta">
     <div class="container">
-      <div class="cta-box reveal">
+      <div class="cta-box">
         <h2>Start Your Mythological Journey Today</h2>
         <p>
           Join MythoVerse and help children discover mythology, values, Sanskrit, and interactive learning
           in one magical digital universe.
         </p>
-
-        <div class="cta-buttons">
-          <a href="register.html" class="btn-primary">Register</a>
-          <a href="login.html" class="btn-secondary">Login</a>
-        </div>
+        <a href="register.html" class="btn-primary">Register Now</a>
       </div>
     </div>
   </section>
@@ -1339,237 +1123,13 @@
       <p><strong>© 2026 MythoVerse</strong><br>Learn Culture, Values & Sanskrit with Fun</p>
 
       <div class="footer-links">
-        <a href="#about">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Social Links</a>
+        <a href="#home">Home</a>
+        <a href="#story-worlds">Stories</a>
+        <a href="#sanskrit">Sanskrit</a>
+        <a href="#rewards">Rewards</a>
       </div>
     </div>
   </footer>
 
-  <script>
-    const API_HOME = "http://localhost:5000/api/home";
-    const API_AUTH = "http://localhost:5000/api/auth";
-
-    const menuBtn = document.getElementById("menuBtn");
-    const navMenu = document.getElementById("navMenu");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const loginLink = document.getElementById("loginLink");
-    const registerLink = document.getElementById("registerLink");
-    const startBtn = document.getElementById("startBtn");
-
-    menuBtn.addEventListener("click", function () {
-      navMenu.classList.toggle("active");
-    });
-
-    async function apiGet(url, token = null) {
-      const headers = {
-        "Content-Type": "application/json"
-      };
-
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-      }
-
-      const response = await fetch(url, {
-        method: "GET",
-        headers
-      });
-
-      const text = await response.text();
-
-      try {
-        const data = JSON.parse(text);
-
-        if (!response.ok) {
-          throw new Error(data.message || "Request failed");
-        }
-
-        return data;
-      } catch (error) {
-        console.error("Raw server response:", text);
-        throw new Error("Backend returned invalid response.");
-      }
-    }
-
-    async function loadHomeContent() {
-      try {
-        const data = await apiGet(API_HOME);
-        const content = data.content || {};
-
-        if (content.heroTitle) {
-          document.getElementById("heroTitle").innerHTML =
-            content.heroTitle.replace("MythoVerse", "<span>MythoVerse</span>");
-        }
-
-        if (content.heroSubtitle) {
-          document.getElementById("heroSubtitle").textContent = content.heroSubtitle;
-          document.getElementById("heroSubtitle").classList.remove("loading-text");
-        }
-
-        if (content.stats) {
-          document.getElementById("statWorlds").textContent = content.stats.storyWorlds || "6+";
-          document.getElementById("statMode").textContent = content.stats.learningMode || "3-in-1";
-          document.getElementById("statExperience").textContent = content.stats.experience || "100%";
-        }
-
-        if (content.featuredStory) {
-          document.getElementById("featuredStoryTitle").textContent =
-            content.featuredStory.title || "Abhimanyu and the Chakravyuh";
-
-          document.getElementById("featuredStoryDescription").textContent =
-            content.featuredStory.description || "Children explore the story of Abhimanyu and learn about bravery, wisdom, and difficult choices.";
-
-          const tagsContainer = document.getElementById("featuredStoryTags");
-          tagsContainer.innerHTML = "";
-
-          (content.featuredStory.tags || ["Courage", "Wisdom", "Responsibility"]).forEach(tag => {
-            tagsContainer.innerHTML += `<span>${tag}</span>`;
-          });
-        }
-
-        if (content.sanskritWord) {
-          document.getElementById("sanskritWord").textContent = content.sanskritWord.word || "धर्म";
-          document.getElementById("sanskritMeaning").textContent = content.sanskritWord.meaning || "Dharma — Duty";
-          document.getElementById("sanskritPronunciation").textContent = content.sanskritWord.pronunciation || "Pronunciation: Dhar-ma";
-        }
-
-        const testimonialContainer = document.getElementById("testimonialContainer");
-        testimonialContainer.innerHTML = "";
-
-        const testimonials = content.testimonials || [
-          "My child now talks about values and mythology with excitement every day.",
-          "A beautiful mix of culture, fun, and meaningful learning for children.",
-          "The Sanskrit and story features make this platform unique and memorable."
-        ];
-
-        testimonials.forEach((item, index) => {
-          const labels = ["Parent Review", "Teacher Review", "Student Feedback"];
-          testimonialContainer.innerHTML += `
-            <div class="card testimonial reveal active">
-              <p>${item}</p>
-              <h4>— ${labels[index] || "MythoVerse Review"}</h4>
-            </div>
-          `;
-        });
-
-      } catch (error) {
-        document.getElementById("heroSubtitle").textContent = "Could not load home content from backend.";
-        document.getElementById("heroSubtitle").classList.remove("loading-text");
-      }
-    }
-
-    async function checkLoginStatus() {
-      const token = localStorage.getItem("token");
-      let user = null;
-
-      try {
-        user = JSON.parse(localStorage.getItem("user"));
-      } catch (error) {
-        user = null;
-      }
-
-      if (!token || !user) {
-        logoutBtn.style.display = "none";
-        loginLink.style.display = "inline-block";
-        registerLink.style.display = "inline-block";
-        startBtn.href = "login.html";
-        return;
-      }
-
-      try {
-        const data = await apiGet(`${API_AUTH}/profile`, token);
-
-        if (data.success) {
-          loginLink.style.display = "none";
-          registerLink.style.display = "none";
-          logoutBtn.style.display = "inline-block";
-          startBtn.href = user.role === "Parent" ? "parent-dashboard.html" : "dashboard.html";
-        }
-      } catch (error) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "login.html";
-    }
-
-    logoutBtn.addEventListener("click", logout);
-
-    const sanskritWords = [
-      {
-        word: "धर्म",
-        meaning: "Dharma — Duty",
-        pronunciation: "Pronunciation: Dhar-ma"
-      },
-      {
-        word: "ज्ञान",
-        meaning: "Gyan — Knowledge",
-        pronunciation: "Pronunciation: Gyaa-n"
-      },
-      {
-        word: "शांति",
-        meaning: "Shanti — Peace",
-        pronunciation: "Pronunciation: Shaan-ti"
-      },
-      {
-        word: "प्रेम",
-        meaning: "Prem — Love",
-        pronunciation: "Pronunciation: Pre-m"
-      },
-      {
-        word: "साहस",
-        meaning: "Sahas — Courage",
-        pronunciation: "Pronunciation: Saa-has"
-      }
-    ];
-
-    let currentWordIndex = 0;
-
-    function changeSanskritWord() {
-      currentWordIndex++;
-      if (currentWordIndex >= sanskritWords.length) {
-        currentWordIndex = 0;
-      }
-
-      document.getElementById("sanskritWord").innerText = sanskritWords[currentWordIndex].word;
-      document.getElementById("sanskritMeaning").innerText = sanskritWords[currentWordIndex].meaning;
-      document.getElementById("sanskritPronunciation").innerText = sanskritWords[currentWordIndex].pronunciation;
-    }
-
-    const revealElements = document.querySelectorAll(".reveal");
-
-    function revealOnScroll() {
-      const windowHeight = window.innerHeight;
-
-      revealElements.forEach(function (element) {
-        const elementTop = element.getBoundingClientRect().top;
-        const revealPoint = 100;
-
-        if (elementTop < windowHeight - revealPoint) {
-          element.classList.add("active");
-        }
-      });
-    }
-
-    window.addEventListener("scroll", revealOnScroll);
-    window.addEventListener("load", revealOnScroll);
-
-    document.querySelectorAll(".world-card").forEach(function (card) {
-      card.addEventListener("click", function () {
-        const page = card.getAttribute("data-page");
-        if (page) {
-          window.location.href = page;
-        }
-      });
-    });
-
-    loadHomeContent();
-    checkLoginStatus();
-  </script>
 </body>
 </html>
